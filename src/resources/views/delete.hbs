@@ -1,0 +1,48 @@
+<h1>DELETE</h1>
+<div class='mt-4'>
+    <form method='POST' action=''>
+        <div class='mb-3'>
+            <label for='data-input' class='form-label'>Tên:</label>
+            <input
+                type='text'
+                name='name'
+                class='form-control'
+                id='data-input'
+                placeholder='VD: viet'
+            />
+        </div>
+        <div class='mb-3'>
+            <label for='data-input' class='form-label'>Tuổi:</label>
+            <input
+                type='text'
+                name='age'
+                class='form-control'
+                id='data-input'
+                placeholder='VD: 18'
+            />
+        </div>
+        <button type='submit' class='btn btn-primary'>Thêm dữ liệu</button>
+    </form>
+</div>
+
+<div class='mt-4'>
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+                {{#each danhsach.[0]}}
+                    <th>{{@key}}</th>
+                {{/each}}
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each danhsach}}
+                <tr>
+                    {{#each this}}
+                        <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
