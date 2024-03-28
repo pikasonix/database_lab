@@ -1,9 +1,47 @@
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand">Pikasonix</a>
-    <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+        <a class="navbar-brand">Pikasonix - AdminPage</a>
+        
+        {{!-- search bar --}}
+        <div class="navbar-nav mx-auto">
+              <div class="input-group">
+                <select class="form-select w-25" aria-label="A">
+                  <option selected>Users</option>
+                  <option value="1">Products</option>
+                  <option value="2">Orders</option>
+                </select>
+                <input type="text" class="form-control w-50" aria-label="Text input with dropdown button">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </div>
+        </div>
+
+        {{!-- Login --}}
+        <div>
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Log in</button>
+
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasRightLabel">Log in</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body">
+              <form>
+                {{!-- username --}}
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="username">Username</label>
+                  <input type="username" id="username" class="form-control" />
+                </div>
+                {{!-- password --}}
+                <div class="form-outline mb-2">
+                  <label class="form-label" for="password">Password</label>
+                  <input type="password" id="password" class="form-control" />
+                </div>
+                 {{!-- Login button --}}
+                <button type="button" class="btn btn-primary btn-block mb-4">Log in</button>
+              </form>
+            </div>
+          </div>
+        </div>
   </div>
 </nav>

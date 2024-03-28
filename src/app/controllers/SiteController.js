@@ -12,7 +12,23 @@ const pool = new Pool({
 class SiteController {
     // [GET] /home
     index(req, res, next) {
-        res.render('home');
+        pool.connect((err, client, done) => {
+            if (err) {
+                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
+                return;
+            }
+
+            client.query('SELECT * FROM contact', (err, result) => {
+                done(); // Giải phóng client trở lại pool
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return;
+                }
+
+                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
+                res.render('home', { danhsach: result.rows }); // Truyền danh sách vào giao diện
+            });
+        });
     }
 
     // [POST] /add
@@ -85,6 +101,28 @@ class SiteController {
         // Hiển thị giao diện 'search'
         res.render('search');
     }
+
+    // [/] /order
+    order(req, res, next) {
+        pool.connect((err, client, done) => {
+            if (err) {
+                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
+                return;
+            }
+
+            client.query('SELECT * FROM "Orders"', (err, result) => {
+                done(); // Giải phóng client trở lại pool
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return;
+                }
+
+                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
+                res.render('order', { danhsach: result.rows }); // Truyền danh sách vào giao diện
+            });
+        });
+    }
+    
 }
 
 module.exports = new SiteController();

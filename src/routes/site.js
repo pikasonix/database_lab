@@ -6,6 +6,7 @@ const siteController = require('../app/controllers/SiteController');
 router.get('/search', siteController.search);
 router.use('/add', siteController.add);
 router.use('/delete', siteController.delete);
+router.use('/order', siteController.order);
 router.use('/', siteController.index);
 
 module.exports = router;
