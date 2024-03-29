@@ -1,6 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
+const helpers = require('handlebars-helpers');
+const comparison = helpers.comparison();
+
+
+const Handlebars = require('handlebars');
+const MomentHandler = require('handlebars.moment');
+MomentHandler.registerHelpers(Handlebars);
+
 const path = require('path');
 const app = express();
 const port = 3000;
@@ -32,3 +40,7 @@ route(app);
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
+
+
+
+ 
