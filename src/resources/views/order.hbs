@@ -1,75 +1,83 @@
+<ul class='nav nav-tabs'>
+    <li class='nav-item'>
+        <a class='nav-link active' data-bs-toggle='tab' href='#users'>Order</a>
+    </li>
+    <li class='nav-item'>
+        <a class='nav-link' data-bs-toggle='tab' href='#products'>Products</a>
+    </li>
+    <li class='nav-item'>
+        <a class='nav-link' data-bs-toggle='tab' href='#others'>Others</a>
+    </li>
+</ul>
 
+<div class='tab-content'>
+    <div class='tab-pane container active' id='users'>
+        <h2>Users</h2>
+        <span
+            class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
+        >Complete</span>
+        <span
+            class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
+        >Cancelled</span>
+        <span
+            class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'
+        >Pending</span>
+        <div class='text-center'>
 
+            <table class='table table-hover'>
+                <thead>
+                    <tr>
+                        {{#each danhsach.[0]}}
+                            <th>{{@key}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#users">Order</a>
-            </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#products">Products</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#others">Others</a>
-        </li>
-    </ul>
+                <tbody>
+                    {{#each danhsach}}
+                        <tr>
+                            <td>{{this.id}}</td>
+                            <td>{{this.customer_id}}</td>
+                            <td>{{this.product_id}}</td>
+                            <td>{{this.quantity}}</td>
 
-    <div class="tab-content">
-        <div class="tab-pane container active" id="users">
-            <h2>Users</h2>
-            <span class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill">Complete</span>
-            <span class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">Cancelled</span>
-            <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill">Pending</span>
-            <div class="text-center">
+                            <td>{{moment
+                                    this.time
+                                    format='DD/MM/YYYY HH:mm:ss'
+                                }}</td>
 
+                            <td>{{this.amount}}</td>
+                            <td>
 
-            <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                {{#each danhsach.[0]}}
-                                    <th>{{@key}}</th>
-                                {{/each}}
-                            </tr>
-                        </thead>
+                                {{#eq this.status '1'}}
+                                    <span
+                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
+                                    >Complete</span>
+                                {{else}}
+                                    {{#eq this.status '2'}}
+                                        <span
+                                            class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
+                                        >Cancelled</span>
+                                    {{else}}
+                                        <span
+                                            class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'
+                                        >Pending</span>
+                                    {{/eq}}
+                                {{/eq}}
 
-                        <tbody>
-                            {{#each danhsach}}
-                                <tr>
-                                    <td>{{this.id}}</td>
-                                    <td>{{this.customer_id}}</td>
-                                    <td>{{this.product_id}}</td>
-                                    <td>{{this.quantity}}</td>
-                                    
-                                    <td>{{moment this.time format="DD/MM/YYYY HH:mm:ss"}}</td> 
-                                    
-                                    <td>{{this.amount}}</td>
-                                    <td>
-                                  
-                                      {{#eq this.status '1'}}
-                                        <span class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill">Complete</span>
-                                      {{else}}
-                                        {{#eq this.status '2'}}
-                                        <span class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">Cancelled</span>
-                                        {{else}}
-                                          <span class="badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill">Pending</span>
-                                        {{/eq}}
-                                      {{/eq}}
-                                  
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </tbody>
-                     </table>
-                     </div>
-        
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
-        
-        <div class="tab-pane container fade" id="products">
-            <h2>Products</h2>
-        </div>
-        <div class="tab-pane container fade" id="others">
-            <h2>Others</h2>
-        </div>
+
     </div>
 
-
-  
+    <div class='tab-pane container fade' id='products'>
+        <h2>Products</h2>
+    </div>
+    <div class='tab-pane container fade' id='others'>
+        <h2>Others</h2>
+    </div>
+</div>

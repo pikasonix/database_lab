@@ -4,7 +4,6 @@ const handlebars = require('express-handlebars');
 const helpers = require('handlebars-helpers');
 const comparison = helpers.comparison();
 
-
 const Handlebars = require('handlebars');
 const MomentHandler = require('handlebars.moment');
 MomentHandler.registerHelpers(Handlebars);
@@ -40,7 +39,3 @@ route(app);
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
-
-
-
- 

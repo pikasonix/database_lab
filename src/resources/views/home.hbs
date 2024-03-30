@@ -1,47 +1,53 @@
-
-<body>  
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link active" data-bs-toggle="tab" href="#users">Users</a>
-            </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#products">Products</a>
+<body>
+    <ul class='nav nav-tabs'>
+        <li class='nav-item'>
+            <a
+                class='nav-link active'
+                data-bs-toggle='tab'
+                href='#users'
+            >Users</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#others">Others</a>
+        <li class='nav-item'>
+            <a
+                class='nav-link'
+                data-bs-toggle='tab'
+                href='#products'
+            >Products</a>
+        </li>
+        <li class='nav-item'>
+            <a class='nav-link' data-bs-toggle='tab' href='#others'>Others</a>
         </li>
     </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane container active" id="users">
+    <div class='tab-content bg-body shadow-sm'>
+        <div class='tab-pane container active' id='users'>
             <h2>Users</h2>
-            <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                {{#each danhsach.[0]}}
-                                    <th>{{@key}}</th>
-                                {{/each}}
-                            </tr>
-                        </thead>
+            <table class='table table-hover'>
+                <thead>
+                    <tr>
+                        {{#each danhsach.[0]}}
+                            <th>{{@key}}</th>
+                        {{/each}}
+                    </tr>
+                </thead>
 
-                        <tbody>
-                            {{#each danhsach}}
-                                <tr>
-                                    {{#each this}}
-                                    <td>{{this}}</td>
-                                    {{/each}}
-                                </tr>
+                <tbody>
+                    {{#each danhsach}}
+                        <tr>
+                            {{#each this}}
+                                <td>{{this}}</td>
                             {{/each}}
-                        </tbody>
-                     </table>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
-        <div class="tab-pane container fade" id="products">
+        <div class='tab-pane container fade' id='products'>
             <h2>Products</h2>
         </div>
-        <div class="tab-pane container fade" id="others">
+        <div class='tab-pane container fade' id='others'>
             <h2>Others</h2>
         </div>
     </div>
-        
-</body>
 
+</body>
