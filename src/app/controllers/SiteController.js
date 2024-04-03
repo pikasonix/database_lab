@@ -122,6 +122,11 @@ class SiteController {
             });
         });
     }
-}
 
+    // [/] /product
+    product(req, res) {
+        // Hiển thị giao diện 'product'
+        res.render('product');
+    }
+}
 module.exports = new SiteController();
