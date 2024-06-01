@@ -1,11 +1,86 @@
 <body>
+    {{!-- CARD --}}
+    <div class="row">
+        {{!-- Tổng thu nhập --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border shadow h-80 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Tổng thu nhập </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">1000000đ</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{!--  Giá vốn --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-80 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Giá vốn</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">500000đ</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Tiền lãi --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-80 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Tiền lãi</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">500000đ</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{!-- Tổng lợi nhuận --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card  border-left-warning shadow py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Tổng lợi nhuận</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">400000đ</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{!-- BODY --}}
     <ul class='nav nav-tabs'>
         <li class='nav-item'>
             <a
                 class='nav-link active'
                 data-bs-toggle='tab'
-                href='#users'
-            >Users</a>
+                href='#customers'
+            >Customers</a>
         </li>
         <li class='nav-item'>
             <a
@@ -20,8 +95,8 @@
     </ul>
 
     <div class='tab-content bg-body shadow-sm'>
-        <div class='tab-pane container active' id='users'>
-            <h2>Users</h2>
+        <div class='tab-pane container active' id='customers'>
+            <h2>Customers</h2>
             <table class='table table-hover'>
                 <thead>
                     <tr>
@@ -42,8 +117,8 @@
                 </tbody>
             </table>
         </div>
-        <div class='tab-pane container fade' id='products'>
-            <h2>Products</h2>
+        <div class='tab-pane container fade' id='products'>           
+            <h5 class='py-2'>Thêm sản phẩm</h5>
             <div class="app">
                 {{> product}}
             </div>

@@ -18,7 +18,7 @@ class SiteController {
                 return;
             }
 
-            client.query('SELECT * FROM contact', (err, result) => {
+            client.query('SELECT * FROM customers', (err, result) => {
                 done(); // Giải phóng client trở lại pool
                 if (err) {
                     console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -36,11 +36,15 @@ class SiteController {
         // Trích xuất tên và tuổi từ phần thân của yêu cầu
         const name = req.body.name;
         const age = req.body.age;
-
-        // Chèn dữ liệu vào bảng 'contact'
+        const gender = req.body.gender;
+        const email = req.body.email;
+        const address = req.body.address;
+        const phone = req.body.phone;    
+        
+        // Chèn dữ liệu vào bảng 'customers'
         pool.query(
-            'INSERT INTO contact (name, age) VALUES ($1, $2)',
-            [name, age],
+            'INSERT INTO customers (name, age, gender, email, address, phone) VALUES ($1, $2, $3, $4, $5, $6)',
+            [name, age, gender, email, address, phone],
             (err, result) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
@@ -48,14 +52,14 @@ class SiteController {
             },
         );
 
-        // Kết nối với cơ sở dữ liệu và truy vấn dữ liệu từ bảng 'contact'
+        // Kết nối với cơ sở dữ liệu và truy vấn dữ liệu từ bảng 'customers'
         pool.connect((err, client, done) => {
             if (err) {
                 console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
                 return;
             }
 
-            client.query('SELECT * FROM contact', (err, result) => {
+            client.query('SELECT * FROM customers', (err, result) => {
                 done(); // Giải phóng client trở lại pool
                 if (err) {
                     console.error('Lỗi khi truy vấn dữ liệu:', err);

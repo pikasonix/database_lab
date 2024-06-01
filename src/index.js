@@ -10,7 +10,7 @@ MomentHandler.registerHelpers(Handlebars);
 
 const path = require('path');
 const app = express();
-const port = 3000;
+const port = 2000;
 
 const route = require('./routes');
 const db = require('./config/db'); // [#1]
@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 db.connect();
 
 //
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // HTTP logger
