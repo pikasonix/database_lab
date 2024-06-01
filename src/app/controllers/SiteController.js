@@ -51,23 +51,37 @@ class SiteController {
                 }
             },
         );
-
+    
         // Kết nối với cơ sở dữ liệu và truy vấn dữ liệu từ bảng 'customers'
         pool.connect((err, client, done) => {
             if (err) {
                 console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
                 return;
             }
-
-            client.query('SELECT * FROM customers', (err, result) => {
-                done(); // Giải phóng client trở lại pool
+    
+            // Thực hiện truy vấn tất cả khách hàng
+            client.query('SELECT * FROM customers', (err, resultAll) => {
                 if (err) {
-                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    console.error('Lỗi khi truy vấn tất cả dữ liệu:', err);
+                    done(); // Giải phóng kết nối trong trường hợp lỗi
                     return;
                 }
-
-                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
-                res.render('customer', { danhsach: result.rows }); // Truyền danh sách vào giao diện
+    
+                // Thực hiện truy vấn khách hàng có tuổi bằng 20
+                client.query('SELECT * FROM customers WHERE age = 20', (err, resultAge20) => {
+                    done(); // Giải phóng kết nối
+    
+                    if (err) {
+                        console.error('Lỗi khi truy vấn dữ liệu tuổi = 20:', err);
+                        return;
+                    }
+    
+                    // Truyền cả hai kết quả vào giao diện
+                    res.render('customer', {
+                        allCustomers: resultAll.rows,
+                        age20Customers: resultAge20.rows
+                    });
+                });
             });
         });
     }
@@ -132,5 +146,6 @@ class SiteController {
         // Hiển thị giao diện 'product'
         res.render('product');
     }
+
 }
 module.exports = new SiteController();

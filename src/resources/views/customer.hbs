@@ -5,107 +5,8 @@
             <strong>Search Customer</strong>
             </button>
         </h2>
-        <div id="collapseZero" class="accordion-collapse" data-bs-parent="#accordionExample">
+        <div id="collapseZero" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class='mt-4'>
-                            <form method='POST' action=''>
-                                <div class="row">
-                                    <div class='col-9'>
-                                        <div class="row">
-                                            <div class='col-5 mb-3'>
-                                                <label for='name-input' class='form-label'>Tên:</label>
-                                                <input
-                                                    type='text'
-                                                    name='name'
-                                                    class='form-control'
-                                                    id='name-input'
-                                                    placeholder='VD: Nguyễn Văn A'
-                                                />
-                                            </div>
-                                            <div class='col-3 mb-3'>
-                                                <label for='age-input' class='form-label'>Tuổi:</label>
-                                                <input
-                                                    type='text'
-                                                    name='age'
-                                                    class='form-control'
-                                                    id='age-input'
-                                                    placeholder='VD: 18'
-                                                />
-                                            </div>
-                                            <div class='col-4 mb-3'>
-                                                <label for='genderSelect' class='form-label'>Giới tính:</label>
-                                                <select id="genderSelect" name="gender" class="form-select">
-                                                    <option selected>Choose Gender</option>
-                                                    <option value="Male">Male</option>
-                                                    <option value="Female">Female</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                            </div>
-                                            <div class='col-5 mb-3'>
-                                                <label for='email-input' class='form-label'>Email:</label>
-                                                <input
-                                                    type='text'
-                                                    name='email'
-                                                    class='form-control'
-                                                    id='email-input'
-                                                    placeholder='VD: customer@example.com'
-                                                />
-                                            </div>
-                                            <div class='col-4 mb-3'>
-                                                <label for='address-input' class='form-label'>Address:</label>
-                                                <input
-                                                    type='text'
-                                                    name='address'
-                                                    class='form-control'
-                                                    id='address-input'
-                                                    placeholder='VD: Hà Nội'
-                                                />
-                                            </div>
-                                            <div class='col-3 mb-3'>
-                                                <label for='phone-input' class='form-label'>Phone number:</label>
-                                                <input
-                                                    type='text'
-                                                    name='phone'
-                                                    class='form-control'
-                                                    id='phone-input'
-                                                    placeholder='VD: 0123456789'
-                                                />
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type='submit' class='btn btn-primary'>Thêm dữ liệu</button>
-                                        </div>
-                                    </div>
-                                    <div class='col-3  pt-4'>
-                                        <div class="card border-warning mb-3" style="max-width: 18rem;">
-                                            <h6 class="card-header text-warning">Chú ý</h6>
-                                            <div class="card-body text-warning">
-                                                <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-        <strong>Add Customer</strong>
-        </button>
-    </h2>
-    {{!-- Add Customer --}}
-    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-            <div class='mt-4'>
                 <form method='POST' action=''>
                     <div class="row">
                         <div class='col-9'>
@@ -114,7 +15,7 @@
                                     <label for='name-input' class='form-label'>Tên:</label>
                                     <input
                                         type='text'
-                                        name='name'
+                                        name='search_name'
                                         class='form-control'
                                         id='name-input'
                                         placeholder='VD: Nguyễn Văn A'
@@ -124,7 +25,7 @@
                                     <label for='age-input' class='form-label'>Tuổi:</label>
                                     <input
                                         type='text'
-                                        name='age'
+                                        name='search_age'
                                         class='form-control'
                                         id='age-input'
                                         placeholder='VD: 18'
@@ -143,7 +44,7 @@
                                     <label for='email-input' class='form-label'>Email:</label>
                                     <input
                                         type='text'
-                                        name='email'
+                                        name='search_email'
                                         class='form-control'
                                         id='email-input'
                                         placeholder='VD: customer@example.com'
@@ -153,7 +54,7 @@
                                     <label for='address-input' class='form-label'>Address:</label>
                                     <input
                                         type='text'
-                                        name='address'
+                                        name='search_address'
                                         class='form-control'
                                         id='address-input'
                                         placeholder='VD: Hà Nội'
@@ -163,7 +64,7 @@
                                     <label for='phone-input' class='form-label'>Phone number:</label>
                                     <input
                                         type='text'
-                                        name='phone'
+                                        name='search_phone'
                                         class='form-control'
                                         id='phone-input'
                                         placeholder='VD: 0123456789'
@@ -171,23 +72,116 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type='submit' class='btn btn-primary'>Thêm dữ liệu</button>
+                                <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
                             </div>
                         </div>
                         <div class='col-3  pt-4'>
                             <div class="card border-warning mb-3" style="max-width: 18rem;">
                                 <h6 class="card-header text-warning">Chú ý</h6>
                                 <div class="card-body text-warning">
-                                    <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
+                                    <p class="card-text"><strong>Chỉnh sửa</strong> và <strong>Xoá</strong> thông tin khách hàng ở bảng dưới</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <strong>Add Customer</strong>
+            </button>
+        </h2>
+        {{!-- Add Customer --}}
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class='mt-4'>
+                    <form method='POST' action=''>
+                        <div class="row">
+                            <div class='col-9'>
+                                <div class="row">
+                                    <div class='col-5 mb-3'>
+                                        <label for='name-input' class='form-label'>Tên:</label>
+                                        <input
+                                            type='text'
+                                            name='name'
+                                            class='form-control'
+                                            id='name-input'
+                                            placeholder='VD: Nguyễn Văn A'
+                                        />
+                                    </div>
+                                    <div class='col-3 mb-3'>
+                                        <label for='age-input' class='form-label'>Tuổi:</label>
+                                        <input
+                                            type='text'
+                                            name='age'
+                                            class='form-control'
+                                            id='age-input'
+                                            placeholder='VD: 18'
+                                        />
+                                    </div>
+                                    <div class='col-4 mb-3'>
+                                        <label for='genderSelect' class='form-label'>Giới tính:</label>
+                                        <select id="genderSelect" name="gender" class="form-select">
+                                            <option selected>Choose Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class='col-5 mb-3'>
+                                        <label for='email-input' class='form-label'>Email:</label>
+                                        <input
+                                            type='text'
+                                            name='email'
+                                            class='form-control'
+                                            id='email-input'
+                                            placeholder='VD: customer@example.com'
+                                        />
+                                    </div>
+                                    <div class='col-4 mb-3'>
+                                        <label for='address-input' class='form-label'>Address:</label>
+                                        <input
+                                            type='text'
+                                            name='address'
+                                            class='form-control'
+                                            id='address-input'
+                                            placeholder='VD: Hà Nội'
+                                        />
+                                    </div>
+                                    <div class='col-3 mb-3'>
+                                        <label for='phone-input' class='form-label'>Phone number:</label>
+                                        <input
+                                            type='text'
+                                            name='phone'
+                                            class='form-control'
+                                            id='phone-input'
+                                            placeholder='VD: 0123456789'
+                                        />
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type='submit' class='btn btn-primary'>Thêm dữ liệu</button>
+                                </div>
+                            </div>
+                            <div class='col-3  pt-4'>
+                                <div class="card border-warning mb-3" style="max-width: 18rem;">
+                                    <h6 class="card-header text-warning">Chú ý</h6>
+                                    <div class="card-body text-warning">
+                                        <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
     <div class="accordion-item">
     <h2 class="accordion-header">
@@ -202,14 +196,14 @@
                 <table class='table table-hover'>
                     <thead class="text-center">
                         <tr>
-                            {{#each danhsach.[0]}}
+                            {{#each allCustomers.[0]}}
                                 <th>{{@key}}</th>
                             {{/each}}
                         </tr>
                     </thead>
 
                     <tbody>
-                        {{#each danhsach}}
+                        {{#each allCustomers}}
                             <tr>
                                 {{#each this}}
                                     <td>{{this}}</td>
