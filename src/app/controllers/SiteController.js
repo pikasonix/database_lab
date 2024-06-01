@@ -32,7 +32,7 @@ class SiteController {
     }
 
     // [POST] /add
-    add(req, res, next) {
+    customer(req, res, next) {
         // Trích xuất tên và tuổi từ phần thân của yêu cầu
         const name = req.body.name;
         const age = req.body.age;
@@ -67,7 +67,7 @@ class SiteController {
                 }
 
                 const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
-                res.render('add', { danhsach: result.rows }); // Truyền danh sách vào giao diện
+                res.render('customer', { danhsach: result.rows }); // Truyền danh sách vào giao diện
             });
         });
     }
