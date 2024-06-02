@@ -1,4 +1,6 @@
 <div class="accordion" id="customer">
+    {{!-- Search customer --}}
+    
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
@@ -7,7 +9,8 @@
         </h2>
         <div id="collapseZero" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-                <form method='POST' action=''>
+                {{!-- Input --}}
+                <form method='POST' action='/searchcustomer'>
                     <div class="row">
                         <div class='col-9'>
                             <div class="row">
@@ -33,7 +36,7 @@
                                 </div>
                                 <div class='col-4 mb-3'>
                                     <label for='genderSelect' class='form-label'>Giới tính:</label>
-                                    <select id="genderSelect" name="gender" class="form-select">
+                                    <select id="genderSelect" name="search_gender" class="form-select">
                                         <option selected>Choose Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -85,22 +88,45 @@
                         </div>
                     </div>
                 </form>
+                {{!-- Table --}}
+                {{#if resultSearch}}
+                    <table class='table table-hover'>
+                        <thead class="text-center">
+                            <tr>
+                                {{#each resultSearch.[0]}}
+                                    <th>{{@key}}</th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each resultSearch}}
+                                <tr>
+                                    {{#each this}}
+                                        <td>{{this}}</td>
+                                    {{/each}}
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{else}}
+                    <p>No results found.</p>
+                {{/if}}
             </div>
         </div>
     </div>
 
-
+    {{!-- Add customer --}}
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             <strong>Add Customer</strong>
             </button>
         </h2>
-        {{!-- Add Customer --}}
+        {{!-- Input --}}
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class='mt-4'>
-                    <form method='POST' action=''>
+                    <form method='POST' action='/addcustomer'>
                         <div class="row">
                             <div class='col-9'>
                                 <div class="row">
@@ -183,13 +209,15 @@
             </div>
         </div>
     </div>
+
+    {{!-- Table of customer --}}
     <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
         <strong>Customer Info</strong>
         </button>
     </h2>
-    {{!-- Table of customer --}}
+    {{!-- Table --}}
     <div id="collapseTwo" class="accordion-collapse " data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class='mt-4'>

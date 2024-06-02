@@ -1,4 +1,4 @@
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
 
 // Tạo một connection pool
 const pool = new Pool({
@@ -12,140 +12,114 @@ const pool = new Pool({
 class SiteController {
     // [GET] /home
     index(req, res, next) {
-        pool.connect((err, client, done) => {
+        pool.query('SELECT * FROM customers', (err, result) => {
             if (err) {
-                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
-                return;
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
+            res.render('home', { danhsach: result.rows });
+        });
+    }
 
-            client.query('SELECT * FROM customers', (err, result) => {
-                done(); // Giải phóng client trở lại pool
-                if (err) {
-                    console.error('Lỗi khi truy vấn dữ liệu:', err);
-                    return;
-                }
-
-                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
-                res.render('home', { danhsach: result.rows }); // Truyền danh sách vào giao diện
-            });
+    // [GET] /customer
+    customer(req, res, next) {
+        pool.query('SELECT * FROM customers', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('customer', { allCustomers: result.rows });
         });
     }
 
     // [POST] /add
-    customer(req, res, next) {
-        // Trích xuất tên và tuổi từ phần thân của yêu cầu
-        const name = req.body.name;
-        const age = req.body.age;
-        const gender = req.body.gender;
-        const email = req.body.email;
-        const address = req.body.address;
-        const phone = req.body.phone;    
-        
-        // Chèn dữ liệu vào bảng 'customers'
+    addcustomer(req, res, next) {
+        const { name, age, gender, email, address, phone } = req.body;
+
         pool.query(
             'INSERT INTO customers (name, age, gender, email, address, phone) VALUES ($1, $2, $3, $4, $5, $6)',
             [name, age, gender, email, address, phone],
-            (err, result) => {
+            (err) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
                 }
-            },
-        );
-    
-        // Kết nối với cơ sở dữ liệu và truy vấn dữ liệu từ bảng 'customers'
-        pool.connect((err, client, done) => {
-            if (err) {
-                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
-                return;
+                res.redirect('/customer'); // Điều hướng đến trang /customer sau khi thêm khách hàng
             }
+        );
+    }
+
+    // [POST] /searchcustomer
+    searchcustomer(req, res, next) {
+        const search_name = req.body.search_name || null;
+        const search_age = req.body.search_age !== '' ? parseInt(req.body.search_age) : null;
+        const search_gender = req.body.search_gender !== 'Choose Gender' ? req.body.search_gender : null;
+        const search_email = req.body.search_email || null;
+        const search_address = req.body.search_address || null;
+        const search_phone = req.body.search_phone || null;
     
-            // Thực hiện truy vấn tất cả khách hàng
-            client.query('SELECT * FROM customers', (err, resultAll) => {
-                if (err) {
-                    console.error('Lỗi khi truy vấn tất cả dữ liệu:', err);
-                    done(); // Giải phóng kết nối trong trường hợp lỗi
-                    return;
-                }
+        console.log('Search parameters:', {
+            search_name,
+            search_age,
+            search_gender,
+            search_email,
+            search_address,
+            search_phone,
+        });
     
-                // Thực hiện truy vấn khách hàng có tuổi bằng 20
-                client.query('SELECT * FROM customers WHERE age = 20', (err, resultAge20) => {
-                    done(); // Giải phóng kết nối
+        const query = `
+            SELECT * FROM customers 
+            WHERE (COALESCE($1, name) = name) 
+            AND (COALESCE($2::INTEGER, age) = age) 
+            AND (COALESCE($3, gender) = gender) 
+            AND (COALESCE($4, email) = email) 
+            AND (COALESCE($5, address) = address) 
+            AND (COALESCE($6, phone) = phone)
+        `;
+        const values = [search_name, search_age, search_gender, search_email, search_address, search_phone];
     
-                    if (err) {
-                        console.error('Lỗi khi truy vấn dữ liệu tuổi = 20:', err);
-                        return;
-                    }
-    
-                    // Truyền cả hai kết quả vào giao diện
-                    res.render('customer', {
-                        allCustomers: resultAll.rows,
-                        age20Customers: resultAge20.rows
-                    });
-                });
-            });
+        pool.query(query, values, (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send(`Lỗi cơ sở dữ liệu: ${err.message}`);
+            }
+            res.render('customer', { resultSearch: result.rows });
         });
     }
 
     // [GET] /delete
     delete(req, res) {
-        pool.query(
-            'DELETE contact WHERE name = $1',
-            [req.body.name],
-            (err, result) => {
-                res.render('add');
-            },
-        );
-        pool.connect((err, client, done) => {
+        const name = req.body.name;
+
+        pool.query('DELETE FROM customers WHERE name = $1', [name], (err) => {
             if (err) {
-                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
-                return;
+                console.error('Lỗi khi xóa dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-
-            client.query('SELECT * FROM contact', (err, result) => {
-                done(); // Giải phóng client trở lại pool
-                if (err) {
-                    console.error('Lỗi khi truy vấn dữ liệu:', err);
-                    return;
-                }
-
-                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
-                res.render('delete', { danhsach: result.rows }); // Truyền danh sách vào giao diện
-            });
+            res.redirect('/customer'); // Điều hướng đến trang /customer sau khi xóa
         });
     }
 
     // [GET] /search
     search(req, res) {
-        // Hiển thị giao diện 'search'
         res.render('search');
     }
 
-    // [/] /order
+    // [GET] /order
     order(req, res, next) {
-        pool.connect((err, client, done) => {
+        pool.query('SELECT * FROM "Orders"', (err, result) => {
             if (err) {
-                console.error('Lỗi khi kết nối với cơ sở dữ liệu:', err);
-                return;
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-
-            client.query('SELECT * FROM "Orders"', (err, result) => {
-                done(); // Giải phóng client trở lại pool
-                if (err) {
-                    console.error('Lỗi khi truy vấn dữ liệu:', err);
-                    return;
-                }
-
-                const danhsach = result.rows; // Gán danh sách từ kết quả truy vấn
-                res.render('order', { danhsach: result.rows }); // Truyền danh sách vào giao diện
-            });
+            res.render('order', { danhsach: result.rows });
         });
     }
 
-    // [/] /product
+    // [GET] /product
     product(req, res) {
-        // Hiển thị giao diện 'product'
         res.render('product');
     }
-
 }
+
 module.exports = new SiteController();

@@ -5,6 +5,8 @@ const siteController = require('../app/controllers/SiteController');
 
 router.get('/search', siteController.search);
 router.use('/customer', siteController.customer);
+router.use('/addcustomer', siteController.addcustomer);
+router.use('/searchcustomer', siteController.searchcustomer);
 router.use('/delete', siteController.delete);
 router.use('/order', siteController.order);
 router.use('/product', siteController.product);
