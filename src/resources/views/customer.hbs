@@ -90,7 +90,7 @@
                 </form>
                 {{!-- Table --}}
                 {{#if resultSearch}}
-                
+                    <small>
                     <table class='table table-hover text-center'>
                         <thead class="text-center text-uppercase">
                             <tr>
@@ -116,13 +116,14 @@
                                     <td>
                                         <div class="d-grid gap-2">
                                             <a href="/editcustomer/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
-                                            <a href="/edituser/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                            <a href="/deletecustomer/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
                                         </div>
                                     </td>
                                 </tr>
                             {{/each}}
                         </tbody>
-                    </table>                
+                    </table>
+                </small>                
                 {{else}}
                     <p>No results found.</p>
                 {{/if}}

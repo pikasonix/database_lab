@@ -106,6 +106,25 @@ class SiteController {
             res.render('customer');
         });
     }
+    // Delete customer
+    deletecustomer(req, res) {
+        pool.query('SELECT * FROM customers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('deletecustomer', { customerinfo: result.rows });
+        });
+    }
+    removecustomer(req, res) {
+        pool.query('DELETE FROM customers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi delete dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('customer');
+        });
+    }
     // [GET] /delete
     delete(req, res) {
         const name = req.body.name;

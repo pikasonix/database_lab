@@ -9,7 +9,9 @@ router.use('/customer', siteController.customer);
 router.use('/searchcustomer', siteController.searchcustomer);
 router.use('/addcustomer', siteController.addcustomer);
 router.use('/editcustomer/:id', siteController.editcustomer);
-router.use('/editcustomer/:id', siteController.updatecustomer);
+router.use('/updatecustomer/:id', siteController.updatecustomer);
+router.use('/deletecustomer/:id', siteController.deletecustomer); // hiển thị trang deletecustomer
+router.use('/removecustomer/:id', siteController.removecustomer); // xoá customer
 router.use('/delete', siteController.delete);
 router.use('/order', siteController.order);
 router.use('/product', siteController.product);
