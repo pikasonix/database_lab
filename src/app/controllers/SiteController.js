@@ -125,6 +125,25 @@ class SiteController {
             res.render('customer');
         });
     }
+// =================== Đã xong phần xử lý customer ====================
+    // [GET] supplier
+    getsuppliers(req, res, next) {
+        pool.query('SELECT name FROM suppliers', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.json(result.rows);
+        });
+    }
+
+
+
+
+
+
+
+
     // [GET] /delete
     delete(req, res) {
         const name = req.body.name;

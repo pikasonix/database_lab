@@ -12,6 +12,9 @@ router.use('/editcustomer/:id', siteController.editcustomer);
 router.use('/updatecustomer/:id', siteController.updatecustomer);
 router.use('/deletecustomer/:id', siteController.deletecustomer); // hiển thị trang deletecustomer
 router.use('/removecustomer/:id', siteController.removecustomer); // xoá customer
+
+router.get('/getsuppliers', siteController.getsuppliers);
+
 router.use('/delete', siteController.delete);
 router.use('/order', siteController.order);
 router.use('/product', siteController.product);
