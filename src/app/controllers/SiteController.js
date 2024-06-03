@@ -23,7 +23,7 @@ class SiteController {
 
     // [GET] /customer
     customer(req, res, next) {
-        pool.query('SELECT * FROM customers', (err, result) => {
+        pool.query('SELECT * FROM customers ORDER BY id DESC', (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -86,7 +86,26 @@ class SiteController {
             res.render('customer', { resultSearch: result.rows });
         });
     }
-
+    // Edit customer
+    editcustomer(req, res) {
+        pool.query('SELECT * FROM customers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('editcustomer', { customerinfo: result.rows });
+        });
+    }
+    updatecustomer(req, res) {
+        const { update_name, update_age, update_gender, update_email, update_address, update_phone } = req.body;
+        pool.query('UPDATE customers SET name = $1, age = $2, gender = $3, email = $4, address = $5, phone = $6 WHERE id = $7', [update_name, update_age, update_gender, update_email, update_address, update_phone, req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi update dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('customer');
+        });
+    }
     // [GET] /delete
     delete(req, res) {
         const name = req.body.name;
