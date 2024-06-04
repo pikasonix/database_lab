@@ -16,7 +16,10 @@ router.use('/removecustomer/:id', siteController.removecustomer); // xoá custom
 router.use('/product', siteController.product);
 router.get('/supplier', siteController.supplier);
 router.use('/addproduct', siteController.addproduct);
-
+router.use('/editproduct/:id', siteController.editproduct);
+router.use('/updateproduct/:id', siteController.updateproduct);
+router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị trang deletecustomer
+router.use('/removeproduct/:id', siteController.removeproduct); // xoá customer
 
 
 router.use('/delete', siteController.delete);

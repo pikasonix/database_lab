@@ -15,73 +15,73 @@
                         <div class='col-9'>
                             <div class="row">
                                 <div class='col-3 mb-3'>
-                                    <label for='id-input' class='form-label'>ID:</label>
+                                    <label for='search_id-input' class='form-label'>ID:</label>
                                     <input
                                         type='text'
                                         name='search_id'
                                         class='form-control'
-                                        id='id-input'
+                                        id='search_id-input'
                                         placeholder='123'
                                     />
                                 </div>
                                 <div class='col-6 mb-3'>
-                                    <label for='name-input' class='form-label'>Tên sản phẩm:</label>
+                                    <label for='search_name-input' class='form-label'>Tên sản phẩm:</label>
                                     <input
                                         type='text'
                                         name='search_name'
                                         class='form-control'
-                                        id='name-input'
+                                        id='search_name-input'
                                         placeholder='Samsung S24'
                                     />
                                 </div>
                                 <div class="col-3">
-                                    <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                    <input name='search_supplier' class="form-control" list="datalistOptions" id="supplier-input" placeholder="Samsung">
+                                    <label for='search_supplier-input' class='form-label active'>Nhà sản xuất:</label>
+                                    <input name='search_supplier' class="form-control" list="datalistOptions" id="search_supplier-input" placeholder="Samsung">
                                     <datalist id="datalistOptions"></datalist>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='mgf-input' class='form-label'>Ngày sản xuất:</label>
+                                    <label for='search_mgf-input' class='form-label'>Ngày sản xuất:</label>
                                     <input
                                         type='date'
                                         name='search_mgf'
                                         class='form-control'
-                                        id='mgf-input'
+                                        id='search_mgf-input'
                                         placeholder='2024-12-5'
                                     />
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='price-input' class='form-label'>Giá gốc:</label>
+                                    <label for='search_price-input' class='form-label'>Giá gốc:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
                                             type='number'
                                             name='search_price'
                                             class='form-control'
-                                            id='price-input'
+                                            id='search_price-input'
                                             placeholder='23000000'
                                         />
                                         <span class="input-group-text" id="addon-wrapping">đ</span>
                                     </div>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='discount-input' class='form-label'>Giảm giá:</label>
+                                    <label for='search_discount-input' class='form-label'>Giảm giá:</label>
                                     <div class="input-group flex-nowrap">
                                         <input
                                             type='number'
                                             name='search_discount'
                                             class='form-control'
-                                            id='discount-input'
+                                            id='search_discount-input'
                                             placeholder='10'
                                         />
                                         <span class="input-group-text" id="addon-wrapping">%</span>
                                     </div>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='quantity-input' class='form-label'>Số lượng:</label>
+                                    <label for='search_quantity-input' class='form-label'>Số lượng:</label>
                                     <input
                                         type='number'
                                         name='search_quantity'
                                         class='form-control'
-                                        id='quantity-input'
+                                        id='search_quantity-input'
                                         placeholder='100'
                                     />
                                 </div>
@@ -170,7 +170,7 @@
                                         name='id'
                                         class='form-control'
                                         id='id-input'
-                                        placeholder='123'
+                                        disabled
                                     />
                                 </div>
                                 <div class='col-6 mb-3'>
@@ -183,7 +183,7 @@
                                         placeholder='Samsung S24'
                                     />
                                 </div>
-                                <div class='col-6 mb-3'>
+                                <div class='col-3 mb-3'>
                                     <label for='catalog-input' class='form-label'>Loại sản phẩm:</label>
                                     <input
                                         type='text'
@@ -195,7 +195,7 @@
                                 </div>
                                 <div class="col-3">
                                     <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                    <input name='upplier' class="form-control" list="datalistOptions" id="supplier-input" placeholder="Samsung">
+                                    <input name='supplier' class="form-control" list="datalistOptions" id="supplier-input" placeholder="Samsung">
                                     <datalist id="datalistOptions"></datalist>
                                 </div>
                                 <div class='col-3 mb-3'>
@@ -241,10 +241,10 @@
                                         name='quantity'
                                         class='form-control'
                                         id='quantity-input'
-                                        placeholder='100'
+                                        value='1'
                                     />
                                 </div>
-                                <div class='col-12 mb-3'>
+                                <div class='col-9 mb-3'>
                                     <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
                                     <input
                                         type='text'
@@ -275,8 +275,7 @@
                                 <div class="card-body text-warning">
                                     <div class="card-text">
                                         <ul>
-                                            <li>Tìm kiếm không phân biệt chữ hoa và thường</li>
-                                            <li><strong>Chỉnh sửa</strong> và <strong>Xoá</strong> sản phẩm ở bảng dưới</li>
+                                            <li>Supplier nhập supplier_id đã có nha...chưa fix đc</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -312,12 +311,21 @@
 
                     <tbody>
                         {{#each allProduct}}
-                            <tr>
-                                {{#each this}}
-                                    <td>{{this}}</td>
-                                {{/each}}
-                            </tr>
-                        {{/each}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.name}}</td>
+                                    <td>{{this.catalog}}</td>
+                                    <td>{{this.supplier_id}}</td>
+                                    <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                    <td>{{this.price}}</td>
+                                    <td>{{this.discount}}</td>
+                                    <td>{{this.quantity}}</td>
+                                    <td>Mô tả</td>
+                                    <td><a href="{{this.image}}">Link</a></td>
+                                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                    <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                </tr>
+                            {{/each}}
                     </tbody>
                 </table>
             </div>
@@ -327,21 +335,20 @@
 </div>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('/supplier')
-                .then(response => response.json())
-                .then(data => {
-                    const datalist = document.getElementById('datalistOptions');
-                    datalist.innerHTML = ''; // Xóa các option hiện tại
-                    data.forEach(supplier => {
-                        const option = document.createElement('option');
-                        option.value = supplier.name;
-                        datalist.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Lỗi khi lấy danh sách nhà sản xuất:', error));
-        });
-    </script>
-
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/supplier')
+            .then(response => response.json())
+            .then(data => {
+                const datalist = document.getElementById('datalistOptions');
+                datalist.innerHTML = ''; // Xóa các option hiện tại
+                data.forEach(supplier => {
+                    const option = document.createElement('option');
+                    option.value = supplier.name;
+                    datalist.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Lỗi khi lấy danh sách nhà sản xuất:', error));
+    });
+</script>
 
 
