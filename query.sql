@@ -45,3 +45,55 @@ CREATE TABLE orders (
   status_shipment SMALLINT CHECK (status_shipment IN (0, 1, 2, 3)), -- 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+CREATE OR REPLACE FUNCTION update_data_products( 
+    p_name VARCHAR(255), 
+    p_catalog VARCHAR(255), 
+    p_mgf TIMESTAMP, 
+    p_supplier_name VARCHAR(255), 
+    p_id_supplier VARCHAR,  
+    p_price INT,  
+    p_discount INT,  
+    p_quantity INT, 
+    p_description TEXT, 
+    p_image VARCHAR(255) 
+) 
+RETURNS VARCHAR(50) 
+AS $$ 
+DECLARE 
+    v_supplier_id VARCHAR; -- Khai báo biến v_supplier_id 
+BEGIN 
+    -- Kiểm tra xem nhà cung cấp có trong bảng suppliers chưa 
+    SELECT id INTO v_supplier_id 
+    FROM suppliers 
+    WHERE name = p_supplier_name; 
+    IF v_supplier_id IS NOT NULL THEN 
+        -- Nếu nhà cung cấp đã tồn tại, chỉ insert vào bảng products 
+        INSERT INTO products (name, catalog, mgf, price, discount, quantity, description, image, supplier_id) 
+        VALUES (p_name, p_catalog, p_mgf, p_price, p_discount, p_quantity, p_description, p_image, v_supplier_id); 
+    ELSE 
+        -- Nếu nhà cung cấp chưa tồn tại, insert vào bảng suppliers trước, sau đó insert vào bảng products 
+        INSERT INTO suppliers (id, name) 
+        VALUES (p_id_supplier, p_supplier_name); 
+        INSERT INTO products (name, catalog, mgf, price, discount, quantity, description, image, supplier_id) 
+        VALUES (p_name, p_catalog, p_mgf, p_price, p_discount, p_quantity, p_description, p_image, p_id_supplier); 
+    END IF; 
+    RETURN 'Success'; 
+END; 
+$$ LANGUAGE plpgsql; 
+
+ 
+
+SELECT update_data_products( 
+    'Product A', 
+    'Category X', 
+    '2023-06-01', 
+    'Supplier X', 
+    '123', 
+    100, 
+    10, 
+    100, 
+    'This is a great product', 
+    'product_a.jpg' 

@@ -22,7 +22,7 @@ class SiteController {
     }
 
     // [GET] /customer
-    customer(req, res, next) {
+    customer(req, res) {
         pool.query('SELECT * FROM customers ORDER BY id DESC', (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -33,7 +33,7 @@ class SiteController {
     }
 
     // [POST] /add
-    addcustomer(req, res, next) {
+    addcustomer(req, res) {
         const { name, age, gender, email, address, phone } = req.body;
 
         pool.query(
@@ -126,8 +126,18 @@ class SiteController {
         });
     }
 // =================== Đã xong phần xử lý customer ====================
+    // [GET] product
+    product(req, res) {
+        pool.query('SELECT * FROM products ORDER BY id DESC', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('product', { allProduct: result.rows });
+        });
+    }
     // [GET] supplier
-    getsuppliers(req, res, next) {
+    supplier(req, res, next) {
         pool.query('SELECT name FROM suppliers', (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -136,8 +146,22 @@ class SiteController {
             res.json(result.rows);
         });
     }
+    addproduct(req, res, next) {
+        const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
 
-
+        pool.query(
+            'INSERT INTO products (name, catalog, supplier, mgf, price, discount, quantity, description, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+            [name, catalog, supplier, mgf, price, discount, quantity, description, image],
+            (err) => {
+                if (err) {
+                    console.error('Lỗi khi chèn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                res.redirect('/product'); // Điều hướng đến trang /product sau khi thêm sản phẩm
+            }
+        );
+    }
+    
 
 
 
@@ -171,11 +195,6 @@ class SiteController {
             }
             res.render('order', { danhsach: result.rows });
         });
-    }
-
-    // [GET] /product
-    product(req, res) {
-        res.render('product');
     }
 }
 
