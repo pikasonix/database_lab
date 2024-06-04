@@ -185,18 +185,13 @@
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='catalog-input' class='form-label'>Loại sản phẩm:</label>
-                                    <input
-                                        type='text'
-                                        name='catalog'
-                                        class='form-control'
-                                        id='catalog-input'
-                                        placeholder='SmartPhone'
-                                    />
+                                    <input name='catalog' class='form-control' list="catalogOptions" id='catalog-input' placeholder='SmartPhone' />
+                                    <datalist id="catalogOptions"></datalist>
                                 </div>
                                 <div class="col-3">
                                     <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                    <input name='supplier' class="form-control" list="datalistOptions" id="supplier-input" placeholder="Samsung">
-                                    <datalist id="datalistOptions"></datalist>
+                                    <input name='supplier' class="form-control" list="supplierOptions" id="supplier-input" placeholder="Samsung">
+                                    <datalist id="supplierOptions"></datalist>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='mgf-input' class='form-label'>Ngày sản xuất:</label>
@@ -336,19 +331,35 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/supplier')
-            .then(response => response.json())
-            .then(data => {
-                const datalist = document.getElementById('datalistOptions');
-                datalist.innerHTML = ''; // Xóa các option hiện tại
-                data.forEach(supplier => {
-                    const option = document.createElement('option');
-                    option.value = supplier.name;
-                    datalist.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Lỗi khi lấy danh sách nhà sản xuất:', error));
+        // Lấy danh sách nhà sản xuất
+        fetch('/getsupplier')
+        .then(response => response.json())
+        .then(data => {
+            const supplierDatalist = document.getElementById('supplierOptions');
+            supplierDatalist.innerHTML = ''; 
+            data.forEach(supplier => {
+                const option = document.createElement('option');
+                option.value = supplier.name;
+                supplierDatalist.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Lỗi khi lấy danh sách nhà sản xuất:', error));
+
+    // Lấy danh sách loại sản phẩm
+        fetch('/getcatalog')
+        .then(response => response.json())
+        .then(data => {
+            const catalogDatalist = document.getElementById('catalogOptions');
+            catalogDatalist.innerHTML = ''; 
+            data.forEach(catalog => {
+                const option = document.createElement('option');
+                option.value = catalog.catalog;
+                catalogDatalist.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Lỗi khi lấy danh sách loại sản phẩm:', error));
     });
 </script>
+
 
 

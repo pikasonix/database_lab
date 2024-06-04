@@ -14,12 +14,16 @@ router.use('/deletecustomer/:id', siteController.deletecustomer); // hiển th�
 router.use('/removecustomer/:id', siteController.removecustomer); // xoá customer
 
 router.use('/product', siteController.product);
-router.get('/supplier', siteController.supplier);
+router.get('/getcatalog', siteController.getcatalog);
+router.get('/getsupplier', siteController.getsupplier);
 router.use('/addproduct', siteController.addproduct);
 router.use('/editproduct/:id', siteController.editproduct);
 router.use('/updateproduct/:id', siteController.updateproduct);
 router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị trang deletecustomer
 router.use('/removeproduct/:id', siteController.removeproduct); // xoá customer
+
+
+
 
 
 router.use('/delete', siteController.delete);

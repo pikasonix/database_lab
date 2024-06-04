@@ -136,6 +136,24 @@ class SiteController {
             res.render('product', { allProduct: result.rows });
         });
     }
+    getcatalog(req, res, next) {
+        pool.query('SELECT DISTINCT catalog FROM products', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.json(result.rows);
+        });
+    }
+    getsupplier(req, res, next) {
+        pool.query('SELECT name FROM suppliers', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.json(result.rows);
+        });
+    }
     addproduct(req, res, next) {
         const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
         pool.query(
@@ -230,17 +248,9 @@ class SiteController {
         });
     }
 
-
+// =================== Phần xử lý products ====================
     // [GET] supplier
-    supplier(req, res, next) {
-        pool.query('SELECT name FROM suppliers', (err, result) => {
-            if (err) {
-                console.error('Lỗi khi truy vấn dữ liệu:', err);
-                return res.status(500).send('Lỗi cơ sở dữ liệu');
-            }
-            res.json(result.rows);
-        });
-    }
+    
 
 
 
