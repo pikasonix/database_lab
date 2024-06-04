@@ -34,20 +34,15 @@
                                         placeholder='Samsung S24'
                                     />
                                 </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_catalog-input' class='form-label'>Loại sản phẩm:</label>
+                                    <input name='search_catalog' class='form-control' list="catalogOptions" id='search_catalog-input' placeholder='SmartPhone' />
+                                    <datalist id="catalogOptions"></datalist>
+                                </div>
                                 <div class="col-3">
                                     <label for='search_supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                    <input name='search_supplier' class="form-control" list="datalistOptions" id="search_supplier-input" placeholder="Samsung">
-                                    <datalist id="datalistOptions"></datalist>
-                                </div>
-                                <div class='col-3 mb-3'>
-                                    <label for='search_mgf-input' class='form-label'>Ngày sản xuất:</label>
-                                    <input
-                                        type='date'
-                                        name='search_mgf'
-                                        class='form-control'
-                                        id='search_mgf-input'
-                                        placeholder='2024-12-5'
-                                    />
+                                    <input name='search_supplier' class="form-control" list="supplierOptions" id="search_supplier-input" placeholder="Samsung">
+                                    <datalist id="supplierOptions"></datalist>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='search_price-input' class='form-label'>Giá gốc:</label>
@@ -85,6 +80,36 @@
                                         placeholder='100'
                                     />
                                 </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_mgf-input' class='form-label'>Ngày sản xuất:</label>
+                                    <input
+                                        type='date'
+                                        name='search_mgf'
+                                        class='form-control'
+                                        id='search_mgf-input'
+                                        placeholder='2024-12-5'
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_mgf-input' class='form-label'>Ngày tạo:</label>
+                                    <input
+                                        type='date'
+                                        name='search_created_at'
+                                        class='form-control'
+                                        id='search_mgf-input'
+                                        placeholder='2024-12-5'
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_mgf-input' class='form-label'>Ngày cập nhật:</label>
+                                    <input
+                                        type='date'
+                                        name='search_updated_at'
+                                        class='form-control'
+                                        id='search_mgf-input'
+                                        placeholder='2024-12-5'
+                                    />
+                                </div>
                             </div>
                             <div class="text-center">
                                 <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
@@ -117,19 +142,22 @@
                                     <th>Action</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {{#each resultSearch}}
                                 <tr>
                                     <td>{{this.id}}</td>
                                     <td>{{this.name}}</td>
-                                    <td>{{this.age}}</td>
-                                    <td>{{this.gender}}</td>
-                                    <td>{{this.email}}</td>
-                                    <td>{{this.address}}</td>
-                                    <td>{{this.phone}}</td>
+                                    <td>{{this.catalog}}</td>
+                                    <td>{{this.supplier_id}}</td>
+                                    <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                    <td>{{this.price}}</td>
+                                    <td>{{this.discount}}</td>
+                                    <td>{{this.quantity}}</td>
+                                    <td>Mô tả</td>
+                                    <td><a href="{{this.image}}">Link</a></td>
                                     <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
                                     <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
-
                                     <td>
                                         <div class="d-grid gap-2">
                                             <a href="/editproduct/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
@@ -138,7 +166,7 @@
                                     </td>
                                 </tr>
                             {{/each}}
-                        </tbody>
+                        </tbody>   
                     </table>
                     </small>                
                 {{else}}
@@ -306,21 +334,21 @@
 
                     <tbody>
                         {{#each allProduct}}
-                                <tr>
-                                    <td>{{this.id}}</td>
-                                    <td>{{this.name}}</td>
-                                    <td>{{this.catalog}}</td>
-                                    <td>{{this.supplier_id}}</td>
-                                    <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
-                                    <td>{{this.price}}</td>
-                                    <td>{{this.discount}}</td>
-                                    <td>{{this.quantity}}</td>
-                                    <td>Mô tả</td>
-                                    <td><a href="{{this.image}}">Link</a></td>
-                                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
-                                    <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
-                                </tr>
-                            {{/each}}
+                            <tr>
+                                <td>{{this.id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.catalog}}</td>
+                                <td>{{this.supplier_id}}</td>
+                                <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                <td>{{this.price}}</td>
+                                <td>{{this.discount}}</td>
+                                <td>{{this.quantity}}</td>
+                                <td>Mô tả</td>
+                                <td><a href="{{this.image}}">Link</a></td>
+                                <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                            </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>

@@ -16,6 +16,7 @@ router.use('/removecustomer/:id', siteController.removecustomer); // xoá custom
 router.use('/product', siteController.product);
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);
+router.use('/searchproduct', siteController.searchproduct);
 router.use('/addproduct', siteController.addproduct);
 router.use('/editproduct/:id', siteController.editproduct);
 router.use('/updateproduct/:id', siteController.updateproduct);
