@@ -253,9 +253,105 @@ class SiteController {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('supplier', { allProduct: result.rows });
+            res.render('supplier', { allSupplier: result.rows });
         });
     }
+    addsupplier(req, res, next) {
+        const { name, address, description } = req.body;
+        pool.query(
+            'INSERT INTO suppliers (name, address, description) VALUES ($1, $2, $3)',
+            [name, address, description],
+            (err) => {
+                if (err) {
+                    console.error('Lỗi khi chèn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                res.redirect('/supplier'); // Điều hướng đến trang /supplier sau khi thêm sản phẩm
+            }
+        );
+    }
+    // Search supplier
+    searchsupplier(req, res, next) {
+        const search_id = req.body.search_id || null;
+        const search_name = req.body.search_name || null;
+        const search_address = req.body.search_address || null;
+        const search_created_at = req.body.search_created_at || null;
+        const search_updated_at = req.body.search_updated_at || null;
+        
+        console.log('Search parameters:', {
+            search_id,
+            search_name,
+            search_address,
+            search_created_at,
+            search_updated_at
+        });
+
+        const query = `
+            SELECT * FROM suppliers 
+            WHERE (COALESCE($1, id) = id)
+            AND (COALESCE($2, name) = name) 
+            AND (COALESCE($3, address) = address) 
+            AND (COALESCE(DATE($4), DATE(created_at)) = DATE(created_at))
+            AND (COALESCE(DATE($5), DATE(updated_at)) = DATE(updated_at))
+        `;
+        const values = [search_id, search_name, search_address, search_created_at, search_updated_at];
+    
+        pool.query(query, values, (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send(`Lỗi cơ sở dữ liệu: ${err.message}`);
+            }
+            res.render('supplier', { resultSearch: result.rows });
+        });
+    }
+    // Edit supplier
+    editsupplier(req, res) {
+        pool.query('SELECT * FROM suppliers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('editsupplier', { supplierinfo: result.rows });
+        });
+    }
+    updatesupplier(req, res) {
+        const { name, address, description } = req.body;
+        pool.query('UPDATE suppliers SET name = $1, address = $2, description = $3  WHERE id = $4', [name, address, description, req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi update dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('supplier');
+        });
+    }
+    // Delete supplier 
+    deletesupplier(req, res) {
+        pool.query('SELECT * FROM suppliers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            pool.query('SELECT * FROM products WHERE supplier_id = $1', [req.params.id], (err, resultSearch) => {
+                if (err) {
+                    console.error('Lỗi SELECT * FROM products WHERE supplier_id = $1', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu 2');
+                }
+                res.render('deletesupplier', { supplierinfo: result.rows, resultSearch: resultSearch.rows });
+            });
+        });
+    }
+
+    removesupplier(req, res) {
+        pool.query('DELETE FROM suppliers WHERE id = $1', [req.params.id], (err, result) => {
+            if (err) {
+                console.error(req.params.id, err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('supplier');
+        });
+    }
+
+
 
 
 

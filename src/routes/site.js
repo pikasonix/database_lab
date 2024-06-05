@@ -14,8 +14,6 @@ router.use('/deletecustomer/:id', siteController.deletecustomer); // hiển th�
 router.use('/removecustomer/:id', siteController.removecustomer); // xoá customer
 
 router.use('/product', siteController.product);
-router.get('/getcatalog', siteController.getcatalog);
-router.get('/getsupplier', siteController.getsupplier);
 router.use('/searchproduct', siteController.searchproduct);
 router.use('/addproduct', siteController.addproduct);
 router.use('/editproduct/:id', siteController.editproduct);
@@ -24,8 +22,17 @@ router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị 
 router.use('/removeproduct/:id', siteController.removeproduct); // xoá product
 
 router.use('/supplier', siteController.supplier);
+router.use('/searchsupplier', siteController.searchsupplier);
+router.use('/addsupplier', siteController.addsupplier);
+router.use('/editsupplier/:id', siteController.editsupplier);
+router.use('/updatesupplier/:id', siteController.updatesupplier);
+router.use('/deletesupplier/:id', siteController.deletesupplier); // hiển thị trang deleteproduct
+router.use('/removesupplier/:id', siteController.removesupplier); // xoá product
 
 
+
+router.get('/getcatalog', siteController.getcatalog);
+router.get('/getsupplier', siteController.getsupplier);
 
 router.use('/delete', siteController.delete);
 router.use('/order', siteController.order);
