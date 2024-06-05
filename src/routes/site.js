@@ -20,8 +20,8 @@ router.use('/searchproduct', siteController.searchproduct);
 router.use('/addproduct', siteController.addproduct);
 router.use('/editproduct/:id', siteController.editproduct);
 router.use('/updateproduct/:id', siteController.updateproduct);
-router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị trang deletecustomer
-router.use('/removeproduct/:id', siteController.removeproduct); // xoá customer
+router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị trang deleteproduct
+router.use('/removeproduct/:id', siteController.removeproduct); // xoá product
 
 
 

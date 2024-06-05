@@ -47,7 +47,7 @@ class SiteController {
             }
         );
     }
-    // [POST] /searchcustomer
+    // [POST] /search customer
     searchcustomer(req, res, next) {
         const search_name = req.body.search_name || null;
         const search_age = req.body.search_age !== '' ? parseInt(req.body.search_age) : null;
@@ -134,6 +134,7 @@ class SiteController {
             res.render('product', { allProduct: result.rows });
         });
     }
+    // [GET] json catalog
     getcatalog(req, res, next) {
         pool.query('SELECT DISTINCT catalog FROM products', (err, result) => {
             if (err) {
@@ -143,6 +144,7 @@ class SiteController {
             res.json(result.rows);
         });
     }
+    // [GET] json supplier
     getsupplier(req, res, next) {
         pool.query('SELECT name FROM suppliers', (err, result) => {
             if (err) {
@@ -152,6 +154,7 @@ class SiteController {
             res.json(result.rows);
         });
     }
+    // Add product
     addproduct(req, res, next) {
         const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
         pool.query(
@@ -166,6 +169,7 @@ class SiteController {
             }
         );
     }
+    // Search product
     searchproduct(req, res, next) {
         const search_id = req.body.search_id || null;
         const search_name = req.body.search_name || null;
@@ -221,27 +225,27 @@ class SiteController {
             res.render('product');
         });
     }
-    // Delete product >< sửa từ đây .... #
+    // Delete product 
     deleteproduct(req, res) {
-        pool.query('SELECT * FROM customers WHERE id = $1', [req.params.id], (err, result) => {
+        pool.query('SELECT * FROM products WHERE id = $1', [req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('deletecustomer', { customerinfo: result.rows });
+            res.render('deleteproduct', { productinfo: result.rows });
         });
     }
     removeproduct(req, res) {
-        pool.query('DELETE FROM customers WHERE id = $1', [req.params.id], (err, result) => {
+        pool.query('DELETE FROM products WHERE id = $1', [req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi delete dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('customer');
+            res.render('product');
         });
     }
 
-// =================== Phần xử lý products ====================
+// =================== Phần xử lý suppliers ====================
     // [GET] supplier
     
 
