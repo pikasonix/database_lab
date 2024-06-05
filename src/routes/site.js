@@ -23,7 +23,7 @@ router.use('/updateproduct/:id', siteController.updateproduct);
 router.use('/deleteproduct/:id', siteController.deleteproduct); // hiển thị trang deleteproduct
 router.use('/removeproduct/:id', siteController.removeproduct); // xoá product
 
-
+router.use('/supplier', siteController.supplier);
 
 
 

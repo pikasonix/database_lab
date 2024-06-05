@@ -247,7 +247,15 @@ class SiteController {
 
 // =================== Phần xử lý suppliers ====================
     // [GET] supplier
-    
+    supplier(req, res) {
+        pool.query('SELECT * FROM suppliers ORDER BY id DESC', (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('supplier', { allProduct: result.rows });
+        });
+    }
 
 
 
