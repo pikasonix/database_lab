@@ -80,14 +80,28 @@
                 class='nav-link active'
                 data-bs-toggle='tab'
                 href='#customers'
-            >Customers</a>
+            >Khách hàng</a>
         </li>
         <li class='nav-item'>
             <a
                 class='nav-link'
                 data-bs-toggle='tab'
                 href='#products'
-            >Products</a>
+            >Sản phẩm</a>
+        </li>
+        <li class='nav-item'>
+            <a
+                class='nav-link'
+                data-bs-toggle='tab'
+                href='#suppliers'
+            >Nhà sản xuất</a>
+        </li>
+        <li class='nav-item'>
+            <a
+                class='nav-link'
+                data-bs-toggle='tab'
+                href='#orders'
+            >Orders</a>
         </li>
         <li class='nav-item'>
             <a class='nav-link' data-bs-toggle='tab' href='#others'>Others</a>
@@ -96,36 +110,116 @@
 
     <div class='tab-content bg-body shadow-sm'>
         <div class='tab-pane container active' id='customers'>
-            <h2>Customers</h2>
-            <table class='table table-hover'>
-                <thead>
-                    <tr>
-                        {{#each danhsach.[0]}}
-                            <th>{{@key}}</th>
-                        {{/each}}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {{#each danhsach}}
+            <small>
+                <table class='table table-hover text-center'>
+                    <thead class="text-center text-uppercase">
                         <tr>
-                            {{#each this}}
-                                <td>{{this}}</td>
+                            {{#each customers.[0]}}
+                                <th>{{@key}}</th>
                             {{/each}}
+                                <th>Action</th>
                         </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {{#each customers}}
+                            <tr>
+                                <td>{{this.id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.age}}</td>
+                                <td>{{this.gender}}</td>
+                                <td>{{this.email}}</td>
+                                <td>{{this.address}}</td>
+                                <td>{{this.phone}}</td>
+                                <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a href="/editcustomer/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                        <a href="/deletecustomer/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </small>
         </div>
         <div class='tab-pane container fade' id='products'>           
-            <h5 class='py-2'>Thêm sản phẩm</h5>
-            <div class="app">
+            <small>
+                <table class='table table-hover text-center'>
+                    <thead class="text-center text-uppercase">
+                        <tr>
+                            {{#each products.[0]}}
+                                <th>{{@key}}</th>
+                            {{/each}}
+                                <th>Action</th>
+                        </tr>
+                    </thead>
 
-            </div>
-            
+                    <tbody>
+                        {{#each products}}
+                            <tr>
+                                <td>{{this.id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.catalog}}</td>
+                                <td>{{this.supplier_id}}</td>
+                                <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                <td>{{this.price}}</td>
+                                <td>{{this.discount}}</td>
+                                <td>{{this.quantity}}</td>
+                                <td>Mô tả</td>
+                                <td><a href="{{this.image}}">Link</a></td>
+                                <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a href="/editproduct/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                        <a href="/deleteproduct/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>   
+                </table>
+            </small>
         </div>
-        <div class='tab-pane container fade' id='others'>
-            <h2>Others</h2>
+        <div class='tab-pane container fade' id='suppliers'>
+            <small>
+                <table class='table table-hover text-center'>
+                    <thead class="text-center text-uppercase">
+                        <tr>
+                            {{#each suppliers.[0]}}
+                                <th>{{@key}}</th>
+                            {{/each}}
+                                <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each suppliers}}
+                            <tr>
+                                <td>{{this.id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.address}}</td>
+                                <td>Mô tả</td>
+                                <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a href="/editsupplier/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                        <a href="/deletesupplier/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </small>
+        </div>
+        <div class='tab-pane container fade' id='Orders'>
+        </div>
+        <div class='tab-pane container fade' id='Others'>
         </div>
     </div>
 

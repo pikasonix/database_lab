@@ -34,7 +34,8 @@ router.use('/removesupplier/:id', siteController.removesupplier); // xoá produc
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);
 
-router.use('/delete', siteController.delete);
+router.get('/test', siteController.test);
+
 router.use('/order', siteController.order);
 router.use('/product', siteController.product);
 router.use('/', siteController.index);

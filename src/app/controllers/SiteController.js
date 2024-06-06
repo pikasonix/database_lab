@@ -11,13 +11,13 @@ const pool = new Pool({
 
 class SiteController {
     // [GET] /home
-    index(req, res, next) {
-        pool.query('SELECT * FROM customers', (err, result) => {
-            if (err) {
-                console.error('Lỗi khi truy vấn dữ liệu:', err);
-                return res.status(500).send('Lỗi cơ sở dữ liệu');
-            }
-            res.render('home', { danhsach: result.rows });
+    index(req, res) {
+        pool.query('SELECT * FROM customers', (err, customers) => {
+            pool.query('SELECT * FROM products', (err, products) => {
+                pool.query('SELECT * FROM suppliers', (err, suppliers) => {
+                    res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows });
+                });
+            });
         });
     }
 // =================== Phần xử lý customers ====================
@@ -356,15 +356,13 @@ class SiteController {
 
 
     // [GET] /delete
-    delete(req, res) {
-        const name = req.body.name;
-
-        pool.query('DELETE FROM customers WHERE name = $1', [name], (err) => {
+    test(req, res) {
+        pool.query('SELECT * FROM products ORDER BY id DESC', (err, result) => {
             if (err) {
-                console.error('Lỗi khi xóa dữ liệu:', err);
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.redirect('/customer'); // Điều hướng đến trang /customer sau khi xóa
+            res.render('test', { allProduct: result.rows });
         });
     }
 
