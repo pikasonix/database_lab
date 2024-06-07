@@ -1,0 +1,129 @@
+{{#each productinfo}}
+<strong>Edit Product #{{this.id}}</strong>
+
+{{!-- Input --}}
+<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+    <div class="accordion-body">
+        <div class='mt-4'>
+            <form method='POST' action='/updateproduct/{{this.id}}'>
+                <div class="row">
+                    <div class='col-9'>
+                        <div class="row">
+                            <div class='col-3 mb-3'>
+                                <label for='id-input' class='form-label'>ID:</label>
+                                <input
+                                    type='text'
+                                    name='id'
+                                    class='form-control'
+                                    id='id-input'
+                                    value = {{this.id}}
+                                    disabled
+                                />
+                            </div>
+                            <div class='col-6 mb-3'>
+                                <label for='name-input' class='form-label'>Tên sản phẩm:</label>
+                                <input
+                                    type='text'
+                                    name='name'
+                                    class='form-control'
+                                    id='name-input'
+                                    value = '{{this.name}}'
+                                />
+                            </div>
+                            <div class='col-3 mb-3'>
+                                <label for='catalog-input' class='form-label'>Loại sản phẩm:</label>
+                                <input name='catalog' value = '{{this.catalog}}' class='form-control' list="catalogOptions" id='catalog-input' placeholder='SmartPhone' />
+                                <datalist id="catalogOptions"></datalist>
+                            </div>
+                            <div class="col-3">
+                                <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
+                                <input name='supplier' value = '{{this.supplier_id}}' class="form-control" list="supplierOptions" id="supplier-input" placeholder="Samsung">
+                                <datalist id="supplierOptions"></datalist>
+                            </div>
+                            <div class='col-3 mb-3'>
+                                <label for='mgf-input' class='form-label'>Ngày sản xuất:</label>
+                                <input
+                                    type='date'
+                                    name='mgf'
+                                    class='form-control'
+                                    id='mgf-input'
+                                    value = '{{moment this.mgf format='YYYY-MM-DD'}}'
+                                />
+                            </div>
+                            <div class='col-3 mb-3'>
+                                <label for='price-input' class='form-label'>Giá gốc:</label>
+                                <div class="input-group flex-nowrap">   
+                                    <input
+                                        type='number'
+                                        name='price'
+                                        class='form-control'
+                                        id='price-input'
+                                        value = {{this.price}}
+                                    />
+                                    <span class="input-group-text" id="addon-wrapping">đ</span>
+                                </div>
+                            </div>
+                            <div class='col-3 mb-3'>
+                                <label for='discount-input' class='form-label'>Giảm giá:</label>
+                                <div class="input-group flex-nowrap">
+                                    <input
+                                        type='number'
+                                        name='discount'
+                                        class='form-control'
+                                        id='discount-input'
+                                        placeholder='10'
+                                        value = {{this.discount}}
+                                    />
+                                    <span class="input-group-text" id="addon-wrapping">%</span>
+                                </div>
+                            </div>
+                            <div class='col-3 mb-3'>
+                                <label for='quantity-input' class='form-label'>Số lượng:</label>
+                                <input
+                                    type='number'
+                                    name='quantity'
+                                    class='form-control'
+                                    id='quantity-input'
+                                    value = {{this.quantity}}
+                                />
+                            </div>
+                            <div class='col-9 mb-3'>
+                                <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
+                                <input
+                                    type='text'
+                                    name='image'
+                                    class='form-control'
+                                    id='image-input'
+                                    value = '{{this.image}}'
+                                />
+                            </div>
+                            <div class='col-12 mb-3'>
+                                <label for='description-input' class='form-label'>Mô tả sản phẩm:</label>
+                                <textarea
+                                    type='text'
+                                    name='description'
+                                    class='form-control'
+                                    id='description-input'
+                                    rows="3"
+                                >{{this.description}}</textarea>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type='submit' class='btn btn-primary'>Sửa dữ liệu</button>
+                        </div>
+                    </div>
+                    <div class='col-3  pt-4'>
+                        <div class="card border-warning mb-3" style="max-width: 18rem;">
+                            <h6 class="card-header text-warning">Chú ý</h6>
+                            <div class="card-body text-warning">
+                                <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{{/each}}

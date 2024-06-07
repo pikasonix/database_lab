@@ -26,18 +26,20 @@ router.use('/searchsupplier', siteController.searchsupplier);
 router.use('/addsupplier', siteController.addsupplier);
 router.use('/editsupplier/:id', siteController.editsupplier);
 router.use('/updatesupplier/:id', siteController.updatesupplier);
-router.use('/deletesupplier/:id', siteController.deletesupplier); // hiển thị trang deleteproduct
-router.use('/removesupplier/:id', siteController.removesupplier); // xoá product
+router.use('/deletesupplier/:id', siteController.deletesupplier); // hiển thị trang deletesupplier
+router.use('/removesupplier/:id', siteController.removesupplier); // xoá supplier
 
-
+router.use('/order', siteController.order);
+router.use('/searchorder', siteController.searchorder);
+router.use('/addorder', siteController.addorder);
+router.use('/editorder/:id', siteController.editorder);
+router.use('/updateorder/:id', siteController.updateorder);
+// router.use('/cancelorder/:id', siteController.cancelorder); // thực hiện cancelorder
 
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);
 
 router.get('/test', siteController.test);
-
-router.use('/order', siteController.order);
-router.use('/product', siteController.product);
 router.use('/', siteController.index);
 
 module.exports = router;

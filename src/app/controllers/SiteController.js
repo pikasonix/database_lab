@@ -351,8 +351,96 @@ class SiteController {
         });
     }
 
+// =================== Phần xử lý orders ====================
+ // [GET] order
+ order(req, res) {
+    pool.query('SELECT * FROM orders ORDER BY id DESC', (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('order', { allOrder: result.rows });
+    });
+}
+// Add order
+addorder(req, res, next) {
+    const { id, customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
+    pool.query(
+        'INSERT INTO orders (customer_id, product_id, quantity, amount, status_payment, status_shipment) VALUES ($1, $2, $3, $4, $5, $6)',
+        [customer_id, product_id, quantity, amount, status_payment, status_shipment],
+        (err) => {
+            if (err) {
+                console.error('Lỗi khi chèn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.redirect('/order'); // Điều hướng đến trang /order sau khi thêm sản phẩm
+        }
+    );
+}
+// Search product
+searchorder(req, res, next) {
+    const search_id = req.body.search_id || null;
+    const search_customer_id = req.body.search_customer_id || null;
+    const search_product_id = req.body.search_product_id || null;
+    const search_quantity = req.body.search_quantity || null;
+    const search_amount = req.body.search_amount || null;
+    const search_status_payment = req.body.search_status_payment || null;
+    const search_status_shipment = req.body.search_status_shipment || null;
+    const search_created_at = req.body.search_created_at || null;
+    const search_updated_at = req.body.search_updated_at || null;
 
+    const query = `
+        SELECT * FROM orders 
+        WHERE (COALESCE($1, id) = id)
+        AND (COALESCE($2, customer_id) = customer_id) 
+        AND (COALESCE($3, product_id) = product_id) 
+        AND (COALESCE($4, quantity) = quantity) 
+        AND (COALESCE($5, amount) = amount) 
+        AND (COALESCE($6, status_payment) = status_payment) 
+        AND (COALESCE($7, status_shipment) = status_shipment)
+        AND (COALESCE(DATE($8), DATE(created_at)) = DATE(created_at))
+        AND (COALESCE(DATE($9), DATE(updated_at)) = DATE(updated_at))
+    `;
+    const values = [search_id, search_customer_id, search_product_id, search_quantity, search_amount, search_status_payment, search_status_shipment, search_created_at, search_updated_at];
 
+    pool.query(query, values, (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send(`Lỗi cơ sở dữ liệu: ${err.message}`);
+        }
+        res.render('order', { resultSearch: result.rows });
+    });
+}
+// Edit order
+editorder(req, res) {
+    pool.query('SELECT * FROM orders WHERE id = $1', [req.params.id], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('editorder', { orderinfo: result.rows });
+    });
+}
+updateorder(req, res) {
+    const { customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
+    pool.query('UPDATE orders SET customer_id = $1, product_id = $2, quantity = $3, amount = $4, status_payment = $5, status_shipment = $6 WHERE id = $7', [customer_id, product_id, quantity, amount, status_payment, status_shipment, req.params.id], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi update dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('order');
+    });
+}
+canceleorder(req, res) {
+    const { customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
+    pool.query('UPDATE orders SET customer_id = $1, product_id = $2, quantity = $3, amount = $4, status_payment = $5, status_shipment = $6 WHERE id = $7', [customer_id, product_id, quantity, amount, status_payment, status_shipment, req.params.id], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi update dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('order');
+    });
+}
 
 
     // [GET] /delete
@@ -371,16 +459,7 @@ class SiteController {
         res.render('search');
     }
 
-    // [GET] /order
-    order(req, res, next) {
-        pool.query('SELECT * FROM "Orders"', (err, result) => {
-            if (err) {
-                console.error('Lỗi khi truy vấn dữ liệu:', err);
-                return res.status(500).send('Lỗi cơ sở dữ liệu');
-            }
-            res.render('order', { danhsach: result.rows });
-        });
-    }
+
 }
 
 module.exports = new SiteController();

@@ -1,84 +1,394 @@
-<ul class='nav nav-tabs'>
-    <li class='nav-item'>
-        <a class='nav-link active' data-bs-toggle='tab' href='#users'>Order</a>
-    </li>
-    <li class='nav-item'>
-        <a class='nav-link' data-bs-toggle='tab' href='#products'>Products</a>
-    </li>
-    <li class='nav-item'>
-        <a class='nav-link' data-bs-toggle='tab' href='#others'>Others</a>
-    </li>
-</ul>
+<div class="accordion" id="order">
+    {{!-- Search Order --}}
+    
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+            <strong>Search order</strong>
+            </button>
+        </h2>
+        <div id="collapseZero" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                {{!-- Input --}}
+                <form method='POST' action='/searchorder'>
+                    <div class="row">
+                        <div class='col-9'>
+                            <div class="row">
+                                <div class='col-2 mb-3'>
+                                    <label for='search_id-input' class='form-label'>ID đơn hàng:</label>
+                                    <input
+                                        type='text'
+                                        name='search_id'
+                                        class='form-control'
+                                        id='search_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='search_customer_id-input' class='form-label'>ID khách hàng:</label>
+                                    <input
+                                        type='text'
+                                        name='search_customer_id'
+                                        class='form-control'
+                                        id='search_customer_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='search_product_id-input' class='form-label'>ID sản phẩm:</label>
+                                    <input
+                                        type='text'
+                                        name='search_product_id'
+                                        class='form-control'
+                                        id='search_product_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='search_quantity-input' class='form-label'>Số lượng:</label>
+                                    <input
+                                        type='number'
+                                        name='search_quantity'
+                                        class='form-control'
+                                        id='search_quantity-input'
+                                        placeholder='1'
+                                    />
+                                </div>
+                                <div class='col-4 mb-3'>
+                                    <label for='search_amount-input' class='form-label'>Giá đơn hàng:</label>
+                                    <div class="input-group flex-nowrap">   
+                                        <input
+                                            type='number'
+                                            name='search_amount'
+                                            class='form-control'
+                                            id='search_amount-input'
+                                            placeholder='23000000'
+                                        />
+                                        <span class="input-group-text" id="addon-wrapping">đ</span>
+                                    </div>
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='paymentSelect' class='form-label'>Thanh toán:</label>
+                                    <select id="paymentSelect" name="search_status_payment" class="form-select">
+                                        <option selected>Chọn trạng thái</option>
+                                        <option value="0">Chưa thanh toán</option>
+                                        <option value="1">Đã thanh toán</option>
+                                        <option value="2">Huỷ thanh toán</option>
+                                    </select>
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='shipmentSelect' class='form-label'>Vận chuyển:</label>
+                                    <select id="shipmentSelect" name="search_status_shipment" class="form-select">
+                                        <option selected>Chọn trạng thái</option>
+                                        <option value="0">Đang xử lý</option> 
+                                        <option value="1">Đang giao hàng</option>
+                                        <option value="2">Đã giao hàng</option>
+                                        <option value="3">Huỷ giao hàng</option>
+                                    </select>
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_created_at-input' class='form-label'>Ngày tạo:</label>
+                                    <input
+                                        type='date'
+                                        name='search_created_at'
+                                        class='form-control'
+                                        id='search_created_at-input'
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_updated_at-input' class='form-label'>Ngày cập nhật:</label>
+                                    <input
+                                        type='date'
+                                        name='search_updated_at'
+                                        class='form-control'
+                                        id='search_updated_at-input'
+                                    />
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
+                            </div>
+                        </div>
+                        <div class='col-3'>
+                            <div class="card border-warning mb-3" style="max-width: 18rem;">
+                                <h6 class="card-header text-warning">Chú ý</h6>
+                                <div class="card-body text-warning">
+                                    <div class="card-text">
+                                        <ul>
+                                            <li>Tìm kiếm không phân biệt chữ hoa và thường</li>
+                                            <li><strong>Chỉnh sửa</strong> và <strong>Xoá</strong> sản phẩm ở bảng dưới</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {{!-- Table --}}
+                {{#if resultSearch}}
+                    <small>
+                    <table class='table table-hover text-center align-middle'>
+                        <thead class="text-center text-uppercase">
+                            <tr>
+                                {{#each resultSearch.[0]}}
+                                    <th>{{@key}}</th>
+                                {{/each}}
+                                    <th>Action</th>
+                            </tr>
+                        </thead>
 
-<div class='tab-content bg-body shadow-sm'>
-    <div class='tab-pane container active' id='users'>
-        <h2>Orders</h2>
-        <span
-            class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
-        >Complete</span>
-        <span
-            class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
-        >Cancelled</span>
-        <span
-            class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'
-        >Pending</span>
-        <div class='text-center'>
-
-            <table class='table table-hover'>
-                <thead>
-                    <tr>
-                        {{#each danhsach.[0]}}
-                            <th>{{@key}}</th>
-                        {{/each}}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {{#each danhsach}}
-                        <tr>
-                            <td>{{this.id}}</td>
-                            <td>{{this.customer_id}}</td>
-                            <td>{{this.product_id}}</td>
-                            <td>{{this.quantity}}</td>
-
-                            <td>{{moment
-                                    this.time
-                                    format='DD/MM/YYYY HH:mm:ss'
-                                }}</td>
-
-                            <td>{{this.amount}}</td>
-                            <td>
-
-                                {{#eq this.status '1'}}
-                                    <span
-                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
-                                    >Complete</span>
-                                {{else}}
-                                    {{#eq this.status '2'}}
-                                        <span
-                                            class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
-                                        >Cancelled</span>
-                                    {{else}}
-                                        <span
-                                            class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'
-                                        >Pending</span>
-                                    {{/eq}}
-                                {{/eq}}
-
-                            </td>
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                        <tbody class="table-group-divider">
+                            {{#each resultSearch}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.customer_id}}</td>
+                                    <td>{{this.product_id}}</td>
+                                    <td>{{this.quantity}}</td>
+                                    <td>{{this.amount}}</td>
+                                    <td>
+                                        {{#eq this.status_payment '0'}}
+                                            <span class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'>
+                                                Chưa thanh toán
+                                            </span>
+                                        {{else}}
+                                            {{#eq this.status_payment '1'}}
+                                                <span class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'>
+                                                    Đã thanh toán
+                                                </span>
+                                            {{else}}
+                                                <span class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'>
+                                                    Huỷ thanh toán
+                                                </span>
+                                            {{/eq}}
+                                        {{/eq}}
+                                    </td>
+                                    <td>
+                                        {{#eq this.status_shipment '0'}}
+                                            <span
+                                                class='badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill'
+                                            >Đang xử lý</span>
+                                        {{else}}
+                                            {{#eq this.status_shipment '1'}}
+                                                <span
+                                                    class='badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill'
+                                                >Đang giao hàng</span>
+                                            {{else}}
+                                                {{#eq this.status_shipment '2'}}
+                                                    <span
+                                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
+                                                    >Đã giao hàng</span>
+                                                {{else}}
+                                                    <span
+                                                        class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
+                                                    >Huỷ giao hàng</span>
+                                                {{/eq}}
+                                            {{/eq}}
+                                        {{/eq}}
+                                    </td>
+                                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                    <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                    <td>
+                                        <div class="d-grid gap-2">
+                                            <a href="/editorder/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                            <a href="/deleteorder/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>   
+                    </table>
+                    </small>                
+                {{else}}
+                    <p>No results found.</p>
+                {{/if}}
+            </div>
         </div>
-
     </div>
 
-    <div class='tab-pane container fade' id='products'>
-        <h2>Products</h2>
+    {{!-- Add order --}}
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <strong>Add order</strong>
+            </button>
+        </h2>
+        {{!-- Input --}}
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class='mt-4'>
+                    <form method='POST' action='/addorder'>
+                    <div class="row">
+                        <div class='col-9'>
+                            <div class="row">
+                                <div class='col-2 mb-3'>
+                                    <label for='id-input' class='form-label'>ID đơn hàng:</label>
+                                    <input
+                                        type='text'
+                                        name='id'
+                                        class='form-control'
+                                        id='id-input'
+                                        disabled
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='customer_id-input' class='form-label'>ID khách hàng:</label>
+                                    <input
+                                        type='text'
+                                        name='customer_id'
+                                        class='form-control'
+                                        id='customer_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='product_id-input' class='form-label'>ID sản phẩm:</label>
+                                    <input
+                                        type='text'
+                                        name='product_id'
+                                        class='form-control'
+                                        id='product_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class='col-2 mb-3'>
+                                    <label for='quantity-input' class='form-label'>Số lượng:</label>
+                                    <input
+                                        type='number'
+                                        name='quantity'
+                                        class='form-control'
+                                        id='quantity-input'
+                                        placeholder='1'
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='paymentSelect' class='form-label'>Thanh toán:</label>
+                                    <select id="paymentSelect" name="status_payment" class="form-select">
+                                        <option selected>Chọn trạng thái</option>
+                                        <option value="0">Chưa thanh toán</option>
+                                        <option value="1">Đã thanh toán</option>
+                                        <option value="2">Huỷ thanh toán</option>
+                                    </select>
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='shipmentSelect' class='form-label'>Vận chuyển:</label>
+                                    <select id="shipmentSelect" name="status_shipment" class="form-select">
+                                        <option selected>Chọn trạng thái</option>
+                                        <option value="0">Đang xử lý</option> 
+                                        <option value="1">Đang giao hàng</option>
+                                        <option value="2">Đã giao hàng</option>
+                                        <option value="3">Huỷ giao hàng</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type='submit' class='btn btn-primary'>Thêm đơn hàng</button>
+                            </div>
+                        </div>
+                        <div class='col-3  pt-4'>
+                            <div class="card border-warning mb-3" style="max-width: 18rem;">
+                                <h6 class="card-header text-warning">Chú ý</h6>
+                                <div class="card-body text-warning">
+                                    <div class="card-text">
+                                        <ul>
+                                            <li>nghiên cứu đưa ra trang admin để chỉnh sửa/duyệt đơn hàng</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
 
+            </div>
+        </div>
     </div>
-    <div class='tab-pane container fade' id='others'>
-        <h2>Others</h2>
+
+    {{!-- Table of order --}}
+    <div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <strong>Order Info</strong>
+        </button>
+    </h2>
+    {{!-- Table --}}
+    <div id="collapseTwo" class="accordion-collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class='table-responsive mt-4'>
+                <table class='table table-hover text-center  align-middle'>
+                        <thead class="text-center text-uppercase">
+                            <tr>
+                                {{#each allOrder.[0]}}
+                                    <th>{{@key}}</th>
+                                {{/each}}
+                                    <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="table-group-divider">
+                            {{#each allOrder}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.customer_id}}</td>
+                                    <td>{{this.product_id}}</td>
+                                    <td>{{this.quantity}}</td>
+                                    <td>{{this.amount}}</td>
+                                    <td>
+                                        {{#eq this.status_payment '0'}}
+                                            <span class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'>
+                                                Chưa thanh toán
+                                            </span>
+                                        {{else}}
+                                            {{#eq this.status_payment '1'}}
+                                                <span class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'>
+                                                    Đã thanh toán
+                                                </span>
+                                            {{else}}
+                                                <span class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'>
+                                                    Huỷ thanh toán
+                                                </span>
+                                            {{/eq}}
+                                        {{/eq}}
+                                    </td>
+                                    <td>
+                                        {{#eq this.status_shipment '0'}}
+                                            <span
+                                                class='badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill'
+                                            >Đang xử lý</span>
+                                        {{else}}
+                                            {{#eq this.status_shipment '1'}}
+                                                <span
+                                                    class='badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill'
+                                                >Đang giao hàng</span>
+                                            {{else}}
+                                                {{#eq this.status_shipment '2'}}
+                                                    <span
+                                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
+                                                    >Đã giao hàng</span>
+                                                {{else}}
+                                                    <span
+                                                        class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
+                                                    >Huỷ giao hàng</span>
+                                                {{/eq}}
+                                            {{/eq}}
+                                        {{/eq}}
+                                    </td>
+                                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                    <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                    <td>
+                                        <div class="d-grid gap-2">
+                                            <a href="/editorder/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                            <a href="/deleteorder/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>   
+                    </table>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
+
+

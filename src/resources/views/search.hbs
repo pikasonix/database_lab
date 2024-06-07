@@ -3,11 +3,11 @@
     <form method='POST' action=''>
         <div class="row align-items-center">
         <div class="col-4">
-            <label for='search-input' class='form-label mt-2'>Nhập mã sản phẩm</label>
+            <label for='search_input' class='form-label mt-2'>Nhập mã sản phẩm</label>
         </div>    
         <div class="col-6">
             <div class="d-flex">  
-                <input type='text' name='q' class='form-control me-2' style='width: 50%' id='search-input' placeholder='MT1234'/>
+                <input type='text' name='q' class='form-control me-2' style='width: 50%' id='search_input' placeholder='MT1234'/>
                 <button type='submit' class='btn btn-success'>Tìm kiếm</button> 
             </div> 
         </div>  
@@ -24,17 +24,17 @@
     {{!-- Tìm kiếm chính --}}
     <div class="row">
         <div class="col">
-            <label for='search-input' class='form-label active'>Tên sản phẩm</label>
+            <label for='search_input' class='form-label active'>Tên sản phẩm</label>
             <input
                 type='text'
                 name='q'
                 class='form-control'
-                id='search-input'
+                id='search_input'
                 placeholder='VD: Máy tính'
             />
         </div>
         <div class="col-3">
-            <label for='search-input' class='form-label active'>Nhà sản xuất</label>
+            <label for='search_input' class='form-label active'>Nhà sản xuất</label>
             <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="VD: DELL">
             <datalist id="datalistOptions">
                 <option value="DELL">
