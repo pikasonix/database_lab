@@ -36,6 +36,8 @@ router.use('/editorder/:id', siteController.editorder);
 router.use('/updateorder/:id', siteController.updateorder);
 // router.use('/cancelorder/:id', siteController.cancelorder); // thực hiện cancelorder
 
+router.use('/statistic', siteController.statistic);
+
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);
 

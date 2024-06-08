@@ -33,15 +33,16 @@ class SiteController {
     }
     // [POST] /add
     addcustomer(req, res) {
-        const { name, age, gender, email, address, phone } = req.body;
+        const gender = req.body.gender !== 'Giới tính' ? req.body.gender : null;
+        const { name, age, email, phone } = req.body;
 
         pool.query(
-            'INSERT INTO customers (name, age, gender, email, address, phone) VALUES ($1, $2, $3, $4, $5, $6)',
-            [name, age, gender, email, address, phone],
+            'INSERT INTO customers (name, age, gender, email, phone) VALUES ($1, $2, $3, $4, $5)',
+            [name, age, gender, email, phone],
             (err) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
-                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                    return res.status(500).send('Lỗi cơ sở dữ liệu r');
                 }
                 res.redirect('/customer'); // Điều hướng đến trang /customer sau khi thêm khách hàng
             }
@@ -51,9 +52,8 @@ class SiteController {
     searchcustomer(req, res, next) {
         const search_name = req.body.search_name || null;
         const search_age = req.body.search_age !== '' ? parseInt(req.body.search_age) : null;
-        const search_gender = req.body.search_gender !== 'Choose Gender' ? req.body.search_gender : null;
+        const search_gender = req.body.search_gender !== 'Giới tính' ? req.body.search_gender : null;
         const search_email = req.body.search_email || null;
-        const search_address = req.body.search_address || null;
         const search_phone = req.body.search_phone || null;
     
         console.log('Search parameters:', {
@@ -61,7 +61,6 @@ class SiteController {
             search_age,
             search_gender,
             search_email,
-            search_address,
             search_phone,
         });
     
@@ -71,10 +70,9 @@ class SiteController {
             AND (COALESCE($2::INTEGER, age) = age) 
             AND (COALESCE($3, gender) = gender) 
             AND (COALESCE($4, email) = email) 
-            AND (COALESCE($5, address) = address) 
-            AND (COALESCE($6, phone) = phone)
+            AND (COALESCE($5, phone) = phone)
         `;
-        const values = [search_name, search_age, search_gender, search_email, search_address, search_phone];
+        const values = [search_name, search_age, search_gender, search_email, search_phone];
     
         pool.query(query, values, (err, result) => {
             if (err) {
@@ -95,8 +93,8 @@ class SiteController {
         });
     }
     updatecustomer(req, res) {
-        const { update_name, update_age, update_gender, update_email, update_address, update_phone } = req.body;
-        pool.query('UPDATE customers SET name = $1, age = $2, gender = $3, email = $4, address = $5, phone = $6 WHERE id = $7', [update_name, update_age, update_gender, update_email, update_address, update_phone, req.params.id], (err, result) => {
+        const { update_name, update_age, update_gender, update_email, update_phone } = req.body;
+        pool.query('UPDATE customers SET name = $1, age = $2, gender = $3, email = $4, phone = $5 WHERE id = $6', [update_name, update_age, update_gender, update_email, update_phone, req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi update dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -111,7 +109,17 @@ class SiteController {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('deletecustomer', { customerinfo: result.rows });
+            
+            pool.query(
+                `SELECT * FROM orders WHERE customer_id = $1
+                `
+                , [req.params.id], (err, resultSearch) => {
+                if (err) {
+                    console.error('Lỗi', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu 2');
+                }
+                res.render('deletecustomer', { customerinfo: result.rows, resultSearch: resultSearch.rows });
+            });
         });
     }
     removecustomer(req, res) {
@@ -353,7 +361,7 @@ class SiteController {
 
 // =================== Phần xử lý orders ====================
  // [GET] order
- order(req, res) {
+order(req, res) {
     pool.query('SELECT * FROM orders ORDER BY id DESC', (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -441,6 +449,15 @@ canceleorder(req, res) {
         res.render('order');
     });
 }
+// chưa hoàn thiện orders
+// =================== Phần xử lý statistics ====================
+
+statistic(req, res) {
+    res.render('statistic');
+}
+
+
+
 
 
     // [GET] /delete
