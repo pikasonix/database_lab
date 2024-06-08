@@ -166,8 +166,8 @@ class SiteController {
     addproduct(req, res, next) {
         const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
         pool.query(
-            'INSERT INTO products (name, catalog, supplier_id, mgf, price, discount, quantity, description, image) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-            [name, catalog, supplier, mgf, price, discount, quantity, description, image],
+            'SELECT update_data_products($1,$2,$3,$4,$5,$6,$7,$8,$9);'
+            , [name, catalog, mgf, supplier, price, discount, quantity, description, image],
             (err) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
@@ -191,17 +191,18 @@ class SiteController {
         const search_updated_at = req.body.search_updated_at || null;
     
         const query = `
-            SELECT * FROM products 
-            WHERE (COALESCE($1, id) = id)
-            AND (COALESCE($2, name) = name) 
-            AND (COALESCE($3, catalog) = catalog) 
-            AND (COALESCE($4, supplier_id) = supplier_id) 
-            AND (COALESCE(DATE($5), DATE(mgf)) = DATE(mgf))
-            AND (COALESCE($6, price) = price) 
-            AND (COALESCE($7, discount) = discount) 
-            AND (COALESCE($8, quantity) = quantity)
-            AND (COALESCE(DATE($9), DATE(created_at)) = DATE(created_at))
-            AND (COALESCE(DATE($10), DATE(updated_at)) = DATE(updated_at))
+            SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price,p.discount,p.quantity,p.description,p.image,p.created_at,p.updated_at
+            FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
+            WHERE (COALESCE($1, p.id) = p.id)
+            AND (COALESCE($2, p.name) = p.name) 
+            AND (COALESCE($3, p.catalog) = p.catalog) 
+            AND (COALESCE($4, s.name) = s.name) 
+            AND (COALESCE(DATE($5), DATE(p.mgf)) = DATE(p.mgf))
+            AND (COALESCE($6, p.price) = p.price) 
+            AND (COALESCE($7, p.discount) = p.discount) 
+            AND (COALESCE($8, p.quantity) = p.quantity)
+            AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at))
+            AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at))
         `;
         const values = [search_id, search_name, search_catalog, search_supplier, search_mgf, search_price, search_discount, search_quantity, search_created_at, search_updated_at];
     
@@ -215,7 +216,10 @@ class SiteController {
     }
     // Edit product
     editproduct(req, res) {
-        pool.query('SELECT * FROM products WHERE id = $1', [req.params.id], (err, result) => {
+        pool.query(`        
+            SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
+            FROM products WHERE id = $1`
+            , [req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -235,7 +239,10 @@ class SiteController {
     }
     // Delete product 
     deleteproduct(req, res) {
-        pool.query('SELECT * FROM products WHERE id = $1', [req.params.id], (err, result) => {
+        pool.query(`        
+            SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
+            FROM products WHERE id = $1`
+            , [req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
