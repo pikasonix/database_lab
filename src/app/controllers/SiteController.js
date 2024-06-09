@@ -55,15 +55,7 @@ class SiteController {
         const search_gender = req.body.search_gender !== 'Giới tính' ? req.body.search_gender : null;
         const search_email = req.body.search_email || null;
         const search_phone = req.body.search_phone || null;
-    
-        console.log('Search parameters:', {
-            search_name,
-            search_age,
-            search_gender,
-            search_email,
-            search_phone,
-        });
-    
+
         const query = `
             SELECT * FROM customers 
             WHERE (COALESCE($1, name) = name) 
@@ -438,7 +430,19 @@ searchorderid(req, res, next) {
     });
 }
 manageorder(req, res, next) {
-    res.render('manageorder');
+    pool.query(`
+        SELECT o.id, c.name as customer_name, c.phone as customer_phone, p.name as product_name, p.id as product_id, o.quantity, o.amount::money::numeric::float8, o.address, o.status_payment, o.status_shipment, o.created_at
+        FROM orders o 
+        LEFT JOIN customers c ON o.customer_id = c.id
+        LEFT JOIN products p ON o.product_id = p.id
+        WHERE (o.status_payment = 1) AND  (o.status_shipment = 3)
+        `, (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('manageorder', { refundOrder: result.rows});
+    });
 }
 // Edit order
 editorder(req, res) {
@@ -460,7 +464,30 @@ updateorder(req, res) {
         res.render('order');
     });
 }
+updatestatusorder(req, res, next) {
+    const { status_payment, status_shipment } = req.body;
 
+    pool.query(
+        'UPDATE orders SET status_payment = $1, status_shipment = $2 WHERE id = $3',
+        [status_payment, status_shipment, req.params.id],
+        (err, result) => {
+            if (err) {
+                console.error('Lỗi khi update dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }   
+            this.manageorder.bind(this)(req, res, next);
+        }
+    );
+}
+refundorder(req, res, next) {
+    pool.query('UPDATE orders SET status_payment = 2 WHERE id = $1', [req.params.id], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi update dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        this.manageorder.bind(this)(req, res, next);
+    });
+}
 // chưa hoàn thiện orders
 // =================== Phần xử lý statistics ====================
 
@@ -492,3 +519,5 @@ statistic(req, res) {
 }
 
 module.exports = new SiteController();
+
+
