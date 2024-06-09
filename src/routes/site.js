@@ -32,9 +32,12 @@ router.use('/removesupplier/:id', siteController.removesupplier); // xoá suppli
 router.use('/order', siteController.order);
 router.use('/searchorder', siteController.searchorder);
 router.use('/addorder', siteController.addorder);
+router.use('/manageorder',siteController.manageorder);
+
+router.use('/searchorderid',siteController.searchorderid);
+
 router.use('/editorder/:id', siteController.editorder);
 router.use('/updateorder/:id', siteController.updateorder);
-// router.use('/cancelorder/:id', siteController.cancelorder); // thực hiện cancelorder
 
 router.use('/statistic', siteController.statistic);
 

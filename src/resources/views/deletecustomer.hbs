@@ -88,75 +88,75 @@
         </div>
     </div>
     <table class='table table-hover text-center align-middle'>
-                        <thead class="text-center text-uppercase">
-                            <tr>
-                                {{#each resultSearch.[0]}}
-                                    <th>{{@key}}</th>
-                                {{/each}}
-                                    <th>Action</th>
-                            </tr>
-                        </thead>
+        <thead class="text-center text-uppercase">
+            <tr>
+                {{#each resultSearch.[0]}}
+                    <th>{{@key}}</th>
+                {{/each}}
+                    <th>Action</th>
+            </tr>
+        </thead>
 
-                        <tbody class="table-group-divider">
-                            {{#each resultSearch}}
-                                <tr>
-                                    <td>{{this.id}}</td>
-                                    <td>{{this.customer_id}}</td>
-                                    <td>{{this.product_id}}</td>
-                                    <td>{{this.address}}</td>
-                                    <td>{{this.quantity}}</td>
-                                    <td>{{this.amount}}</td>
-                                    <td>
-                                        {{#eq this.status_payment 0}}
-                                            <span class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'>
-                                                Chưa thanh toán
-                                            </span>
-                                        {{else}}
-                                            {{#eq this.status_payment 1}}
-                                                <span class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'>
-                                                    Đã thanh toán
-                                                </span>
-                                            {{else}}
-                                                <span class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'>
-                                                    Huỷ thanh toán
-                                                </span>
-                                            {{/eq}}
-                                        {{/eq}}
-                                    </td>
-                                    <td>
-                                        {{#eq this.status_shipment 0}}
-                                            <span
-                                                class='badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill'
-                                            >Đang xử lý</span>
-                                        {{else}}
-                                            {{#eq this.status_shipment 1}}
-                                                <span
-                                                    class='badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill'
-                                                >Đang giao hàng</span>
-                                            {{else}}
-                                                {{#eq this.status_shipment 2}}
-                                                    <span
-                                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
-                                                    >Đã giao hàng</span>
-                                                {{else}}
-                                                    <span
-                                                        class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
-                                                    >Huỷ giao hàng</span>
-                                                {{/eq}}
-                                            {{/eq}}
-                                        {{/eq}}
-                                    </td>
-                                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
-                                    <td>
-                                        <div class="d-grid gap-2">
-                                            <a href="/editorder/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
-                                            <a href="/deleteorder/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
-                                        </div>
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </tbody>   
-                    </table>               
+        <tbody class="table-group-divider">
+            {{#each resultSearch}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.customer_id}}</td>
+                    <td>{{this.product_id}}</td>
+                    <td>{{this.address}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>{{this.amount}}</td>
+                    <td>
+                        {{#eq this.status_payment 0}}
+                            <span class='badge bg-warning-subtle border border-warning-subtle text-warning-emphasis rounded-pill'>
+                                Chưa thanh toán
+                            </span>
+                        {{else}}
+                            {{#eq this.status_payment 1}}
+                                <span class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'>
+                                    Đã thanh toán
+                                </span>
+                            {{else}}
+                                <span class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'>
+                                    Huỷ thanh toán
+                                </span>
+                            {{/eq}}
+                        {{/eq}}
+                    </td>
+                    <td>
+                        {{#eq this.status_shipment 0}}
+                            <span
+                                class='badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill'
+                            >Đang xử lý</span>
+                        {{else}}
+                            {{#eq this.status_shipment 1}}
+                                <span
+                                    class='badge bg-info-subtle border border-info-subtle text-info-emphasis rounded-pill'
+                                >Đang giao hàng</span>
+                            {{else}}
+                                {{#eq this.status_shipment 2}}
+                                    <span
+                                        class='badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill'
+                                    >Đã giao hàng</span>
+                                {{else}}
+                                    <span
+                                        class='badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill'
+                                    >Huỷ giao hàng</span>
+                                {{/eq}}
+                            {{/eq}}
+                        {{/eq}}
+                    </td>
+                    <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                    <td>
+                        <div class="d-grid gap-2">
+                            <a href="/editorder/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                            <a href="/deleteorder/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                        </div>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>   
+    </table>               
 {{else}}
     <p>Có thể xoá Nhà sản xuất {{this.name}}</p>
 {{/if}}

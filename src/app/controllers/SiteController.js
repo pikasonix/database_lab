@@ -379,10 +379,10 @@ order(req, res) {
 }
 // Add order
 addorder(req, res, next) {
-    const { id, customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
+    const {phone, address, quantity, product_id, status_payment } = req.body;
     pool.query(
-        'INSERT INTO orders (customer_id, product_id, quantity, amount, status_payment, status_shipment) VALUES ($1, $2, $3, $4, $5, $6)',
-        [customer_id, product_id, quantity, amount, status_payment, status_shipment],
+        'SELECT insert_order ($1, $2, $3, $4, $5)',
+        [phone, address, quantity, product_id, status_payment],
         (err) => {
             if (err) {
                 console.error('Lỗi khi chèn dữ liệu:', err);
@@ -392,31 +392,30 @@ addorder(req, res, next) {
         }
     );
 }
-// Search product
+// Search order
 searchorder(req, res, next) {
     const search_id = req.body.search_id || null;
-    const search_customer_id = req.body.search_customer_id || null;
+    const search_phone = req.body.search_phone|| null;
     const search_product_id = req.body.search_product_id || null;
     const search_quantity = req.body.search_quantity || null;
     const search_amount = req.body.search_amount || null;
-    const search_status_payment = req.body.search_status_payment || null;
-    const search_status_shipment = req.body.search_status_shipment || null;
+    const search_status_payment = req.body.search_status_payment !== 'Chọn trạng thái' ? req.body.search_status_payment : null;
+    const search_status_shipment = req.body.search_status_shipment !== 'Chọn trạng thái' ? req.body.search_status_shipment : null;
     const search_created_at = req.body.search_created_at || null;
-    const search_updated_at = req.body.search_updated_at || null;
 
     const query = `
-        SELECT * FROM orders 
-        WHERE (COALESCE($1, id) = id)
-        AND (COALESCE($2, customer_id) = customer_id) 
-        AND (COALESCE($3, product_id) = product_id) 
-        AND (COALESCE($4, quantity) = quantity) 
-        AND (COALESCE($5, amount) = amount) 
-        AND (COALESCE($6, status_payment) = status_payment) 
-        AND (COALESCE($7, status_shipment) = status_shipment)
-        AND (COALESCE(DATE($8), DATE(created_at)) = DATE(created_at))
-        AND (COALESCE(DATE($9), DATE(updated_at)) = DATE(updated_at))
+        SELECT o.id, o.customer_id, o.product_id, o.address, o.quantity, o.amount, o.status_payment, o.status_shipment, o.created_at
+        FROM orders o JOIN customers c ON o.customer_id = c.id
+        WHERE (COALESCE($1, o.id) = o.id)
+        AND (COALESCE($2, c.phone) = c.phone) 
+        AND (COALESCE($3, o.product_id) = o.product_id) 
+        AND (COALESCE($4, o.quantity) = o.quantity) 
+        AND (COALESCE($5, o.amount) = o.amount) 
+        AND (COALESCE($6, o.status_payment) = o.status_payment) 
+        AND (COALESCE($7, o.status_shipment) = o.status_shipment)
+        AND (COALESCE(DATE($8), DATE(o.created_at)) = DATE(o.created_at))
     `;
-    const values = [search_id, search_customer_id, search_product_id, search_quantity, search_amount, search_status_payment, search_status_shipment, search_created_at, search_updated_at];
+    const values = [search_id, search_phone, search_product_id, search_quantity, search_amount, search_status_payment, search_status_shipment, search_created_at];
 
     pool.query(query, values, (err, result) => {
         if (err) {
@@ -425,6 +424,21 @@ searchorder(req, res, next) {
         }
         res.render('order', { resultSearch: result.rows });
     });
+}
+searchorderid(req, res, next) {
+    const searchorderid = req.body.searchorderid;
+    pool.query(`
+        SELECT o.id, c.name as customer_name, c.phone as customer_phone, p.name as product_name, p.id as product_id, o.quantity, o.amount::money::numeric::float8, o.address, o.status_payment, o.status_shipment, o.created_at
+        FROM orders o 
+        LEFT JOIN customers c ON o.customer_id = c.id
+        LEFT JOIN products p ON o.product_id = p.id
+        WHERE o.id = $1    
+        `,[searchorderid], (err, result) => {
+        res.render('manageorder', { fullOrder: result.rows});
+    });
+}
+manageorder(req, res, next) {
+    res.render('manageorder');
 }
 // Edit order
 editorder(req, res) {
@@ -437,8 +451,8 @@ editorder(req, res) {
     });
 }
 updateorder(req, res) {
-    const { customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
-    pool.query('UPDATE orders SET customer_id = $1, product_id = $2, quantity = $3, amount = $4, status_payment = $5, status_shipment = $6 WHERE id = $7', [customer_id, product_id, quantity, amount, status_payment, status_shipment, req.params.id], (err, result) => {
+    const { address } = req.body;
+    pool.query('UPDATE orders SET address = $1 WHERE id = $2', [address, req.params.id], (err, result) => {
         if (err) {
             console.error('Lỗi khi update dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -446,16 +460,7 @@ updateorder(req, res) {
         res.render('order');
     });
 }
-canceleorder(req, res) {
-    const { customer_id, product_id, quantity, amount, status_payment, status_shipment } = req.body;
-    pool.query('UPDATE orders SET customer_id = $1, product_id = $2, quantity = $3, amount = $4, status_payment = $5, status_shipment = $6 WHERE id = $7', [customer_id, product_id, quantity, amount, status_payment, status_shipment, req.params.id], (err, result) => {
-        if (err) {
-            console.error('Lỗi khi update dữ liệu:', err);
-            return res.status(500).send('Lỗi cơ sở dữ liệu');
-        }
-        res.render('order');
-    });
-}
+
 // chưa hoàn thiện orders
 // =================== Phần xử lý statistics ====================
 

@@ -1,0 +1,165 @@
+<div class="accordion" id="manageorder">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                <strong>Trạng thái đơn hàng</strong>
+            </button>
+        </h2>
+        <div id="collapseZero" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="d-flex flex-column mb-3">
+                    <div class="p-2">
+                        <form method='POST' action='/searchorderid'>  
+                            <div class='input-group' style='max-width: 250px'>
+                            <input
+                                type='text'
+                                name='searchorderid'
+                                class='form-control border-primary'
+                                placeholder="ID đơn hàng"
+                            />
+                            <button class='btn btn-outline-primary' type='submit'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </button>
+                        </form> 
+                    </div>
+                    <div>
+                        <div class='table-responsive mt-4'>
+                            <small>
+                            <table class='table table-hover text-center align-middle'>
+                                <thead class="text-uppercase">
+                                    <tr>
+                                            <th>ID</th>
+                                            <th>Khách hàng</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Số lượng</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Địa chỉ giao hàng</th>
+                                            <th>Thanh toán</th>
+                                            <th>Vận chuyển</th>
+                                            <th>Thời gian</th>
+                                            <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="table-group-divider">
+                                        <tr>
+                                            <td>{{fullOrder.[0].id}}</td>
+                                            <td>
+                                                <div>
+                                                    <p class="mb-0"><strong>{{fullOrder.[0].customer_name}}</strong></p>
+                                                    <p class="mb-0">{{fullOrder.[0].customer_phone}}</p>
+                                                </div>
+                                            </td>
+        
+                                            <td>
+                                                <div>
+                                                    <p class="mb-0"><strong>{{fullOrder.[0].product_name}}</strong></p>
+                                                    <p class="mb-0">#{{fullOrder.[0].product_id}}</p>
+                                                </div>
+                                            </td>
+                                        
+                                            <td>{{fullOrder.[0].quantity}}</td>
+                                            <td>{{fullOrder.[0].amount}}đ</td>
+                                            <td>{{fullOrder.[0].address}}</td>
+                                            <td>
+                                                <small>
+                                                <select id="status_paymentSelect" name="status_payment" class="form-select form-select-sm">
+                                                    <option value = 0 {{#eq fullOrder.[0].status_payment 0}}selected{{/eq}}>
+                                                        Chưa thanh toán
+                                                    </option>
+                                                    <option value=1 {{#eq fullOrder.[0].status_payment 1}}selected{{/eq}}>
+                                                        Đã thanh toán
+                                                    </option>
+                                                    <option value=2 {{#eq fullOrder.[0].status_payment 2}}selected{{/eq}}>
+                                                        Huỷ thanh toán
+                                                    </option>
+                                                </select>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <select id="status_shipmentSelect" name="status_shipment" class="form-select form-select-sm">
+                                                    <option value = 0 {{#eq fullOrder.[0].status_shipment 0}}selected{{/eq}}>
+                                                        Đang xử lý
+                                                    </option>
+                                                    <option value=1 {{#eq fullOrder.[0].status_shipment 1}}selected{{/eq}}>
+                                                        Đang giao hàng
+                                                    </option>
+                                                    <option value=2 {{#eq fullOrder.[0].status_shipment 2}}selected{{/eq}}>
+                                                        Đã giao hàng
+                                                    </option>
+                                                    <option value=3 {{#eq fullOrder.[0].status_shipment 3}}selected{{/eq}}>
+                                                        Huỷ giao hàng
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td>{{moment fullOrder.[0].created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                            <td>
+                                                <a href="/updateorder/{{fullOrder.[0].id}}" type="button" class="btn btn-outline-primary btn-sm">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                                                </svg>
+                                                </a> 
+                                            </td>
+                                        </tr>
+                                </tbody>   
+                            </table>  
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+        
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <strong>Add Customer</strong>
+            </button>
+        </h2>
+        {{!-- Input --}}
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class='mt-4'>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <strong>Customer Info</strong>
+        </button>
+    </h2>
+    {{!-- Table --}}
+    <div id="collapseTwo" class="accordion-collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class='mt-4'>
+                
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
