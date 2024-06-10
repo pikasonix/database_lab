@@ -45,6 +45,19 @@
                                     <datalist id="supplierOptions"></datalist>
                                 </div>
                                 <div class='col-3 mb-3'>
+                                    <label for='search_base_price-input' class='form-label'>Giá nhập vào:</label>
+                                    <div class="input-group flex-nowrap">   
+                                        <input
+                                            type='number'
+                                            name='search_base_price'
+                                            class='form-control'
+                                            id='search_base_price-input'
+                                            placeholder='23000000'
+                                        />
+                                        <span class="input-group-text" id="addon-wrapping">đ</span>
+                                    </div>
+                                </div>
+                                <div class='col-3 mb-3'>
                                     <label for='search_price-input' class='form-label'>Giá gốc:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
@@ -130,7 +143,7 @@
                 {{!-- Table --}}
                 {{#if resultSearch}}
                     <small>
-                    <table class='table table-hover text-center align-middle'>
+                    <table class='table table-hover text-center align-middle table-responsive'>
                         <thead class="text-center text-uppercase">
                             <tr>
                                 {{#each resultSearch.[0]}}
@@ -149,6 +162,7 @@
                                     <td>{{this.supplier_id}}</td>
                                     <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
                                     <td>{{this.price}}</td>
+                                    <td>{{this.base_price}}</td>
                                     <td>{{this.discount}}</td>
                                     <td>{{this.quantity}}</td>
                                     <td>Mô tả</td>
@@ -229,6 +243,19 @@
                                     />
                                 </div>
                                 <div class='col-3 mb-3'>
+                                    <label for='base_price-input' class='form-label'>Giá nhập vào:</label>
+                                    <div class="input-group flex-nowrap">   
+                                        <input
+                                            type='number'
+                                            name='base_price'
+                                            class='form-control'
+                                            id='base_price-input'
+                                            placeholder='23000000'
+                                        />
+                                        <span class="input-group-text" id="addon-wrapping">đ</span>
+                                    </div>
+                                </div>
+                                <div class='col-3 mb-3'>
                                     <label for='price-input' class='form-label'>Giá gốc:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
@@ -241,7 +268,7 @@
                                         <span class="input-group-text" id="addon-wrapping">đ</span>
                                     </div>
                                 </div>
-                                <div class='col-3 mb-3'>
+                                <div class='col-2 mb-3'>
                                     <label for='discount-input' class='form-label'>Giảm giá:</label>
                                     <div class="input-group flex-nowrap">
                                         <input
@@ -254,7 +281,7 @@
                                         <span class="input-group-text" id="addon-wrapping">%</span>
                                     </div>
                                 </div>
-                                <div class='col-3 mb-3'>
+                                <div class='col-2 mb-3'>
                                     <label for='quantity-input' class='form-label'>Số lượng:</label>
                                     <input
                                         type='number'
@@ -264,7 +291,7 @@
                                         value='1'
                                     />
                                 </div>
-                                <div class='col-9 mb-3'>
+                                <div class='col-8 mb-3'>
                                     <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
                                     <input
                                         type='text'
@@ -295,7 +322,7 @@
                                 <div class="card-body text-warning">
                                     <div class="card-text">
                                         <ul>
-                                            <li>Supplier nhập supplier_id đã có nha...chưa fix đc</li>
+                                            <li>Chú thích gì không nhỉ</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -338,6 +365,7 @@
                                 <td>{{this.supplier_id}}</td>
                                 <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
                                 <td>{{this.price}}</td>
+                                <td>{{this.base_price}}</td>
                                 <td>{{this.discount}}</td>
                                 <td>{{this.quantity}}</td>
                                 <td>Mô tả</td>

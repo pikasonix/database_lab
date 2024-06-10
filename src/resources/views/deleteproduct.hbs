@@ -53,6 +53,20 @@
                                 />
                             </div>
                             <div class='col-3 mb-3'>
+                                <label for='base_price-input' class='form-label'>Giá nhập vào:</label>
+                                <div class="input-group flex-nowrap">   
+                                    <input
+                                        type='number'
+                                        name='base_price'
+                                        class='form-control'
+                                        id='base_price-input'
+                                        value = {{this.base_price}}
+                                        disabled
+                                    />
+                                    <span class="input-group-text" id="addon-wrapping">đ</span>
+                                </div>
+                            </div>
+                            <div class='col-3 mb-3'>
                                 <label for='price-input' class='form-label'>Giá gốc:</label>
                                 <div class="input-group flex-nowrap">   
                                     <input
@@ -66,7 +80,7 @@
                                     <span class="input-group-text" id="addon-wrapping">đ</span>
                                 </div>
                             </div>
-                            <div class='col-3 mb-3'>
+                            <div class='col-2 mb-3'>
                                 <label for='discount-input' class='form-label'>Giảm giá:</label>
                                 <div class="input-group flex-nowrap">
                                     <input
@@ -81,7 +95,7 @@
                                     <span class="input-group-text" id="addon-wrapping">%</span>
                                 </div>
                             </div>
-                            <div class='col-3 mb-3'>
+                            <div class='col-2 mb-3'>
                                 <label for='quantity-input' class='form-label'>Số lượng:</label>
                                 <input
                                     type='number'
@@ -92,7 +106,7 @@
                                     disabled
                                 />
                             </div>
-                            <div class='col-9 mb-3'>
+                            <div class='col-8 mb-3'>
                                 <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
                                 <input
                                     type='text'

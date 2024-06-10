@@ -156,10 +156,10 @@ class SiteController {
     }
     // Add product
     addproduct(req, res, next) {
-        const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
+        const { name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image } = req.body;
         pool.query(
-            'SELECT update_data_products($1,$2,$3,$4,$5,$6,$7,$8,$9);'
-            , [name, catalog, mgf, supplier, price, discount, quantity, description, image],
+            'SELECT update_data_products($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);'
+            , [name, catalog, mgf, supplier, base_price, price, discount, quantity, description, image],
             (err) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
@@ -176,6 +176,7 @@ class SiteController {
         const search_catalog = req.body.search_catalog || null;
         const search_supplier = req.body.search_supplier || null;
         const search_mgf = req.body.search_mgf || null;
+        const search_base_price = req.body.search_base_price || null;
         const search_price = req.body.search_price || null;
         const search_discount = req.body.search_discount || null;
         const search_quantity = req.body.search_quantity || null;
@@ -183,7 +184,7 @@ class SiteController {
         const search_updated_at = req.body.search_updated_at || null;
     
         const query = `
-            SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price,p.discount,p.quantity,p.description,p.image,p.created_at,p.updated_at
+            SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price,p.base_price,p.discount,p.quantity,p.description,p.image,p.created_at,p.updated_at
             FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
             WHERE (COALESCE($1, p.id) = p.id)
             AND (COALESCE($2, p.name) = p.name) 
@@ -195,8 +196,9 @@ class SiteController {
             AND (COALESCE($8, p.quantity) = p.quantity)
             AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at))
             AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at))
+            AND (COALESCE($11, p.base_price) = p.base_price)
         `;
-        const values = [search_id, search_name, search_catalog, search_supplier, search_mgf, search_price, search_discount, search_quantity, search_created_at, search_updated_at];
+        const values = [search_id, search_name, search_catalog, search_supplier, search_mgf, search_price, search_discount, search_quantity, search_created_at, search_updated_at, search_base_price];
     
         pool.query(query, values, (err, result) => {
             if (err) {
@@ -209,7 +211,7 @@ class SiteController {
     // Edit product
     editproduct(req, res) {
         pool.query(`        
-            SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
+            SELECT id,name,catalog,supplier_id,mgf,base_price::money::numeric::float8,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
             FROM products WHERE id = $1`
             , [req.params.id], (err, result) => {
             if (err) {
@@ -220,8 +222,8 @@ class SiteController {
         });
     }
     updateproduct(req, res) {
-        const { name, catalog, supplier, mgf, price, discount, quantity, description, image } = req.body;
-        pool.query('UPDATE products SET name = $1, catalog = $2, supplier_id = $3, mgf = $4, price = $5, discount = $6, quantity = $7, description = $8, image = $9  WHERE id = $10', [name, catalog, supplier, mgf, price, discount, quantity, description, image, req.params.id], (err, result) => {
+        const { name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image } = req.body;
+        pool.query('UPDATE products SET name = $1, catalog = $2, supplier_id = $3, mgf = $4, price = $5, discount = $6, quantity = $7, description = $8, image = $9, base_price = $10 WHERE id = $11', [name, catalog, supplier, mgf, price, discount, quantity, description, image, base_price, req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi update dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -232,7 +234,7 @@ class SiteController {
     // Delete product 
     deleteproduct(req, res) {
         pool.query(`        
-            SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
+            SELECT id,name,catalog,supplier_id,mgf,base_price::money::numeric::float8,price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at 
             FROM products WHERE id = $1`
             , [req.params.id], (err, result) => {
             if (err) {
@@ -488,25 +490,33 @@ refundorder(req, res, next) {
         this.manageorder.bind(this)(req, res, next);
     });
 }
-// chưa hoàn thiện orders
+
 // =================== Phần xử lý statistics ====================
 
 statistic(req, res) {
     res.render('statistic');
 }
-
+bestselling(req, res) {
+    pool.query('SELECT * FROM get_best_selling_product();', (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('statistic', { bestselling: result.rows });
+    });
+}
 
 
 
 
     // [GET] /delete
     test(req, res) {
-        pool.query('SELECT * FROM products ORDER BY id DESC', (err, result) => {
+        pool.query('SELECT * FROM get_best_selling_product();', (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('test', { allProduct: result.rows });
+            res.render('test', { test: result.rows });
         });
     }
 
@@ -514,7 +524,6 @@ statistic(req, res) {
     search(req, res) {
         res.render('search');
     }
-
 
 }
 
