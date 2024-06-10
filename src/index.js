@@ -29,9 +29,24 @@ app.use(express.json());
 app.use(morgan('tiny'));
 
 // Template engine
-app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
+app.engine('hbs', handlebars.engine({ extname: '.hbs', helpers: comparison }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
+
+// Register the helper
+Handlebars.registerHelper('eachFromIndex', function(array, startIndex, options) {
+    let result = '';
+    for (let i = startIndex; i < array.length; i++) {
+        result += options.fn(array[i]);
+    }
+    return result;
+});
+
+
+
+
+
+
 
 // Routes init
 route(app);

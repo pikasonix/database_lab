@@ -511,7 +511,7 @@ bestselling(req, res) {
 
     // [GET] /delete
     test(req, res) {
-        pool.query('SELECT * FROM get_best_selling_product();', (err, result) => {
+        pool.query('SELECT * FROM products', (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
