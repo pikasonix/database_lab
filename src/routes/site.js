@@ -38,10 +38,10 @@ router.use('/editorder/:id', siteController.editorder);
 router.use('/updateorder/:id', siteController.updateorder);
 router.post('/updatestatusorder/:id', siteController.updatestatusorder.bind(siteController));
 router.post('/refundorder/:id', siteController.refundorder.bind(siteController));
+router.post('/paidorder/:id', siteController.paidorder.bind(siteController));
 
 router.use('/statistic', siteController.statistic);
 router.get('/bestselling', siteController.bestselling)
-
 
 
 

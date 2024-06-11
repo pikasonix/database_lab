@@ -442,7 +442,30 @@ manageorder(req, res, next) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('manageorder', { refundOrder: result.rows});
+            pool.query(`
+                SELECT o.id, c.name as customer_name, c.phone as customer_phone, p.name as product_name, p.id as product_id, o.quantity, o.amount::money::numeric::float8, o.address, o.status_payment, o.status_shipment, o.created_at
+                FROM orders o 
+                LEFT JOIN customers c ON o.customer_id = c.id
+                LEFT JOIN products p ON o.product_id = p.id
+                `, (err, allOrder) => {
+                    if (err) {
+                        console.error('Lỗi khi truy vấn dữ liệu:', err);
+                        return res.status(500).send('Lỗi cơ sở dữ liệu');
+                    }
+                    pool.query(`
+                        SELECT o.id, c.name as customer_name, c.phone as customer_phone, p.name as product_name, p.id as product_id, o.quantity, o.amount::money::numeric::float8, o.address, o.status_payment, o.status_shipment, o.created_at
+                        FROM orders o 
+                        LEFT JOIN customers c ON o.customer_id = c.id
+                        LEFT JOIN products p ON o.product_id = p.id
+                        WHERE (o.status_payment = 0) AND  (o.status_shipment = 2)
+                        `, (err, unpaidOrder) => {
+                            if (err) {
+                                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                                return res.status(500).send('Lỗi cơ sở dữ liệu');
+                            }  
+                            res.render('manageorder', { refundOrder: result.rows, allOrder: allOrder.rows, unpaidOrder: unpaidOrder.rows});
+                    });  
+            });
     });
 }
 // Edit order
@@ -482,6 +505,15 @@ updatestatusorder(req, res, next) {
 }
 refundorder(req, res, next) {
     pool.query('UPDATE orders SET status_payment = 2 WHERE id = $1', [req.params.id], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi update dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        this.manageorder.bind(this)(req, res, next);
+    });
+}
+paidorder(req, res, next) {
+    pool.query('UPDATE orders SET status_payment = 1 WHERE id = $1', [req.params.id], (err, result) => {
         if (err) {
             console.error('Lỗi khi update dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');

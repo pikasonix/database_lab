@@ -16,3 +16,8 @@
     align-items: center;
     flex-direction: column;
 }
+
+.offcanvas-bottom.custom-height {
+    height: 50vh; 
+    max-height: 50vh;
+}
