@@ -194,73 +194,117 @@
     <div class='row d-flex justify-content-center'>
         <div class='col-12'>
             <div class='row p-2 border rounded border border-warning-subtle bg-dark-subtle'> 
-				<strong>Tri ân khách hàng</strong>
+				<h5><strong>Tri ân khách hàng</strong></h5>
+				<form method='POST' action='/statistic'>
+					<div class="d-flex flex-row mb-3">
+						<div class="p-2">
+							<div class="input-group input-group-sm mb-3">
+								<span class="input-group-text">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-week-fill" viewBox="0 0 16 16">
+										<path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M9.5 7h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5M2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3.5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</span>
+								<input 
+									type="date" 
+									class="form-control" 
+									name="begin_date"
+									value='{{daysAgo 30 'YYYY-MM-DD'}}'
+								>
+								<span class="input-group-text">-</span>
+								<input 
+									type="date" 
+									class="form-control" 
+									name="end_date" 
+									value="{{daysAgo -1 'YYYY-MM-DD'}}"
+								>
+							</div>
+						</div>
+						<div class="p-2">
+							<div class="input-group input-group-sm mb-3">
+								<span class="input-group-text" id="basic-addon1">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+										<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+									</svg>
+								</span>
+								<input type="number" class="form-control" style="max-width:70px" name="number" value="5">
+							</div>
+						</div>
+						<div class="p-2">
+							<button type='submit' class='btn btn-primary btn-sm'>
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+									<path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+									<path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+								</svg>
+							</button>
+						</div>
+					</div>
+				</form>
+				{{#if topCustomers}}
 				<table class='table table-hover text-center  align-middle'>
-                <thead class="text-center text-uppercase">
-                    <tr>
-                        {{#each topCustomers.[0]}}
-							<th>Thứ hạng</th>
-                            <th>ID</th>
-                            <th>Khách hàng</th>
-                            <th>Email</th>
-                            <th>Điện thoại</th>
-                            <th>Tổng tiền</th>
-                        {{/each}}
-                    </tr>
-                </thead>
+					<thead class="text-center text-uppercase">
+						<tr>
+								<th>Thứ hạng</th>
+								<th>ID</th>
+								<th>Khách hàng</th>
+								<th>Email</th>
+								<th>Điện thoại</th>
+								<th>Tổng tiền</th>
+						</tr>
+					</thead>
 
-                <tbody class="table-group-divider">
-                        <tr>
-                            <td>
-								<svg xmlns='http://www.w3.org/2000/svg' class='bi' width='16' height='16' fill='currentColor' style="color: #ffc107;" viewBox="0 0 576 512">
-									<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
-								</svg>
-								{{topCustomers.[0].rank_by_spend}}
-							</td>
-                            <td>{{topCustomers.[0].customer_id}}</td>
-                            <td>{{topCustomers.[0].customer_name}}</td>
-                            <td>{{topCustomers.[0].customer_email}}</td>
-                            <td>{{topCustomers.[0].customer_phone}}</td>
-                            <td>{{topCustomers.[0].total_spend}}</td>
-                        </tr>
-						<tr>
-                            <td>
-								<svg xmlns='http://www.w3.org/2000/svg' class='bi' width='16' height='16' fill='currentColor' style="color: #C0C0C0" viewBox="0 0 576 512">
-									<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
-								</svg>
-								{{topCustomers.[1].rank_by_spend}}
-							</td>
-                            <td>{{topCustomers.[1].customer_id}}</td>
-                            <td>{{topCustomers.[1].customer_name}}</td>
-                            <td>{{topCustomers.[1].customer_email}}</td>
-                            <td>{{topCustomers.[1].customer_phone}}</td>
-                            <td>{{topCustomers.[1].total_spend}}</td>
-                        </tr>
-						<tr>
-                            <td>
-								<svg xmlns='http://www.w3.org/2000/svg' class='bi' width='16' height='16' fill='currentColor' style="color: #964B00;" viewBox="0 0 576 512">
-									<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
-								</svg>
-								{{topCustomers.[2].rank_by_spend}}
-							</td>
-                            <td>{{topCustomers.[2].customer_id}}</td>
-                            <td>{{topCustomers.[2].customer_name}}</td>
-                            <td>{{topCustomers.[2].customer_email}}</td>
-                            <td>{{topCustomers.[2].customer_phone}}</td>
-                            <td>{{topCustomers.[2].total_spend}}</td>
-                        </tr>
-						{{#eachFromIndex topCustomers 3}}
-						<tr>
-                            <td>{{this.rank_by_spend}}</td>
-                            <td>{{this.customer_id}}</td>
-                            <td>{{this.customer_name}}</td>
-                            <td>{{this.customer_email}}</td>
-                            <td>{{this.customer_phone}}</td>
-                            <td>{{this.total_spend}}</td>
-                        </tr>
-						{{/eachFromIndex}}
-                </tbody>   
-            </table>
+					<tbody class="table-group-divider">
+							<tr>
+								<td class="d-flex align-items-center justify-content-center">
+									<svg xmlns='http://www.w3.org/2000/svg' class='bi me-1 mb-1' width='16' height='16' fill='currentColor' style="color: #ffc107;" viewBox="0 0 576 512">
+										<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
+									</svg>
+									<strong class="text text-warning">{{topCustomers.[0].rank_by_spend}}</strong>
+								</td>
+								<td>{{topCustomers.[0].customer_id}}</td>
+								<td>{{topCustomers.[0].customer_name}}</td>
+								<td>{{topCustomers.[0].customer_email}}</td>
+								<td>{{topCustomers.[0].customer_phone}}</td>
+								<td>{{topCustomers.[0].total_spend}}</td>
+							</tr>
+							<tr>
+								<td class="d-flex align-items-center justify-content-center">
+									<svg xmlns='http://www.w3.org/2000/svg' class='bi me-1 mb-1' width='16' height='16' fill='currentColor' style="color: #C0C0C0" viewBox="0 0 576 512">
+										<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
+									</svg>
+									<strong class="text" style="color: #C0C0C0;">{{topCustomers.[1].rank_by_spend}}</strong>
+								</td>
+								<td>{{topCustomers.[1].customer_id}}</td>
+								<td>{{topCustomers.[1].customer_name}}</td>
+								<td>{{topCustomers.[1].customer_email}}</td>
+								<td>{{topCustomers.[1].customer_phone}}</td>
+								<td>{{topCustomers.[1].total_spend}}</td>
+							</tr>
+							<tr>
+								<td class="d-flex align-items-center justify-content-center">
+									<svg xmlns='http://www.w3.org/2000/svg' class='bi me-1 mb-1' width='16' height='16' fill='currentColor' style="color: #964B00;" viewBox="0 0 576 512">
+										<path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z"/>
+									</svg>
+									<strong class="text" style="color: #964B00;">{{topCustomers.[2].rank_by_spend}}</strong>
+								</td>
+								<td>{{topCustomers.[2].customer_id}}</td>
+								<td>{{topCustomers.[2].customer_name}}</td>
+								<td>{{topCustomers.[2].customer_email}}</td>
+								<td>{{topCustomers.[2].customer_phone}}</td>
+								<td>{{topCustomers.[2].total_spend}}</td>
+							</tr>
+							{{#eachFromIndex topCustomers 3}}
+							<tr>
+								<td><strong>{{this.rank_by_spend}}</strong></td>
+								<td>{{this.customer_id}}</td>
+								<td>{{this.customer_name}}</td>
+								<td>{{this.customer_email}}</td>
+								<td>{{this.customer_phone}}</td>
+								<td>{{this.total_spend}}</td>
+							</tr>
+							{{/eachFromIndex}}
+					</tbody>   
+            	</table>
+				{{/if}}
             </div>
         </div>
     </div>

@@ -184,7 +184,7 @@ class SiteController {
         const search_updated_at = req.body.search_updated_at || null;
     
         const query = `
-            SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price,p.base_price,p.discount,p.quantity,p.description,p.image,p.created_at,p.updated_at
+            SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price::money::numeric::float8,p.base_price::money::numeric::float8,p.discount,p.quantity,p.image,p.created_at,p.updated_at
             FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
             WHERE (COALESCE($1, p.id) = p.id)
             AND (COALESCE($2, p.name) = p.name) 
@@ -349,7 +349,6 @@ class SiteController {
             });
         });
     }
-
     removesupplier(req, res) {
         pool.query('DELETE FROM suppliers WHERE id = $1', [req.params.id], (err, result) => {
             if (err) {
@@ -494,8 +493,16 @@ refundorder(req, res, next) {
 // =================== Phần xử lý statistics ====================
 
 statistic(req, res) {
-    res.render('statistic');
+    const { begin_date, end_date, number } = req.body;
+    pool.query('SELECT * FROM get_top_customers($1, $2, $3);', [begin_date, end_date, number], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('statistic', { topCustomers: result.rows });
+    });
 }
+
 bestselling(req, res) {
     pool.query('SELECT * FROM get_best_selling_product();', (err, result) => {
         if (err) {

@@ -8,6 +8,7 @@ const Handlebars = require('handlebars');
 const MomentHandler = require('handlebars.moment');
 MomentHandler.registerHelpers(Handlebars);
 
+const moment = require('moment'); 
 const path = require('path');
 const app = express();
 const port = 2000;
@@ -34,6 +35,7 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
 // Register the helper
+// Dùng cho array bắt đầu từ startIndex đến hết
 Handlebars.registerHelper('eachFromIndex', function(array, startIndex, options) {
     let result = '';
     for (let i = startIndex; i < array.length; i++) {
@@ -42,9 +44,10 @@ Handlebars.registerHelper('eachFromIndex', function(array, startIndex, options) 
     return result;
 });
 
-
-
-
+// Trả về days (days ago) (vd: days = 30 -> 30 days ago; days = -1 -> tomorrow)
+Handlebars.registerHelper('daysAgo', function(days, format) {
+    return moment().subtract(days, 'days').format(format);
+});
 
 
 

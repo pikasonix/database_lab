@@ -177,21 +177,31 @@
     <div id="collapseTwo" class="accordion-collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class='mt-4'>
-                <table class='table table-hover align-middle'>
-                    <thead class="text-center">
+                <table class='table table-hover text-center align-middle'>
+                    <thead class="text-center text-uppercase">
                         <tr>
                             {{#each allSupplier.[0]}}
                                 <th>{{@key}}</th>
                             {{/each}}
+                                <th>Action</th>
                         </tr>
                     </thead>
-
                     <tbody class="table-group-divider">
                         {{#each allSupplier}}
                             <tr>
-                                {{#each this}}
-                                    <td>{{this}}</td>
-                                {{/each}}
+                                <td>{{this.id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.address}}</td>
+                                <td>Mô tả</td>
+                                <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a href="/editsupplier/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                        <a href="/deletesupplier/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                    </div>
+                                </td>
                             </tr>
                         {{/each}}
                     </tbody>

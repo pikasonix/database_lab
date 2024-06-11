@@ -1,87 +1,81 @@
-<strong>Edit Customer</strong>
-{{#each customerinfo}}
+<div class="p-3 bg-body rounded shadow-sm">
+    <h3><strong>Edit Customer</strong></h3>
+    {{#each customerinfo}}
+    {{!-- Input --}}
+    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+            <div class='mt-4'>
+                <form method='POST' action='/updatecustomer/{{this.id}}'>
+                    <div class="row">
+                        <div class='col-9'>
+                            <div class="row">
+                                <div class='col-5 mb-3'>
+                                    <label for='name-input' class='form-label'>Tên:</label>
+                                    <input
+                                        type='text'
+                                        name='update_name'
+                                        class='form-control'
+                                        id='name-input'
+                                        value = "{{this.name}}"
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='age-input' class='form-label'>Tuổi:</label>
+                                    <input
+                                        type='text'
+                                        name='update_age'
+                                        class='form-control'
+                                        id='age-input'
+                                        value = {{this.age}}
+                                    />
+                                </div>
+                                <div class='col-4 mb-3'>
+                                    <label for='genderSelect' class='form-label'>Giới tính:</label>
+                                    <select id="genderSelect" name="update_gender" value = {{this.gender}} class="form-select">
+                                        <option>{{this.gender}}</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                        <option value="Khác">Khác</option>
+                                    </select>
+                                </div>
+                                <div class='col-5 mb-3'>
+                                    <label for='email-input' class='form-label'>Email:</label>
+                                    <input
+                                        type='text'
+                                        name='update_email'
+                                        class='form-control'
+                                        id='email-input'
+                                        value = {{this.email}}
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='phone-input' class='form-label'>Phone number:</label>
+                                    <input
+                                        type='text'
+                                        name='update_phone'
+                                        class='form-control'
+                                        id='phone-input'
+                                        value = {{this.phone}}
+                                    />
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type='submit' class='btn btn-primary'>Sửa dữ liệu</button>
+                            </div>
+                        </div>
+                        <div class='col-3  pt-4'>
+                            <div class="card border-warning mb-3" style="max-width: 18rem;">
+                                <h6 class="card-header text-warning">Chú ý</h6>
+                                <div class="card-body text-warning">
+                                    <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-{{!-- Input --}}
-<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-    <div class="accordion-body">
-        <div class='mt-4'>
-            <form method='POST' action='/updatecustomer/{{this.id}}'>
-                <div class="row">
-                    <div class='col-9'>
-                        <div class="row">
-                            <div class='col-5 mb-3'>
-                                <label for='name-input' class='form-label'>Tên:</label>
-                                <input
-                                    type='text'
-                                    name='update_name'
-                                    class='form-control'
-                                    id='name-input'
-                                    value = "{{this.name}}"
-                                />
-                            </div>
-                            <div class='col-3 mb-3'>
-                                <label for='age-input' class='form-label'>Tuổi:</label>
-                                <input
-                                    type='text'
-                                    name='update_age'
-                                    class='form-control'
-                                    id='age-input'
-                                    value = {{this.age}}
-                                />
-                            </div>
-                            <div class='col-4 mb-3'>
-                                <label for='genderSelect' class='form-label'>Giới tính:</label>
-                                <select id="genderSelect" name="update_gender" value = {{this.gender}} class="form-select">
-                                    <option>{{this.gender}}</option>
-                                    <option value="Nam">Nam</option>
-                                    <option value="Nữ">Nữ</option>
-                                    <option value="Khác">Khác</option>
-                                </select>
-                            </div>
-                            <div class='col-5 mb-3'>
-                                <label for='email-input' class='form-label'>Email:</label>
-                                <input
-                                    type='text'
-                                    name='update_email'
-                                    class='form-control'
-                                    id='email-input'
-                                    value = {{this.email}}
-                                />
-                            </div>
-                            <div class='col-3 mb-3'>
-                                <label for='phone-input' class='form-label'>Phone number:</label>
-                                <input
-                                    type='text'
-                                    name='update_phone'
-                                    class='form-control'
-                                    id='phone-input'
-                                    value = {{this.phone}}
-                                />
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button type='submit' class='btn btn-primary'>Sửa dữ liệu</button>
-                        </div>
-                    </div>
-                    <div class='col-3  pt-4'>
-                        <div class="card border-warning mb-3" style="max-width: 18rem;">
-                            <h6 class="card-header text-warning">Chú ý</h6>
-                            <div class="card-body text-warning">
-                                <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </div>
-
     </div>
+    {{/each}}
 </div>
-<script>
-    console.log('Name:', '{{this.name}}');
-    console.log('Age:', '{{this.age}}');
-    console.log('Gender:', '{{this.gender}}');
-    console.log('Email:', '{{this.email}}');
-    console.log('Phone:', '{{this.phone}}');
-</script>
-{{/each}}
