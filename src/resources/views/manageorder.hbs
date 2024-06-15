@@ -237,7 +237,22 @@
             <strong>Đơn hàng chưa thanh toán</strong>
         </button>
     </h2>
-    {{!-- Table --}}
+    <form method='POST' action='/manageorder'>  
+        <div class='input-group pt-4 ps-4' style='max-width: 350px'>
+        <input
+            type='number'
+            name='customer_phone'
+            class='form-control border-primary'
+            placeholder="Số điện thoại khách hàng"
+        />
+        <button class='btn btn-outline-primary' type='submit'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+        </div>
+    </form>
+    {{!-- Unpaid Table --}}
     <div id="collapseTwo" class="accordion-collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class='mt-4'>

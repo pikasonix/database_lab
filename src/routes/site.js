@@ -42,8 +42,9 @@ router.post('/paidorder/:id', siteController.paidorder.bind(siteController));
 
 router.use('/statistic', siteController.statistic);
 router.get('/bestselling', siteController.bestselling)
-
-
+router.use('/basepricesupplier', siteController.basepricesupplier)
+router.use('/revenuesupplier', siteController.revenuesupplier)
+router.use('/revenueproduct', siteController.revenueproduct)
 
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);

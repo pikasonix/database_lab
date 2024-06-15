@@ -1,46 +1,43 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
+# Store Admin 
+Trang web quản lý bán hàng
 
 
 
 
 
 ## Tech Stack
-**Front-end:**
+
+**Front-end:** Handlebars, SCSS, Bootstrap 5
+
 **Back-end:** Node, Express
-**Database:**
+
+**Database:** PostgreSQL
 
 
 ## Features
 
-- Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+- 
 
 
 ## Installation
 
-Install my-project with npm
-
+Install NodeJS
+Install npm
 ```bash
-  npm install my-project
-  cd my-project
+  npm install
 ```
     
-## Usage/Examples
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
+## Usage
+Run project
+```bash
+npm start
 ```
 
-
+Run to convert SCSS to CSS
+```bash
+npm run watch
+```
 ## Screenshots
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)

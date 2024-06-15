@@ -159,7 +159,7 @@ class SiteController {
         const { name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image } = req.body;
         pool.query(
             'SELECT update_data_products($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);'
-            , [name, catalog, mgf, supplier, base_price, price, discount, quantity, description, image],
+            , [name, catalog, mgf, supplier, price, base_price, discount, quantity, description, image],
             (err) => {
                 if (err) {
                     console.error('Lỗi khi chèn dữ liệu:', err);
@@ -431,6 +431,7 @@ searchorderid(req, res, next) {
     });
 }
 manageorder(req, res, next) {
+    const customer_phone = req.body.customer_phone || null;
     pool.query(`
         SELECT o.id, c.name as customer_name, c.phone as customer_phone, p.name as product_name, p.id as product_id, o.quantity, o.amount::money::numeric::float8, o.address, o.status_payment, o.status_shipment, o.created_at
         FROM orders o 
@@ -457,8 +458,8 @@ manageorder(req, res, next) {
                         FROM orders o 
                         LEFT JOIN customers c ON o.customer_id = c.id
                         LEFT JOIN products p ON o.product_id = p.id
-                        WHERE (o.status_payment = 0) AND  (o.status_shipment = 2)
-                        `, (err, unpaidOrder) => {
+                        WHERE (o.status_payment = 0) AND (COALESCE($1, phone) = phone) 
+                        `, [customer_phone], (err, unpaidOrder) => {
                             if (err) {
                                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -522,16 +523,23 @@ paidorder(req, res, next) {
     });
 }
 
+
 // =================== Phần xử lý statistics ====================
 
 statistic(req, res) {
-    const { begin_date, end_date, number } = req.body;
-    pool.query('SELECT * FROM get_top_customers($1, $2, $3);', [begin_date, end_date, number], (err, result) => {
+    const { begin_date, end_date, number, store_begin_date, store_end_date } = req.body;
+    pool.query('SELECT * FROM get_top_customers($1, $2, $3);', [begin_date, end_date, number], (err, topCustomers) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        res.render('statistic', { topCustomers: result.rows });
+        pool.query('SELECT * FROM get_store_revenue($1, $2);', [store_begin_date, store_end_date], (err, storeStatistic) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('statistic', { topCustomers: topCustomers.rows, storeStatistic: storeStatistic.rows });
+        });
     });
 }
 
@@ -545,7 +553,38 @@ bestselling(req, res) {
     });
 }
 
+revenuesupplier(req, res) {
+    const { supplier } = req.body;
+    pool.query('SELECT * FROM get_revenue_supplier($1);',[supplier], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('statistic', { revenuesupplier: result.rows });
+    });
+}
 
+basepricesupplier(req, res) {
+    const { importsupplier } = req.body;
+    pool.query('SELECT * FROM get_total_base_price_by_supplier($1);',[importsupplier], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('statistic', { basepricesupplier: result.rows });
+    });
+}
+
+revenueproduct(req, res) {
+    const { product } = req.body;
+    pool.query('SELECT get_product_profit($1);',[product], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi truy vấn dữ liệu:', err);
+            return res.status(500).send('Lỗi cơ sở dữ liệu');
+        }
+        res.render('statistic', { revenueproduct: result.rows });
+    });
+}
 
 
     // [GET] /delete

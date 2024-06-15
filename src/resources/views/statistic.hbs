@@ -309,12 +309,12 @@
         </div>
     </div>
 </div>
-{{!-- Search supplier's revenue --}}
-{{!-- <div class='container mt-1 my-3'>
+{{!-- Store statistic --}}
+<div class='container mt-1 my-3'>
     <div class='row d-flex justify-content-center'>
         <div class='col-12'>
             <div class='row p-2 border rounded border border-warning-subtle bg-dark-subtle'> 
-				<h5><strong>Tri ân khách hàng</strong></h5>
+				<h5><strong>Thống kê thu nhập</strong></h5>
 				<form method='POST' action='/statistic'>
 					<div class="d-flex flex-row mb-3">
 						<div class="p-2">
@@ -327,26 +327,16 @@
 								<input 
 									type="date" 
 									class="form-control" 
-									name="begin_date"
-									value='{{daysAgo 30 'YYYY-MM-DD'}}'
+									name="store_begin_date"
+									value='{{daysAgo 365 'YYYY-MM-DD'}}'
 								>
 								<span class="input-group-text">-</span>
 								<input 
 									type="date" 
 									class="form-control" 
-									name="end_date" 
+									name="store_end_date" 
 									value="{{daysAgo -1 'YYYY-MM-DD'}}"
 								>
-							</div>
-						</div>
-						<div class="p-2">
-							<div class="input-group input-group-sm mb-3">
-								<span class="input-group-text" id="basic-addon1">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-										<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-									</svg>
-								</span>
-								<input type="number" class="form-control" style="max-width:70px" name="number" value="5">
 							</div>
 						</div>
 						<div class="p-2">
@@ -359,8 +349,181 @@
 						</div>
 					</div>
 				</form>
-			
+				{{#if storeStatistic}}
+				<table class='table table-hover text-center  align-middle'>
+					<thead class="text-center text-uppercase">
+						<tr>
+								<th>Tháng</th>
+								<th>Quý</th>
+								<th>Năm</th>
+								<th>Total cost</th>
+								<th>Total revenue</th>
+								<th>Total profit</th>
+						</tr>
+					</thead>
+
+					<tbody class="table-group-divider">
+						{{#each storeStatistic}}
+						<tr>
+							{{#each this}}
+								<td>{{this}}</td>
+							{{/each}}
+						</tr>
+						{{/each}}
+					</tbody>   
+            	</table>
+				{{/if}}
             </div>
         </div>
     </div>
-</div> --}}
+</div>
+{{!-- Search supplier's base_price and revenue --}}
+<div class='container mt-1 my-3'>
+    <div class='row d-flex justify-content-center'>
+        <div class='col-12'>
+            <div class='row p-2 border rounded border border-warning-subtle bg-dark-subtle'> 
+				<h5><strong>Nhà sản xuất</strong></h5>
+				<div class="row">
+					<div class="col-6">
+						<h6><strong>Tổng tiền nhập hàng từ nhà sản xuất:</strong></h6>
+						<form method='POST' action='/basepricesupplier'>  
+							<div class='input-group' style='max-width: 250px'>
+								<input name='importsupplier' class='form-control border-primary' list="supplierOptions" id="supplier-input" placeholder="Nhà sản xuất">
+								<datalist id="supplierOptions"></datalist>
+								<button class='btn btn-outline-primary' type='submit'>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+									</svg>
+								</button>
+							</div>
+						</form>
+						<div class='mt-4'>
+							<table class='table table-hover  align-middle'>
+								<thead class="text-center">
+									<tr>
+										{{#each basepricesupplier.[0]}}
+											<th>{{@key}}</th>
+										{{/each}}
+									</tr>
+								</thead>
+
+								<tbody class="table-group-divider">
+									{{#each basepricesupplier}}
+										<tr>
+											{{#each this}}
+												<td>{{this}}</td>
+											{{/each}}
+										</tr>
+									{{/each}}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-6 border-start">
+						<h6><strong>Tổng doanh thu từ nhà sản xuất:</strong></h6>
+						<form method='POST' action='/revenuesupplier'>  
+							<div class='input-group' style='max-width: 250px'>
+								<input name='supplier' class='form-control border-primary' list="supplierOptions" id="supplier-input" placeholder="Nhà sản xuất">
+								<datalist id="supplierOptions"></datalist>
+								<button class='btn btn-outline-primary' type='submit'>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+									</svg>
+								</button>
+							</div>
+						</form>
+						<div class='mt-4'>
+							<table class='table table-hover  align-middle'>
+								<thead class="text-center">
+									<tr>
+										{{#each revenuesupplier.[0]}}
+											<th>{{@key}}</th>
+										{{/each}}
+									</tr>
+								</thead>
+
+								<tbody class="table-group-divider">
+									{{#each revenuesupplier}}
+										<tr>
+											{{#each this}}
+												<td>{{this}}</td>
+											{{/each}}
+										</tr>
+									{{/each}}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Search product's revenue --}}
+<div class='container mt-1 my-3'>
+    <div class='row d-flex justify-content-center'>
+        <div class='col-12'>
+            <div class='row p-2 border rounded border border-warning-subtle bg-dark-subtle'> 
+				<h5><strong>Sản phẩm</strong></h5>
+				<form method='POST' action='/revenueproduct'>  
+					<div class='input-group' style='max-width: 350px'>
+					<input
+						type='text'
+						name='product'
+						class='form-control border-primary'
+						placeholder="Tên sản phẩm"
+					/>
+					<button class='btn btn-outline-primary' type='submit'>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+							<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+						</svg>
+					</button>
+					</div>
+				</form>
+				<div class='mt-4'>
+					<table class='table table-hover  align-middle'>
+						<thead class="text-center">
+							<tr>
+								{{#each revenueproduct.[0]}}
+									<th>{{@key}}</th>
+								{{/each}}
+							</tr>
+						</thead>
+
+						<tbody class="table-group-divider">
+							{{#each revenueproduct}}
+								<tr>
+									{{#each this}}
+										<td>{{this}}</td>
+									{{/each}}
+								</tr>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy danh sách nhà sản xuất
+        fetch('/getsupplier')
+        .then(response => response.json())
+        .then(data => {
+            const supplierDatalist = document.getElementById('supplierOptions');
+            supplierDatalist.innerHTML = ''; 
+            data.forEach(supplier => {
+                const option = document.createElement('option');
+                option.value = supplier.name;
+                supplierDatalist.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Lỗi khi lấy danh sách nhà sản xuất:', error));
+	});
+</script>
