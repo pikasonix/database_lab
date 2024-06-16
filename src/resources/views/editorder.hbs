@@ -64,7 +64,38 @@
                                         disabled
                                     />
                                 </div>
-                                <div class='col mb-3'>
+                                <div class='col-4 mb-3'>
+                                    <label for='status_paymentSelect' class='form-label'>Trạng thái thanh toán:</label>
+                                    <select id="status_paymentSelect" name="status_payment" class="form-select" disabled>
+                                        <option value = 0 {{#eq this.status_payment 0}}selected{{/eq}}>
+                                            Chưa thanh toán
+                                        </option>
+                                        <option value=1 {{#eq this.status_payment 1}}selected{{/eq}}>
+                                            Đã thanh toán
+                                        </option>
+                                        <option value=2 {{#eq this.status_payment 2}}selected{{/eq}}>
+                                            Huỷ thanh toán
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class='col-4 mb-3'>
+                                    <label for='status_shipmentSelect' class='form-label'>Trạng thái giao hàng:</label>
+                                    <select id="status_shipmentSelect" name="status_shipment" class="form-select" disabled>
+                                        <option value =0 {{#eq this.status_shipment 0}}selected{{/eq}}>
+                                            Đang xử lý
+                                        </option>
+                                        <option value=1 {{#eq this.status_shipment 1}}selected{{/eq}}>
+                                            Đang giao hàng
+                                        </option>
+                                        <option value=2 {{#eq this.status_shipment 2}}selected{{/eq}}>
+                                            Đã giao hàng
+                                        </option>
+                                        <option value=3 {{#eq this.status_shipment 3}}selected{{/eq}}>
+                                            Huỷ giao hàng
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class='col-12 mb-3'>
                                     <label for='address-input' class='form-label'>Địa chỉ:</label>
                                     <input
                                         type='text'

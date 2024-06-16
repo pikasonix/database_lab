@@ -74,7 +74,6 @@
                                     <td>{{fullOrder.[0].amount}}đ</td>
                                     <td>{{fullOrder.[0].address}}</td>
                                     <td>
-                                        <small>
                                         <select id="status_paymentSelect" name="status_payment" class="form-select form-select-sm">
                                             <option value = 0 {{#eq fullOrder.[0].status_payment 0}}selected{{/eq}}>
                                                 Chưa thanh toán
@@ -86,7 +85,6 @@
                                                 Huỷ thanh toán
                                             </option>
                                         </select>
-                                        </small>
                                     </td>
                                     <td>
                                         <select id="status_shipmentSelect" name="status_shipment" class="form-select form-select-sm">

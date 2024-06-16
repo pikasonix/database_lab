@@ -347,12 +347,14 @@
     <div id="collapseTwo" class="accordion-collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
             <div class='table-responsive mt-4'>
-                <table class='table table-hover align-middle'>
-                    <thead class="text-center">
+                <small>
+                <table class='table table-hover text-center align-middle table-responsive'>
+                    <thead class="text-center text-uppercase">
                         <tr>
                             {{#each allProduct.[0]}}
                                 <th>{{@key}}</th>
                             {{/each}}
+                                <th>Action</th>
                         </tr>
                     </thead>
 
@@ -368,14 +370,21 @@
                                 <td>{{this.base_price}}</td>
                                 <td>{{this.discount}}</td>
                                 <td>{{this.quantity}}</td>
-                                <td>Mô tả</td>
+                                {{!-- <td>Mô tả</td> --}}
                                 <td><a href="{{this.image}}">Link</a></td>
                                 <td>{{moment this.created_at format='DD/MM/YYYY HH:mm:ss'}}</td>
                                 <td>{{moment this.updated_at format='DD/MM/YYYY HH:mm:ss'}}</td>
+                                <td>
+                                    <div class="d-grid gap-2">
+                                        <a href="/editproduct/{{this.id}}" type="button" class="btn btn-primary btn-sm">Edit</a> 
+                                        <a href="/deleteproduct/{{this.id}}" type="button" class="btn btn-danger btn-sm">Delete</a> 
+                                    </div>
+                                </td>
                             </tr>
                         {{/each}}
-                    </tbody>
+                    </tbody>   
                 </table>
+                </small>
             </div>
         </div>
     </div>

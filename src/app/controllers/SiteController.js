@@ -45,7 +45,6 @@ class SiteController {
             });
         } else if (searchType === 'products') {
             // Tìm product theo id
-            console.log("AAAA");
             pool.query('SELECT id FROM products WHERE id = $1', [navbarsearch], (err, result) => {
                 if (err) {
                     console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -58,7 +57,6 @@ class SiteController {
                 } else {
                     return res.status(404).send('Product not found');
                 }
-                console.log(productId)
             });
         } else if (searchType === 'orders') {
             // Tìm order theo id
@@ -185,7 +183,10 @@ class SiteController {
 // =================== Phần xử lý products ====================
     // [GET] product
     product(req, res) {
-        pool.query('SELECT * FROM products ORDER BY id DESC', (err, result) => {
+        pool.query(`
+            SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,base_price::money::numeric::float8,discount,quantity,image,created_at,updated_at
+            FROM products ORDER BY id DESC`
+            , (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -399,7 +400,10 @@ class SiteController {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            pool.query('SELECT * FROM products WHERE supplier_id = $1', [req.params.id], (err, resultSearch) => {
+            pool.query(`
+                SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,base_price::money::numeric::float8,discount,quantity,description,image,created_at,updated_at
+                FROM products 
+                WHERE supplier_id = $1`, [req.params.id], (err, resultSearch) => {
                 if (err) {
                     console.error('Lỗi SELECT * FROM products WHERE supplier_id = $1', err);
                     return res.status(500).send('Lỗi cơ sở dữ liệu 2');
@@ -421,7 +425,10 @@ class SiteController {
 // =================== Phần xử lý orders ====================
  // [GET] order
 order(req, res) {
-    pool.query('SELECT * FROM orders ORDER BY id DESC', (err, result) => {
+    pool.query(`
+        SELECT id, customer_id, product_id, address, quantity, amount::money::numeric::float8, status_payment, status_shipment, created_at 
+        FROM orders 
+        ORDER BY id DESC`, (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -456,7 +463,7 @@ searchorder(req, res, next) {
     const search_created_at = req.body.search_created_at || null;
 
     const query = `
-        SELECT o.id, o.customer_id, o.product_id, o.address, o.quantity, o.amount, o.status_payment, o.status_shipment, o.created_at
+        SELECT o.id, o.customer_id, o.product_id, o.address, o.quantity, o.amount::money::numeric::float8, o.status_payment, o.status_shipment, o.created_at
         FROM orders o JOIN customers c ON o.customer_id = c.id
         WHERE (COALESCE($1, o.id) = o.id)
         AND (COALESCE($2, c.phone) = c.phone) 
@@ -530,7 +537,9 @@ manageorder(req, res, next) {
 }
 // Edit order
 editorder(req, res) {
-    pool.query('SELECT * FROM orders WHERE id = $1', [req.params.id], (err, result) => {
+    pool.query(`
+        SELECT id, customer_id, product_id, address, quantity, amount::money::numeric::float8, status_payment, status_shipment, created_at 
+        FROM orders WHERE id = $1`, [req.params.id], (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -587,12 +596,16 @@ paidorder(req, res, next) {
 
 statistic(req, res) {
     const { begin_date, end_date, number, store_begin_date, store_end_date } = req.body;
-    pool.query('SELECT * FROM get_top_customers($1, $2, $3);', [begin_date, end_date, number], (err, topCustomers) => {
+    pool.query(`
+        SELECT rank_by_spend,customer_id,customer_name,customer_email,customer_phone,total_spend::money::numeric::float8
+        FROM get_top_customers($1, $2, $3);`, [begin_date, end_date, number], (err, topCustomers) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        pool.query('SELECT * FROM get_store_revenue($1, $2);', [store_begin_date, store_end_date], (err, storeStatistic) => {
+        pool.query(`
+            SELECT month,quarter,year, total_cost::money::numeric::float8, total_revenue::money::numeric::float8, total_profit::money::numeric::float8
+            FROM get_store_revenue($1, $2);`, [store_begin_date, store_end_date], (err, storeStatistic) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -603,7 +616,7 @@ statistic(req, res) {
 }
 
 bestselling(req, res) {
-    pool.query('SELECT * FROM get_best_selling_product();', (err, result) => {
+    pool.query(`SELECT * FROM get_best_selling_product();`, (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -614,7 +627,9 @@ bestselling(req, res) {
 
 revenuesupplier(req, res) {
     const { supplier } = req.body;
-    pool.query('SELECT * FROM get_revenue_supplier($1);',[supplier], (err, result) => {
+    pool.query(`
+        SELECT supplier_name AS name ,total_revenue::money::numeric::float8
+        FROM get_revenue_supplier($1);`,[supplier], (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -625,7 +640,9 @@ revenuesupplier(req, res) {
 
 basepricesupplier(req, res) {
     const { importsupplier } = req.body;
-    pool.query('SELECT * FROM get_total_base_price_by_supplier($1);',[importsupplier], (err, result) => {
+    pool.query(`
+        SELECT name,total_base_price::money::numeric::float8
+        FROM get_total_base_price_by_supplier($1);`,[importsupplier], (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -636,7 +653,9 @@ basepricesupplier(req, res) {
 
 revenueproduct(req, res) {
     const { product } = req.body;
-    pool.query('SELECT get_product_profit($1);',[product], (err, result) => {
+    pool.query(`
+        SELECT get_product_profit::money::numeric::float8 
+        FROM get_product_profit($1);`,[product], (err, result) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
@@ -644,7 +663,6 @@ revenueproduct(req, res) {
         res.render('statistic', { revenueproduct: result.rows });
     });
 }
-
 
     // [GET] /delete
     test(req, res) {
@@ -656,7 +674,6 @@ revenueproduct(req, res) {
             res.render('test', { test: result.rows });
         });
     }
-
     // [GET] /search
     search(req, res) {
         res.render('search');
