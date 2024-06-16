@@ -3,23 +3,25 @@
         <a class='navbar-brand' style="width: 72px">Pix</a>
 
         {{! search bar }}
-        <div class='navbar-nav mx-auto' style='width: 50%'>
-            <div class='input-group'>
-                <select class='form-select' style='max-width: 150px'>
-                    <option selected>Users</option>
-                    <option value='1'>Products</option>
-                    <option value='2'>Orders</option>
-                </select>
-                <input
-                    type='text'
-                    class='form-control'
-                    aria-label='Text input with dropdown button'
-                />
-                <button
-                    class='btn btn-outline-success'
-                    type='submit'
-                >Search</button>
-            </div>
+        <div class='navbar-nav mx-auto'>
+            <form method='POST' action='/navbarsearch'> 
+                <div class='input-group' style='min-width: 550px'>
+                    <select class='form-select border border-primary' name='searchType' style='max-width: 150px'>
+                        <option value='customers' selected>customers</option>
+                        <option value='products'>products</option>
+                        <option value='orders'>orders</option>
+                    </select>
+                    <input
+                        type='text'
+                        class='form-control border border-primary'
+                        name='navbarsearch'
+                    />
+                    <button
+                        class='btn btn-outline-primary'
+                        type='submit'
+                    >Search</button>
+                </div>
+            </form>
         </div>
 
         <a href="/manageorder" class="btn btn-outline-primary btn-sm" role="button">

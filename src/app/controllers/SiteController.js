@@ -26,6 +26,59 @@ class SiteController {
             });
         });
     }
+    navbarsearch(req, res) {
+        const { searchType, navbarsearch } = req.body;
+        console.log({ searchType, navbarsearch });
+        if (searchType === 'customers') {
+            // Tìm customer theo name
+            pool.query('SELECT id FROM customers WHERE name = $1', [navbarsearch], (err, result) => {
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                if (result.rows.length > 0) {
+                    const customerId = result.rows[0].id;
+                    return res.redirect(`/editcustomer/${customerId}`);
+                } else {
+                    return res.status(404).send('Customer not found');
+                }
+            });
+        } else if (searchType === 'products') {
+            // Tìm product theo id
+            console.log("AAAA");
+            pool.query('SELECT id FROM products WHERE id = $1', [navbarsearch], (err, result) => {
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                if (result.rows.length > 0) {
+                    const productId = result.rows[0].id;
+                    console.log(productId);
+                    return res.redirect(`/editproduct/${productId}`);
+                } else {
+                    return res.status(404).send('Product not found');
+                }
+                console.log(productId)
+            });
+        } else if (searchType === 'orders') {
+            // Tìm order theo id
+            pool.query('SELECT id FROM orders WHERE id = $1', [navbarsearch], (err, result) => {
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                if (result.rows.length > 0) {
+                    const orderId = result.rows[0].id;
+                    return res.redirect(`/editorder/${orderId}`);
+                } else {
+                    return res.status(404).send('Order not found');
+                }
+            });
+        } else {
+            return res.status(400).send('Invalid search type');
+        }               
+    }
+
 // =================== Phần xử lý customers ====================
     // [GET] /customer
     customer(req, res) {

@@ -4,6 +4,7 @@ const router = express.Router();
 const siteController = require('../app/controllers/SiteController');
 
 
+router.post('/navbarsearch', siteController.navbarsearch);
 router.get('/search', siteController.search);
 
 router.use('/customer', siteController.customer);
