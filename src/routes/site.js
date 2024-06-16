@@ -3,6 +3,7 @@ const router = express.Router();
 
 const siteController = require('../app/controllers/SiteController');
 
+
 router.get('/search', siteController.search);
 
 router.use('/customer', siteController.customer);
@@ -48,6 +49,7 @@ router.use('/revenueproduct', siteController.revenueproduct)
 
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);
+
 
 router.get('/test', siteController.test);
 router.use('/', siteController.index);

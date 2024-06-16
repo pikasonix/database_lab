@@ -16,3 +16,15 @@
 .offcanvas-bottom.custom-height {
   height: 50vh;
   max-height: 50vh; }
+
+.border-start-custom-blue {
+  border-left: 5px solid #007bff; }
+
+.border-start-custom-yellow {
+  border-left: 5px solid #ffc107; }
+
+.border-start-custom-green {
+  border-left: 5px solid #198754; }
+
+.border-start-custom-red {
+  border-left: 5px solid #dc3545; }

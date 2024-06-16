@@ -15,7 +15,13 @@ class SiteController {
         pool.query('SELECT * FROM customers', (err, customers) => {
             pool.query('SELECT * FROM products', (err, products) => {
                 pool.query('SELECT * FROM suppliers', (err, suppliers) => {
-                    res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows });
+                    pool.query('SELECT COUNT(*) FROM customers', (err, countcustomer) => {
+                        pool.query('SELECT COUNT(*) FROM products', (err, countproduct) => {
+                            pool.query('SELECT COUNT(*) FROM orders', (err, countorder) => {
+                                res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows, countcustomer: countcustomer.rows, countproduct: countproduct.rows, countorder: countorder.rows });
+                            });
+                        });
+                    });
                 });
             });
         });
