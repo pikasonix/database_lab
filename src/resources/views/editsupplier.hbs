@@ -5,7 +5,7 @@
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class='mt-4'>
-                    <form method='POST' action='/updatesupplier/{{this.id}}'>
+                    <form class="needs-validation" method='POST' action='/updatesupplier/{{this.id}}' novalidate>
                         <div class="row">
                             <div class='col-9'>
                                 <div class="row">
@@ -28,7 +28,11 @@
                                             class='form-control'
                                             id='name-input'
                                             value = '{{this.name}}'
+                                            required
                                         />
+                                        <div class="invalid-feedback">
+                                            Hãy nhập tên nhà sản xuất
+                                        </div>
                                     </div>
                                     <div class='col-6 mb-3'>
                                         <label for='address-input' class='form-label'>Địa chỉ:</label>
@@ -70,3 +74,21 @@
         </div>
     {{/each}}
 </div>
+
+<script>
+    (function() {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

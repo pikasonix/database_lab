@@ -32,7 +32,7 @@ router.use('/deletesupplier/:id', siteController.deletesupplier); // hiển th�
 router.use('/removesupplier/:id', siteController.removesupplier); // xoá supplier
 
 router.use('/order', siteController.order);
-router.use('/searchorder', siteController.searchorder);
+router.use('/searchorder', siteController.searchorder.bind(siteController));
 router.use('/addorder', siteController.addorder);
 router.use('/manageorder',siteController.manageorder);
 router.use('/searchorderid',siteController.searchorderid);
@@ -43,10 +43,10 @@ router.post('/refundorder/:id', siteController.refundorder.bind(siteController))
 router.post('/paidorder/:id', siteController.paidorder.bind(siteController));
 
 router.use('/statistic', siteController.statistic);
-router.get('/bestselling', siteController.bestselling)
-router.use('/basepricesupplier', siteController.basepricesupplier)
-router.use('/revenuesupplier', siteController.revenuesupplier)
-router.use('/revenueproduct', siteController.revenueproduct)
+router.get('/bestselling', siteController.bestselling);
+router.post('/basepricesupplier', siteController.basepricesupplier);
+router.post('/revenuesupplier', siteController.revenuesupplier);
+router.post('/revenueproduct', siteController.revenueproduct);
 
 router.get('/getcatalog', siteController.getcatalog);
 router.get('/getsupplier', siteController.getsupplier);

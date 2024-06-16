@@ -48,7 +48,9 @@
                                         name='mgf'
                                         class='form-control'
                                         id='mgf-input'
-                                        value = '{{moment this.mgf format='YYYY-MM-DD'}}'
+                                        {{#if this.mgf}}
+                                           value = '{{moment this.mgf format='YYYY-MM-DD'}}'
+                                        {{/if}}
                                         disabled
                                     />
                                 </div>
@@ -67,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='price-input' class='form-label'>Giá gốc:</label>
+                                    <label for='price-input' class='form-label'>Giá bán:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
                                             type='text'

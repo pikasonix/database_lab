@@ -5,7 +5,7 @@
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class='mt-4'>
-                    <form method='POST' action='/updateproduct/{{this.id}}'>
+                    <form class="needs-validation" method='POST' action='/updateproduct/{{this.id}}' novalidate>
                         <div class="row">
                             <div class='col-9'>
                                 <div class="row">
@@ -28,7 +28,11 @@
                                             class='form-control'
                                             id='name-input'
                                             value = '{{this.name}}'
+                                            required
                                         />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập tên sản phẩm
+                                        </div>
                                     </div>
                                     <div class='col-3 mb-3'>
                                         <label for='catalog-input' class='form-label'>Loại sản phẩm:</label>
@@ -36,9 +40,11 @@
                                         <datalist id="catalogOptions"></datalist>
                                     </div>
                                     <div class="col-3">
-                                        <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                        <input name='supplier' value = '{{this.supplier_id}}' class="form-control" list="supplierOptions" id="supplier-input" placeholder="Samsung">
-                                        <datalist id="supplierOptions"></datalist>
+                                        <label for='supplier-input' class='form-label active'>ID nhà sản xuất:</label>
+                                        <input name='supplier' value = '{{this.supplier_id}}' class="form-control" id="supplier-input" required>
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập ID nhà sản xuất
+                                        </div>
                                     </div>
                                     <div class='col-3 mb-3'>
                                         <label for='mgf-input' class='form-label'>Ngày sản xuất:</label>
@@ -47,7 +53,9 @@
                                             name='mgf'
                                             class='form-control'
                                             id='mgf-input'
+                                            {{#if this.mgf}}
                                             value = '{{moment this.mgf format='YYYY-MM-DD'}}'
+                                            {{/if}}
                                         />
                                     </div>
                                     <div class='col-3 mb-3'>
@@ -59,12 +67,13 @@
                                                 class='form-control'
                                                 id='base_price-input'
                                                 value = {{this.base_price}}
+                                                required
                                             />
                                             <span class="input-group-text" id="addon-wrapping">đ</span>
                                         </div>
                                     </div>
                                     <div class='col-3 mb-3'>
-                                        <label for='price-input' class='form-label'>Giá gốc:</label>
+                                        <label for='price-input' class='form-label'>Giá bán:</label>
                                         <div class="input-group flex-nowrap">   
                                             <input
                                                 type='text'
@@ -72,6 +81,7 @@
                                                 class='form-control'
                                                 id='price-input'
                                                 value = {{this.price}}
+                                                required
                                             />
                                             <span class="input-group-text" id="addon-wrapping">đ</span>
                                         </div>
@@ -86,6 +96,7 @@
                                                 id='discount-input'
                                                 placeholder='10'
                                                 value = {{this.discount}}
+                                                required
                                             />
                                             <span class="input-group-text" id="addon-wrapping">%</span>
                                         </div>
@@ -98,7 +109,11 @@
                                             class='form-control'
                                             id='quantity-input'
                                             value = {{this.quantity}}
+                                            required
                                         />
+                                        <div class="invalid-feedback">
+                                            Vui lòng nhập số lượng sản phẩm
+                                        </div>
                                     </div>
                                     <div class='col-8 mb-3'>
                                         <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
@@ -141,3 +156,21 @@
         </div>
     {{/each}}
 </div>
+
+<script>
+    (function() {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

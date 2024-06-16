@@ -26,13 +26,14 @@
                                         name='update_age'
                                         class='form-control'
                                         id='age-input'
-                                        value = {{customerinfo.[0].age}}
+                                        value = '{{customerinfo.[0].age}}'
                                         disabled
                                     />
                                 </div>
                                 <div class='col-4 mb-3'>
                                     <label for='genderSelect' class='form-label'>Giới tính:</label>
-                                    <select id="genderSelect" name="update_gender" value = {{customerinfo.[0].gender}} class="form-select" disabled>
+                                    <select id="genderSelect" name="update_gender" value = '{{customerinfo.[0].gender}}' class="form-select" disabled>
+                                        <option value=""></option>
                                         <option value="Nam">Nam</option>
                                         <option value="Nữ">Nữ</option>
                                         <option value="Khác">Khác</option>

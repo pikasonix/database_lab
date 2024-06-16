@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='search_price-input' class='form-label'>Giá gốc:</label>
+                                    <label for='search_price-input' class='form-label'>Giá bán:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
                                             type='number'
@@ -160,7 +160,7 @@
                                     <td>{{this.name}}</td>
                                     <td>{{this.catalog}}</td>
                                     <td>{{this.supplier_id}}</td>
-                                    <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                    <td>{{#if this.mgf}}{{moment this.mgf format='DD/MM/YYYY'}}{{/if}}</td>
                                     <td>{{this.price}}</td>
                                     <td>{{this.base_price}}</td>
                                     <td>{{this.discount}}</td>
@@ -198,7 +198,7 @@
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class='mt-4'>
-                    <form method='POST' action='/addproduct'>
+                    <form class="needs-validation" method='POST' action='/addproduct' novalidate>
                     <div class="row">
                         <div class='col-9'>
                             <div class="row">
@@ -220,7 +220,11 @@
                                         class='form-control'
                                         id='name-input'
                                         placeholder='Samsung S24'
+                                        required
                                     />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập tên sản phẩm
+                                    </div>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='catalog-input' class='form-label'>Loại sản phẩm:</label>
@@ -229,8 +233,11 @@
                                 </div>
                                 <div class="col-3">
                                     <label for='supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                                    <input name='supplier' class="form-control" list="supplierOptions" id="supplier-input" placeholder="Samsung">
+                                    <input name='supplier' class="form-control" list="supplierOptions" id="supplier-input" placeholder="Samsung" required>
                                     <datalist id="supplierOptions"></datalist>
+                                    <div class="invalid-feedback">
+                                        Hãy nhập tên nhà sản xuất
+                                    </div>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='mgf-input' class='form-label'>Ngày sản xuất:</label>
@@ -251,12 +258,13 @@
                                             class='form-control'
                                             id='base_price-input'
                                             placeholder='23000000'
+                                            required
                                         />
                                         <span class="input-group-text" id="addon-wrapping">đ</span>
                                     </div>
                                 </div>
                                 <div class='col-3 mb-3'>
-                                    <label for='price-input' class='form-label'>Giá gốc:</label>
+                                    <label for='price-input' class='form-label'>Giá bán:</label>
                                     <div class="input-group flex-nowrap">   
                                         <input
                                             type='number'
@@ -264,6 +272,7 @@
                                             class='form-control'
                                             id='price-input'
                                             placeholder='23000000'
+                                            required
                                         />
                                         <span class="input-group-text" id="addon-wrapping">đ</span>
                                     </div>
@@ -276,7 +285,7 @@
                                             name='discount'
                                             class='form-control'
                                             id='discount-input'
-                                            placeholder='10'
+                                            value='0'
                                         />
                                         <span class="input-group-text" id="addon-wrapping">%</span>
                                     </div>
@@ -289,7 +298,11 @@
                                         class='form-control'
                                         id='quantity-input'
                                         value='1'
+                                        required
                                     />
+                                    <div class="invalid-feedback">
+                                        Vui lòng nhập số lượng sản phẩm
+                                    </div>
                                 </div>
                                 <div class='col-8 mb-3'>
                                     <label for='image-input' class='form-label'>Link hình ảnh sản phẩm:</label>
@@ -365,7 +378,7 @@
                                 <td>{{this.name}}</td>
                                 <td>{{this.catalog}}</td>
                                 <td>{{this.supplier_id}}</td>
-                                <td>{{moment this.mgf format='DD/MM/YYYY'}}</td>
+                                <td>{{#if this.mgf}}{{moment this.mgf format='DD/MM/YYYY'}}{{/if}}</td>
                                 <td>{{this.price}}</td>
                                 <td>{{this.base_price}}</td>
                                 <td>{{this.discount}}</td>
@@ -423,5 +436,21 @@
     });
 </script>
 
+<script>
+    (function() {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
 
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
 

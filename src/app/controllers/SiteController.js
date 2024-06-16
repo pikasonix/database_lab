@@ -90,9 +90,9 @@ class SiteController {
     }
     // [POST] /add
     addcustomer(req, res) {
-        const gender = req.body.gender !== 'Giới tính' ? req.body.gender : null;
-        const { name, age, email, phone } = req.body;
-
+        const gender = req.body.gender !== '' ? req.body.gender : null;
+        const age = req.body.age !== '' ? parseInt(req.body.age) : null;
+        const { name, email, phone } = req.body;
         pool.query(
             'INSERT INTO customers (name, age, gender, email, phone) VALUES ($1, $2, $3, $4, $5)',
             [name, age, gender, email, phone],
@@ -101,28 +101,28 @@ class SiteController {
                     console.error('Lỗi khi chèn dữ liệu:', err);
                     return res.status(500).send('Lỗi cơ sở dữ liệu r');
                 }
-                res.redirect('/customer'); // Điều hướng đến trang /customer sau khi thêm khách hàng
+                res.redirect('/customer'); 
             }
         );
     }
     // [POST] /search customer
     searchcustomer(req, res, next) {
         const search_name = req.body.search_name || null;
-        const search_age = req.body.search_age !== '' ? parseInt(req.body.search_age) : null;
-        const search_gender = req.body.search_gender !== 'Giới tính' ? req.body.search_gender : null;
+        const search_age = req.body.search_age !== '' ? req.body.search_age : null;
+        const search_gender = req.body.search_gender !== '' ? req.body.search_gender : null;
         const search_email = req.body.search_email || null;
         const search_phone = req.body.search_phone || null;
 
         const query = `
             SELECT * FROM customers 
-            WHERE (COALESCE($1, name) = name) 
-            AND (COALESCE($2::INTEGER, age) = age) 
-            AND (COALESCE($3, gender) = gender) 
-            AND (COALESCE($4, email) = email) 
-            AND (COALESCE($5, phone) = phone)
+            WHERE (COALESCE($1, name) = name OR $1 IS NULL) 
+            AND (COALESCE($2, age) = age OR $2 IS NULL) 
+            AND (COALESCE($3, gender) = gender OR $3 IS NULL) 
+            AND (COALESCE($4, email) = email OR $4 IS NULL) 
+            AND (COALESCE($5, phone) = phone OR $5 IS NULL)
         `;
         const values = [search_name, search_age, search_gender, search_email, search_phone];
-    
+
         pool.query(query, values, (err, result) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
@@ -142,7 +142,9 @@ class SiteController {
         });
     }
     updatecustomer(req, res) {
-        const { update_name, update_age, update_gender, update_email, update_phone } = req.body;
+        const update_gender = req.body.update_gender !== '' ? req.body.update_gender : null;
+        const update_age = req.body.update_age !== '' ? parseInt(req.body.update_age) : null;
+        const { update_name, update_email, update_phone } = req.body;
         pool.query('UPDATE customers SET name = $1, age = $2, gender = $3, email = $4, phone = $5 WHERE id = $6', [update_name, update_age, update_gender, update_email, update_phone, req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi update dữ liệu:', err);
@@ -182,7 +184,7 @@ class SiteController {
     }
 // =================== Phần xử lý products ====================
     // [GET] product
-    product(req, res) {
+    product(req, res, next) {
         pool.query(`
             SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,base_price::money::numeric::float8,discount,quantity,image,created_at,updated_at
             FROM products ORDER BY id DESC`
@@ -216,7 +218,15 @@ class SiteController {
     }
     // Add product
     addproduct(req, res, next) {
-        const { name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image } = req.body;
+        const catalog = req.body.catalog !== '' ? req.body.catalog : null;
+        const mgf = req.body.mgf !== '' ? req.body.mgf : null;
+        const description = req.body.description !== '' ? req.body.description : null;
+        const image = req.body.image !== '' ? req.body.image : null;
+        const discount = req.body.discount !== '' ? req.body.discount : null;
+        const { name, supplier, base_price, price, quantity } = req.body;
+        console.log({
+            name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image
+        });
         pool.query(
             'SELECT update_data_products($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);'
             , [name, catalog, mgf, supplier, price, base_price, discount, quantity, description, image],
@@ -231,32 +241,34 @@ class SiteController {
     }
     // Search product
     searchproduct(req, res, next) {
-        const search_id = req.body.search_id || null;
-        const search_name = req.body.search_name || null;
-        const search_catalog = req.body.search_catalog || null;
-        const search_supplier = req.body.search_supplier || null;
-        const search_mgf = req.body.search_mgf || null;
-        const search_base_price = req.body.search_base_price || null;
-        const search_price = req.body.search_price || null;
-        const search_discount = req.body.search_discount || null;
-        const search_quantity = req.body.search_quantity || null;
-        const search_created_at = req.body.search_created_at || null;
-        const search_updated_at = req.body.search_updated_at || null;
+        const catalog = req.body.catalog !== '' ? req.body.catalog : null;
+        const search_id = req.body.search_id !== '' ? req.body.search_id : null;
+        const search_name = req.body.search_name !== '' ? req.body.search_name : null;
+        const search_catalog = req.body.search_catalog !== '' ? req.body.search_catalog : null;
+        const search_supplier = req.body.search_supplier !== '' ? req.body.search_supplier : null;
+        const search_mgf = req.body.search_mgf !== '' ? req.body.search_mgf : null;
+        const search_base_price = req.body.search_base_price !== '' ? req.body.search_base_price : null;
+        const search_price = req.body.search_price !== '' ? req.body.search_price : null;
+        const search_discount = req.body.search_discount !== '' ? req.body.search_discount : null;
+        const search_quantity = req.body.search_quantity !== '' ? req.body.search_quantity : null;
+        const search_created_at = req.body.search_created_at !== '' ? req.body.search_created_at : null;
+        const search_updated_at = req.body.search_updated_at !== '' ? req.body.search_updated_at : null;
     
         const query = `
             SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price::money::numeric::float8,p.base_price::money::numeric::float8,p.discount,p.quantity,p.image,p.created_at,p.updated_at
             FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
-            WHERE (COALESCE($1, p.id) = p.id)
-            AND (COALESCE($2, p.name) = p.name) 
-            AND (COALESCE($3, p.catalog) = p.catalog) 
-            AND (COALESCE($4, s.name) = s.name) 
-            AND (COALESCE(DATE($5), DATE(p.mgf)) = DATE(p.mgf))
-            AND (COALESCE($6, p.price) = p.price) 
-            AND (COALESCE($7, p.discount) = p.discount) 
-            AND (COALESCE($8, p.quantity) = p.quantity)
-            AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at))
-            AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at))
-            AND (COALESCE($11, p.base_price) = p.base_price)
+            WHERE (COALESCE($1, p.id) = p.id OR $1 IS NULL)
+            AND (COALESCE($2, p.name) = p.name OR $2 IS NULL) 
+            AND (COALESCE($3, p.catalog) = p.catalog OR $3 IS NULL) 
+            AND (COALESCE($4, s.name) = s.name OR $4 IS NULL) 
+            AND (COALESCE(DATE($5), DATE(p.mgf)) = DATE(p.mgf) OR $5 IS NULL)
+            AND (COALESCE($6, p.price) = p.price OR $6 IS NULL) 
+            AND (COALESCE($7, p.discount) = p.discount OR $7 IS NULL) 
+            AND (COALESCE($8, p.quantity) = p.quantity OR $8 IS NULL)
+            AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at) OR $9 IS NULL)
+            AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at) OR $10 IS NULL)
+            AND (COALESCE($11, p.base_price) = p.base_price OR $11 IS NULL)
+            ORDER BY p.name ASC
         `;
         const values = [search_id, search_name, search_catalog, search_supplier, search_mgf, search_price, search_discount, search_quantity, search_created_at, search_updated_at, search_base_price];
     
@@ -281,8 +293,13 @@ class SiteController {
             res.render('editproduct', { productinfo: result.rows });
         });
     }
-    updateproduct(req, res) {
-        const { name, catalog, supplier, mgf, base_price, price, discount, quantity, description, image } = req.body;
+    updateproduct(req, res, next) {
+        const catalog = req.body.catalog !== '' ? req.body.catalog : null;
+        const mgf = req.body.mgf !== '' ? req.body.mgf : null;
+        const description = req.body.description !== '' ? req.body.description : null;
+        const image = req.body.image !== '' ? req.body.image : null;
+        const discount = req.body.discount !== '' ? req.body.discount : null;
+        const { name, supplier, base_price, price, quantity } = req.body;
         pool.query('UPDATE products SET name = $1, catalog = $2, supplier_id = $3, mgf = $4, price = $5, discount = $6, quantity = $7, description = $8, image = $9, base_price = $10 WHERE id = $11', [name, catalog, supplier, mgf, price, discount, quantity, description, image, base_price, req.params.id], (err, result) => {
             if (err) {
                 console.error('Lỗi khi update dữ liệu:', err);
@@ -473,6 +490,7 @@ searchorder(req, res, next) {
         AND (COALESCE($6, o.status_payment) = o.status_payment) 
         AND (COALESCE($7, o.status_shipment) = o.status_shipment)
         AND (COALESCE(DATE($8), DATE(o.created_at)) = DATE(o.created_at))
+        ORDER BY o.id DESC
     `;
     const values = [search_id, search_phone, search_product_id, search_quantity, search_amount, search_status_payment, search_status_shipment, search_created_at];
 
@@ -603,6 +621,8 @@ statistic(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
+        req.session.topCustomers = topCustomers.rows;
+
         pool.query(`
             SELECT month,quarter,year, total_cost::money::numeric::float8, total_revenue::money::numeric::float8, total_profit::money::numeric::float8
             FROM get_store_revenue($1, $2);`, [store_begin_date, store_end_date], (err, storeStatistic) => {
@@ -610,7 +630,8 @@ statistic(req, res) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            res.render('statistic', { topCustomers: topCustomers.rows, storeStatistic: storeStatistic.rows });
+            req.session.storeStatistic = storeStatistic.rows;
+            res.render('statistic', { ...req.session });
         });
     });
 }
@@ -621,7 +642,8 @@ bestselling(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        res.render('statistic', { bestselling: result.rows });
+        req.session.bestselling = result.rows;
+        res.render('statistic', { ...req.session });
     });
 }
 
@@ -634,7 +656,8 @@ revenuesupplier(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        res.render('statistic', { revenuesupplier: result.rows });
+        req.session.revenuesupplier = result.rows;
+        res.render('statistic', { ...req.session });
     });
 }
 
@@ -647,7 +670,8 @@ basepricesupplier(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        res.render('statistic', { basepricesupplier: result.rows });
+        req.session.basepricesupplier = result.rows;
+        res.render('statistic', { ...req.session });
     });
 }
 
@@ -660,7 +684,8 @@ revenueproduct(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        res.render('statistic', { revenueproduct: result.rows });
+        req.session.revenueproduct = result.rows;
+        res.render('statistic', { ...req.session });
     });
 }
 

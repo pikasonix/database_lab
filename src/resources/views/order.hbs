@@ -204,7 +204,7 @@
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class='mt-4'>
-                    <form method='POST' action='/addorder'>
+                    <form class="needs-validation" method='POST' action='/addorder' novalidate>
                     <div class="row">
                         <div class='col-9'>
                             <div class="row">
@@ -226,7 +226,11 @@
                                         class='form-control'
                                         id='phone-input'
                                         placeholder='0987654321'
+                                        required
                                     />
+                                    <div class="invalid-feedback">
+                                        Hãy nhập số điện thoại khách hàng
+                                    </div>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='product_id-input' class='form-label'>ID sản phẩm:</label>
@@ -236,7 +240,11 @@
                                         class='form-control'
                                         id='product_id-input'
                                         placeholder='123'
+                                        required
                                     />
+                                    <div class="invalid-feedback">
+                                        Hãy nhập ID sản phẩm
+                                    </div>
                                 </div>
                                 <div class='col-3 mb-3'>
                                     <label for='quantity-input' class='form-label'>Số lượng:</label>
@@ -246,13 +254,16 @@
                                         class='form-control'
                                         id='quantity-input'
                                         placeholder='1'
+                                        required
                                     />
+                                    <div class="invalid-feedback">
+                                        Hãy nhập số lượng sản phẩm
+                                    </div>
                                 </div>
                                 <div class='col-4 mb-3'>
                                     <label for='paymentSelect' class='form-label'>Thanh toán:</label>
                                     <select id="paymentSelect" name="status_payment" class="form-select">
-                                        <option selected>Chọn trạng thái</option>
-                                        <option value="0">Chưa thanh toán</option>
+                                        <option value="0" selected>Chưa thanh toán</option>
                                         <option value="1">Đã thanh toán</option>
                                         <option value="2">Huỷ thanh toán</option>
                                     </select>
@@ -264,7 +275,7 @@
                                         name='address'
                                         class='form-control'
                                         id='address-input'
-                                        placeholder='Bách Khoa, Quận Hai Bà Chưng, Hà Nội'
+                                        placeholder='Bách Khoa, Quận Hai Bà Trưng, Hà Nội'
                                     />
                                 </div>
                             </div>
@@ -376,4 +387,20 @@
     </div>
 </div>
 
+<script>
+    (function() {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
 
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
