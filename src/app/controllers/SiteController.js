@@ -363,14 +363,6 @@ class SiteController {
         const search_address = req.body.search_address || null;
         const search_created_at = req.body.search_created_at || null;
         const search_updated_at = req.body.search_updated_at || null;
-        
-        console.log('Search parameters:', {
-            search_id,
-            search_name,
-            search_address,
-            search_created_at,
-            search_updated_at
-        });
 
         const query = `
             SELECT * FROM suppliers 
