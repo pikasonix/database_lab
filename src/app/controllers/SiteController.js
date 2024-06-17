@@ -31,7 +31,7 @@ class SiteController {
         console.log({ searchType, navbarsearch });
         if (searchType === 'customers') {
             // Tìm customer theo name
-            pool.query('SELECT id FROM customers WHERE name = $1', [navbarsearch], (err, result) => {
+            pool.query('SELECT id FROM customers WHERE phone = $1', [navbarsearch], (err, result) => {
                 if (err) {
                     console.error('Lỗi khi truy vấn dữ liệu:', err);
                     return res.status(500).send('Lỗi cơ sở dữ liệu');

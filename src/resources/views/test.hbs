@@ -189,3 +189,40 @@ AND (COALESCE($5, phone) = phone OR $5 IS NULL)
   </div>
 </div>
 
+
+
+
+<!-- Toast Trigger Button -->
+    <button type="button" class="btn btn-success" id="toastTrigger">
+        Show The Toast
+    </button>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast text-bg-success border-0" id="toastAlert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong>Success!</strong>
+                    This is a success toast.
+                </div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast"
+                ></button>
+            </div>
+        </div>
+    </div>
+<script>
+const toastTrigger = document.getElementById('toastTrigger');
+const toastAlert = document.getElementById('toastAlert');
+
+if (toastTrigger) {
+    toastTrigger.addEventListener('click', () => {
+
+        const toast = new bootstrap.Toast(toastAlert);
+        toast.show();
+
+    });
+}
+</script>
