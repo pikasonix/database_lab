@@ -8,7 +8,7 @@ const MomentHandler = require('handlebars.moment');
 MomentHandler.registerHelpers(Handlebars);
 const moment = require('moment'); 
 const path = require('path');
-const session = require('express-session'); // Thêm dòng này để yêu cầu express-session
+const session = require('express-session'); 
 const app = express();
 const port = 2000;
 const route = require('./routes');
@@ -61,3 +61,6 @@ route(app);
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
+
+
+

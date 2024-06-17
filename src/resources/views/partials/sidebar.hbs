@@ -68,9 +68,11 @@
     const pageName = pathName.split("/").pop();
     if(pageName === "") { document.querySelector(".home").classList.add("active"); }
     if(pageName === "search") { document.querySelector(".search").classList.add("active"); }
-    if(pageName === "statistic") { document.querySelector(".statistic").classList.add("active"); }
     if(pathName.includes("customer")) { document.querySelector(".customer").classList.add("active"); }
     if(pathName.includes("product")) { document.querySelector(".product").classList.add("active"); }
     if(pathName.includes("supplier")) { document.querySelector(".supplier").classList.add("active"); }
     if(pathName.includes("order")) { document.querySelector(".order").classList.add("active"); }
+    if(pathName.includes("statistic")) { document.querySelector(".statistic").classList.add("active"); }
+    if(pathName.includes("revenue")) { document.querySelector(".statistic").classList.add("active"); }
+    if(pathName.includes("baseprice")) { document.querySelector(".statistic").classList.add("active"); }
 </script>

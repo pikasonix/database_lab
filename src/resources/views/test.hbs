@@ -157,3 +157,38 @@
     console.log('Email:', '{{this.email}}');
     console.log('Phone:', '{{this.phone}}');
 </script>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="sql">
+SELECT o.id, o.customer_id, o.product_id, o.address, o.quantity, 
+       o.amount::money::numeric::float8, o.status_payment, 
+       o.status_shipment, o.created_at
+FROM orders o 
+JOIN customers c ON o.customer_id = c.id
+WHERE (COALESCE($1, o.id) = o.id)
+AND (COALESCE($2, c.phone) = c.phone)
+AND (COALESCE($3, o.product_id) = o.product_id)
+AND (COALESCE($4, o.quantity) = o.quantity)
+AND (COALESCE($5, o.amount) = o.amount)
+AND (COALESCE($6, o.status_payment) = o.status_payment)
+AND (COALESCE($7, o.status_shipment) = o.status_shipment)
+AND (COALESCE(DATE($8), DATE(o.created_at)) = DATE(o.created_at))
+ORDER BY o.id DESC;
+</code></pre>
+      </div>
+    </div>
+  </div>
+</div>

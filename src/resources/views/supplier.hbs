@@ -12,52 +12,67 @@
                 {{!-- Input --}}
                 <form method='POST' action='/searchsupplier'>
                     <div class="row">
-                        <div class='col-3 mb-3'>
-                            <label for='search_id-input' class='form-label'>ID:</label>
-                            <input
-                                type='text'
-                                name='search_id'
-                                class='form-control'
-                                id='search_id-input'
-                                placeholder='123'
-                            />
+                        <div class='col-9'>
+                            <div class="row">
+                                <div class='col-3 mb-3'>
+                                    <label for='search_id-input' class='form-label'>ID:</label>
+                                    <input
+                                        type='text'
+                                        name='search_id'
+                                        class='form-control'
+                                        id='search_id-input'
+                                        placeholder='123'
+                                    />
+                                </div>
+                                <div class="col-4">
+                                    <label for='search_supplier-input' class='form-label active'>Nhà sản xuất:</label>
+                                    <input name='search_name' class="form-control" list="supplierOptions" id="search_supplier-input" placeholder="Samsung">
+                                    <datalist id="supplierOptions"></datalist>
+                                </div>
+                                <div class='col-5 mb-3'>
+                                    <label for='address-input' class='form-label'>Địa chỉ:</label>
+                                    <input
+                                        type='text'
+                                        name='search_address'
+                                        class='form-control'
+                                        id='address-input'
+                                        placeholder='Hà Nội'
+                                    />
+                                </div>
+                                <div class='col-3 mb-3'>
+                                    <label for='search_created_at-input' class='form-label'>Ngày tạo:</label>
+                                    <input
+                                        type='date'
+                                        name='search_created_at'
+                                        class='form-control'
+                                        id='search_created_at-input'
+                                    />
+                                </div>
+                                <div class='col-4 mb-3'>
+                                    <label for='search_updated_at-input' class='form-label'>Ngày cập nhật:</label>
+                                    <input
+                                        type='date'
+                                        name='search_updated_at'
+                                        class='form-control'
+                                        id='search_updated_at-input'
+                                    />
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
+                            </div>
                         </div>
-                        <div class="col-3">
-                            <label for='search_supplier-input' class='form-label active'>Nhà sản xuất:</label>
-                            <input name='search_name' class="form-control" list="supplierOptions" id="search_supplier-input" placeholder="Samsung">
-                            <datalist id="supplierOptions"></datalist>
+                        <div class='col-3  pt-4'>
+                            <div class="card border-warning mb-3" style="max-width: 18rem;">
+                                <h6 class="card-header text-warning"><strong>Chú ý</strong></h6>
+                                <div class="card-body text-warning">
+                                    <div class="card-text">
+                                        <p class="card-text"><strong>Chỉnh sửa</strong> và <strong>Xoá</strong> thông tin nhà sản xuất ở bảng dưới</p>
+                                        <p class="card-text"><strong>Đây là tìm kiếm chính xác</strong></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class='col-4 mb-3'>
-                            <label for='address-input' class='form-label'>Địa chỉ:</label>
-                            <input
-                                type='text'
-                                name='search_address'
-                                class='form-control'
-                                id='address-input'
-                                placeholder='Hà Nội'
-                            />
-                        </div>
-                        <div class='col-3 mb-3'>
-                            <label for='search_created_at-input' class='form-label'>Ngày tạo:</label>
-                            <input
-                                type='date'
-                                name='search_created_at'
-                                class='form-control'
-                                id='search_created_at-input'
-                            />
-                        </div>
-                        <div class='col-3 mb-3'>
-                            <label for='search_updated_at-input' class='form-label'>Ngày cập nhật:</label>
-                            <input
-                                type='date'
-                                name='search_updated_at'
-                                class='form-control'
-                                id='search_updated_at-input'
-                            />
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
                     </div>
                 </form>
                 {{!-- Table --}}
@@ -158,7 +173,7 @@
                                 <div class="card border-warning mb-3" style="max-width: 18rem;">
                                     <h6 class="card-header text-warning">Chú ý</h6>
                                     <div class="card-body text-warning">
-                                        <p class="card-text">Điền đầy thông tin trường "Tên" và trường "Email"</p>
+                                        <p class="card-text">Điền đầy đủ thông tin <strong>"Tên nhà sản xuất"</strong></p>
                                     </div>
                                 </div>
                             </div>
