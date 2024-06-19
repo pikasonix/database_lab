@@ -50,8 +50,54 @@ FOR EACH ROW
 WHEN (NEW.status_payment = 1)
 EXECUTE PROCEDURE update_product_quantity();
 
---- 3 Sửa web
+--- 3 
+CREATE OR REPLACE FUNCTION get_best_selling_products()
+RETURNS TABLE (
+    product_id INT,
+    product_name VARCHAR(255),
+    product_catalog VARCHAR(255),
+    product_description TEXT,
+    product_price MONEY,
+    product_discount INT,
+    product_amount MONEY,
+    total_quantity_sold BIGINT,
+    product_image VARCHAR(255)
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    WITH top_selling_products AS (
+        SELECT
+            o.product_id,
+            SUM(o.quantity) AS total_quantity_sold,
+            RANK() OVER (ORDER BY SUM(o.quantity) DESC) AS product_rank
+        FROM
+            orders o
+        WHERE
+            o.status_payment = 1
+        GROUP BY
+            o.product_id
+    )
+    SELECT
+        p.id AS product_id,
+        p.name AS product_name,
+        p.catalog AS product_catalog,
+        p.description AS product_description,
+        p.price AS product_price,
+        p.discount AS product_discount,
+        SUM(o.amount) AS product_amount,
+        tsp.total_quantity_sold AS total_quantity_sold,
+        p.image AS product_image
+    FROM
+        products p
+        JOIN top_selling_products tsp ON p.id = tsp.product_id
+		INNER JOIN orders o ON o.product_id = p.id
+	GROUP BY o.product_id,p.id,tsp.total_quantity_sold
+	ORDER BY tsp.total_quantity_sold DESC;
+END;
+$$ LANGUAGE plpgsql;
 
+SELECT * FROM get_best_selling_products();
 -- 4 OK
 CREATE FUNCTION get_total_base_price_by_supplier(supplier_name VARCHAR(255))
 RETURNS TABLE(name VARCHAR(255), total_base_price MONEY)
@@ -323,6 +369,38 @@ $$ LANGUAGE plpgsql;
 SELECT * FROM get_store_revenue('2024-01-01', '2024-12-31');
 
 -- 13
+CREATE OR REPLACE FUNCTION rank_of_suppliers()
+RETURNS TABLE (supplier_name VARCHAR(255), supplier_address VARCHAR(255), total_quantity_sold INT, total_amount MONEY, total_order BIGINT, rank_num BIGINT)
+AS $$
+BEGIN
+	RETURN QUERY
+	WITH number_of_purchases AS(
+	SELECT
+		s.id AS supplier_id,
+		s.name AS supplier_name,
+		s.address AS supplier_address,
+		SUM(o.quantity) :: INT AS total_quantity_sold,
+		SUM(o.amount) AS total_amount,
+		COUNT(*) AS total_order
+	FROM products p
+	INNER JOIN suppliers s ON s.id = p.supplier_id
+	INNER JOIN orders o ON o.product_id = p.id
+	WHERE o.status_payment = 1
+	GROUP BY s.id
+	)
+	SELECT
+		number_of_purchases.supplier_name,
+		number_of_purchases.supplier_address,
+		number_of_purchases.total_quantity_sold,
+		number_of_purchases.total_amount,
+		number_of_purchases.total_order,
+		RANK() OVER (ORDER BY number_of_purchases.total_quantity_sold DESC) AS rank_num
+	FROM number_of_purchases;
+
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM rank_of_suppliers()
 -- 14
 
 -- 15 OK

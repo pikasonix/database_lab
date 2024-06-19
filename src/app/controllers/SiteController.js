@@ -18,7 +18,13 @@ class SiteController {
                     pool.query('SELECT COUNT(*) FROM customers', (err, countcustomer) => {
                         pool.query('SELECT COUNT(*) FROM products', (err, countproduct) => {
                             pool.query('SELECT COUNT(*) FROM orders', (err, countorder) => {
-                                res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows, countcustomer: countcustomer.rows, countproduct: countproduct.rows, countorder: countorder.rows });
+                                pool.query(`
+                                    SELECT SUM(o.amount)::money::numeric::float8 AS total_revenue
+                                     FROM orders o
+                                    WHERE o.status_payment = 1
+                                    `, (err, total_revenue) => {
+                                    res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows, countcustomer: countcustomer.rows, countproduct: countproduct.rows, countorder: countorder.rows, total_revenue: total_revenue.rows});
+                                });
                             });
                         });
                     });
@@ -606,36 +612,43 @@ paidorder(req, res, next) {
 
 statistic(req, res) {
     const { begin_date, end_date, number, store_begin_date, store_end_date } = req.body;
-    pool.query(`
-        SELECT rank_by_spend,customer_id,customer_name,customer_email,customer_phone,total_spend::money::numeric::float8
-        FROM get_top_customers($1, $2, $3);`, [begin_date, end_date, number], (err, topCustomers) => {
+    pool.query(`SELECT product_id, product_name, product_price::money::numeric::float8, product_discount, total_quantity_sold, product_image, product_amount::money::numeric::float8
+        FROM get_best_selling_products()`, (err, topProducts) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        req.session.topCustomers = topCustomers.rows;
+        req.session.topProducts = topProducts.rows;
 
-        pool.query(`
-            SELECT month,quarter,year, total_cost::money::numeric::float8, total_revenue::money::numeric::float8, total_profit::money::numeric::float8
-            FROM get_store_revenue($1, $2);`, [store_begin_date, store_end_date], (err, storeStatistic) => {
+        pool.query(`SELECT supplier_name, supplier_address, total_quantity_sold, total_amount::money::numeric::float8, total_order, rank_num
+            FROM rank_of_suppliers()`, (err, topSuppliers) => {
             if (err) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            req.session.storeStatistic = storeStatistic.rows;
-            res.render('statistic', { ...req.session });
-        });
-    });
-}
+            req.session.topSuppliers = topSuppliers.rows;
 
-bestselling(req, res) {
-    pool.query(`SELECT * FROM get_best_selling_product();`, (err, result) => {
-        if (err) {
-            console.error('Lỗi khi truy vấn dữ liệu:', err);
-            return res.status(500).send('Lỗi cơ sở dữ liệu');
-        }
-        req.session.bestselling = result.rows;
-        res.render('statistic', { ...req.session });
+            pool.query(`
+                SELECT rank_by_spend,customer_id,customer_name,customer_email,customer_phone,total_spend::money::numeric::float8
+                FROM get_top_customers($1, $2, $3);`, [begin_date, end_date, number], (err, topCustomers) => {
+                if (err) {
+                    console.error('Lỗi khi truy vấn dữ liệu:', err);
+                    return res.status(500).send('Lỗi cơ sở dữ liệu');
+                }
+                req.session.topCustomers = topCustomers.rows;
+
+                pool.query(`
+                    SELECT month,quarter,year, total_cost::money::numeric::float8, total_revenue::money::numeric::float8, total_profit::money::numeric::float8
+                    FROM get_store_revenue($1, $2);`, [store_begin_date, store_end_date], (err, storeStatistic) => {
+                    if (err) {
+                        console.error('Lỗi khi truy vấn dữ liệu:', err);
+                        return res.status(500).send('Lỗi cơ sở dữ liệu');
+                    }
+                    req.session.storeStatistic = storeStatistic.rows;
+                    res.render('statistic', { ...req.session });
+                });
+            });
+        });
     });
 }
 

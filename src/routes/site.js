@@ -43,7 +43,6 @@ router.post('/refundorder/:id', siteController.refundorder.bind(siteController))
 router.post('/paidorder/:id', siteController.paidorder.bind(siteController));
 
 router.use('/statistic', siteController.statistic);
-router.get('/bestselling', siteController.bestselling);
 router.post('/basepricesupplier', siteController.basepricesupplier);
 router.post('/revenuesupplier', siteController.revenuesupplier);
 router.post('/revenueproduct', siteController.revenueproduct);
