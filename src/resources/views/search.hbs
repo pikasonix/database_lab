@@ -1,14 +1,14 @@
 {{!-- Tìm kiếm theo mã --}}
 <div class="p-3 bg-body rounded shadow-sm">
-    <form method='POST' action=''>
+    <form method='POST' action='/searchproductid'>
         <div class="row align-items-center">
         <div class="col-4">
             <label for='search_input' class='form-label mt-2'>Nhập mã sản phẩm</label>
         </div>    
         <div class="col-6">
             <div class="d-flex">  
-                <input type='text' name='q' class='form-control me-2' style='width: 50%' id='search_input' placeholder='MT1234'/>
-                <button type='submit' class='btn btn-success'>Tìm kiếm</button> 
+                <input type='text' name='product_id' class='form-control me-2' style='width: 50%' id='search_input' placeholder='234'/>
+                <button type='submit' class='btn btn-primary'>Tìm kiếm</button> 
             </div> 
         </div>  
         <div class="col-3">
@@ -22,92 +22,122 @@
 {{!-- Tìm kiếm nâng cao --}}
 <div class="my-3 p-3 bg-body rounded shadow-sm">
     {{!-- Tìm kiếm chính --}}
-    <div class="row">
-        <div class="col">
-            <label for='search_input' class='form-label active'>Tên sản phẩm</label>
-            <input
-                type='text'
-                name='q'
-                class='form-control'
-                id='search_input'
-                placeholder='VD: Máy tính'
-            />
-        </div>
-        <div class="col-3">
-            <label for='search_input' class='form-label active'>Nhà sản xuất</label>
-            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="VD: DELL">
-            <datalist id="datalistOptions">
-                <option value="DELL">
-                <option value="HP">
-                <option value="ASUS">
-                <option value="Acer">
-                <option value="Lenovo">
-                <option value="Macbook">
-            </datalist>
-        </div>
-
-        <div class="col-3">
-            <label for='input-group' class='form-label active'>Năm sản xuất</label>
-            <div class="input-group">   
-                <select class="form-select">
-                  <option selected>Vào</option>
-                  <option value="1">Trước</option>
-                  <option value="2">Sau</option>
-                </select>
-                <input type="text" class="form-control">
+    <form method='POST' action='/searchcatalogprice'>
+        <div class="row">     
+            <div class='col-3 mb-3'>
+                <label for='search_catalog-input' class='form-label'>Loại sản phẩm:</label>
+                <input name='search_catalog' class='form-control' list="catalogOptions" id='search_catalog-input' placeholder='Điện thoại' />
+                <datalist id="catalogOptions"></datalist>
             </div>
-        </div>
-    </div>
-
-<hr> 
-    <div class="row">
-        {{!-- Màu --}}
-        <div class="col">   
-            <label for='color-bar' class='form-label active'>Màu sắc</label>
-            <div class="color-bar">
-                <input type="radio" class="btn-check " name="options-outlined1" id="all-button" autocomplete="off"checked>
-                <label class="btn btn-outline-light btn-sm" style="font-size: 12px;" for="all-button">All</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="green-button" autocomplete="off">
-                <label class="btn btn-outline-success btn-sm" style="font-size: 12px;" for="green-button">Green</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="red-button" autocomplete="off">
-                <label class="btn btn-outline-danger btn-sm" style="font-size: 12px;" for="red-button">Red</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="blue-button" autocomplete="off">
-                <label class="btn btn-outline-primary btn-sm" style="font-size: 12px;" for="blue-button">Blue</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="yellow-button" autocomplete="off">
-                <label class="btn btn-outline-warning btn-sm" style="font-size: 12px;" for="yellow-button">Yellow</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="white-button" autocomplete="off">
-                <label class="btn btn-outline-light btn-sm" style="font-size: 12px;" for="white-button">White</label>
-
-                <input type="radio" class="btn-check" name="options-outlined1" id="black-button" autocomplete="off">
-                <label class="btn btn-outline-secondary btn-sm" style="font-size: 12px;" for="black-button">Black</label>
-            </div>
-
-
-        </div>
-        {{!-- Giá thành --}}
-        <div class="col">
-            <label for='price-range' class='form-label active'>Giá thành</label>
-            <div class="price-range">
-                <div class="input-group input-group-sm mb-3">
-                    <input type="text" class="form-control" placeholder="Từ">
-                    <span class="input-group-text">-</span>
-                    <input type="text" class="form-control" placeholder="đến">
-                    <span class="input-group-text">VND</span>
+            <div class="col-6">
+                <label for='price-range' class='form-label active'>Giá thành:</label>
+                <div class="price-range">
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" name="min_price" placeholder="Từ">
+                        <span class="input-group-text">-</span>
+                        <input type="number" class="form-control" name="max_price" placeholder="đến">
+                        <span class="input-group-text">VND</span>
+                    </div>
                 </div>
             </div>
+            <div class="col-3 text-center mt-4">
+                <button type='submit' class='btn btn-primary'>Tìm kiếm</button>
+                <!-- Button trigger modal 1-->
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#ModalQuery1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                </svg>
+                </button>
+            </div>
         </div>
+    </form>
+    {{#if resultSearch}}
+        <small>
+            <table class='table table-hover text-center align-middle table-responsive'>
+                <thead class="text-center text-uppercase">
+                    <tr>
+                        {{#each resultSearch.[0]}}
+                            <th>{{@key}}</th>
+                        {{/each}}
+                            <th>Action</th>
+                    </tr>
+                </thead>
 
-<hr>
+                <tbody class="table-group-divider">
+                    {{#each resultSearch}}
+                        <tr>
+                            <td>{{this.product_id}}</td>
+                            <td>{{this.product_name}}</td>
+                            <td>{{this.product_catalog}}</td>
+                            <td>{{this.product_supplier}}</td>
+                            <td>{{this.product_price}}</td>
+                            <td>{{this.product_discount}}</td>
+                            <td><a href="{{this.product_image}}">Link</a></td>
+                            <td>
+                                <div class="d-grid gap-2">
+                                    <a href="/editproduct/{{this.product_id}}" type="button" class="btn btn-primary btn-sm">Chi tiết</a> 
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>   
+            </table>
+        </small>                
+    {{else}}
+        <p>No results found.</p>
+    {{/if}}
+</div>
+<script>
+console.log({search_catalog, min_price, max_price});
+</script>
 
-    {{!-- Buttons --}}
-   <div class="text-center">
-            <button type='submit' class='btn btn-success my-1' style="width: 50%">Tìm kiếm</button>
-            <button type='submit' class='btn btn-outline-danger my-1' style="width: 50%">Tìm kiếm chính xác</button>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    fetch('/getcatalog')
+        .then(response => response.json())
+        .then(data => {
+            const catalogDatalist = document.getElementById('catalogOptions');
+            catalogDatalist.innerHTML = ''; 
+            data.forEach(catalog => {
+                const option = document.createElement('option');
+                option.value = catalog.catalog;
+                catalogDatalist.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Lỗi khi lấy danh sách loại sản phẩm:', error));
+    });
+</script>
+
+
+
+
+<!-- Modal 1-->
+<div class="modal fade modal-xl" id="ModalQuery1" tabindex="-1" aria-labelledby="ModalQuery1Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="ModalQuery1Label">Search product</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="postgresql" style="font-size: 18px;">
+SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price::money::numeric::float8,p.base_price::money::numeric::float8,p.discount,p.quantity,p.image,p.created_at,p.updated_at
+FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
+WHERE   (COALESCE($1, p.id) = p.id OR $1 IS NULL)
+    AND (COALESCE($2, p.name) = p.name OR $2 IS NULL) 
+    AND (COALESCE($3, p.catalog) = p.catalog OR $3 IS NULL) 
+    AND (COALESCE($4, s.name) = s.name OR $4 IS NULL) 
+    AND (COALESCE(DATE($5), DATE(p.mgf)) = DATE(p.mgf) OR $5 IS NULL)
+    AND (COALESCE($6, p.price) = p.price OR $6 IS NULL) 
+    AND (COALESCE($7, p.discount) = p.discount OR $7 IS NULL) 
+    AND (COALESCE($8, p.quantity) = p.quantity OR $8 IS NULL)
+    AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at) OR $9 IS NULL)
+    AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at) OR $10 IS NULL)
+    AND (COALESCE($11, p.base_price) = p.base_price OR $11 IS NULL)
+ORDER BY p.name ASC
+        </code></pre>
+      </div>
     </div>
-
+  </div>
 </div>

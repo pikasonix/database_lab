@@ -705,11 +705,41 @@ revenueproduct(req, res) {
         });
     }
     // [GET] /search
-    search(req, res) {
+    search(req, res, next) {
         res.render('search');
     }
 
+    searchproductid(req, res) {
+        const { product_id } = req.body;
+        pool.query('SELECT id FROM products WHERE id = $1', [product_id], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            if (result.rows.length > 0) {
+                const productId = result.rows[0].id;
+                console.log(productId);
+                return res.redirect(`/editproduct/${productId}`);
+            } else {
+                return res.status(404).send('Product not found');
+            }
+        });
+    }
+
+    searchcatalogprice(req, res, next) {
+        const { search_catalog,min_price,max_price } = req.body;
+        pool.query(`
+            SELECT product_id,product_name,product_catalog,product_supplier,product_price::money::numeric::float8,product_discount,product_image
+            FROM search_inf_products($1, $2::MONEY, $3::MONEY);`, [search_catalog,max_price,min_price], (err, result) => {
+            if (err) {
+                console.error('Lỗi khi truy vấn dữ liệu:', err);
+                return res.status(500).send('Lỗi cơ sở dữ liệu');
+            }
+            res.render('search', { resultSearch: result.rows });
+        });
+    }
 }
+
 
 module.exports = new SiteController();
 

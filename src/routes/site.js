@@ -6,6 +6,8 @@ const siteController = require('../app/controllers/SiteController');
 
 router.post('/navbarsearch', siteController.navbarsearch);
 router.get('/search', siteController.search);
+router.post('/searchproductid', siteController.searchproductid);
+router.post('/searchcatalogprice', siteController.searchcatalogprice);
 
 router.use('/customer', siteController.customer);
 router.use('/searchcustomer', siteController.searchcustomer);
