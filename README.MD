@@ -8,9 +8,9 @@ Trang web quản lý bán hàng
 
 ## Tech Stack
 
-**Front-end:** Handlebars, SCSS, Bootstrap 5
+**Front-end:** HTML, Javascript, SCSS, Bootstrap 5
 
-**Back-end:** Node, Express
+**Back-end:** NodeJS (ExpressJS)
 
 **Database:** PostgreSQL
 
@@ -22,7 +22,8 @@ Trang web quản lý bán hàng
 
 ## Installation
 
-Install NodeJS
+Install NodeJS v20.12.2
+https://nodejs.org/en/download/prebuilt-installer
 Install npm
 ```bash
   npm install
