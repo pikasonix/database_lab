@@ -13,17 +13,25 @@ class SiteController {
     // [GET] /home
     index(req, res) {
         pool.query('SELECT * FROM customers', (err, customers) => {
-            pool.query('SELECT * FROM products', (err, products) => {
-                pool.query('SELECT * FROM suppliers', (err, suppliers) => {
-                    pool.query('SELECT COUNT(*) FROM customers', (err, countcustomer) => {
-                        pool.query('SELECT COUNT(*) FROM products', (err, countproduct) => {
-                            pool.query('SELECT COUNT(*) FROM orders', (err, countorder) => {
-                                pool.query(`
-                                    SELECT SUM(o.amount)::money::numeric::float8 AS total_revenue
-                                     FROM orders o
-                                    WHERE o.status_payment = 1
-                                    `, (err, total_revenue) => {
-                                    res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows, countcustomer: countcustomer.rows, countproduct: countproduct.rows, countorder: countorder.rows, total_revenue: total_revenue.rows});
+            pool.query(`
+                SELECT id,name,catalog,supplier_id,mgf,price::money::numeric::float8,base_price::money::numeric::float8,discount,quantity,image,created_at,updated_at
+                FROM products
+            `, (err, products) => {
+                pool.query(`
+                    SELECT id, customer_id, product_id, address, quantity, amount::money::numeric::float8, status_payment, status_shipment, created_at 
+                    FROM orders
+                    `, (err, orders) => {
+                    pool.query('SELECT * FROM suppliers', (err, suppliers) => {
+                        pool.query('SELECT COUNT(*) FROM customers', (err, countcustomer) => {
+                            pool.query('SELECT COUNT(*) FROM products', (err, countproduct) => {
+                                pool.query('SELECT COUNT(*) FROM orders', (err, countorder) => {
+                                    pool.query(`
+                                        SELECT SUM(o.amount)::money::numeric::float8 AS total_revenue
+                                        FROM orders o
+                                        WHERE o.status_payment = 1
+                                        `, (err, total_revenue) => {
+                                        res.render('home', { customers: customers.rows, products: products.rows, suppliers: suppliers.rows, orders: orders.rows, countcustomer: countcustomer.rows, countproduct: countproduct.rows, countorder: countorder.rows, total_revenue: total_revenue.rows});
+                                    });
                                 });
                             });
                         });
