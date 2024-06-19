@@ -119,20 +119,36 @@
       </div>
       <div class="modal-body">
         <pre><code class="postgresql" style="font-size: 18px;">
-SELECT p.id,p.name,p.catalog,p.supplier_id,p.mgf,p.price::money::numeric::float8,p.base_price::money::numeric::float8,p.discount,p.quantity,p.image,p.created_at,p.updated_at
-FROM products p LEFT JOIN suppliers s ON p.supplier_id = s.id 
-WHERE   (COALESCE($1, p.id) = p.id OR $1 IS NULL)
-    AND (COALESCE($2, p.name) = p.name OR $2 IS NULL) 
-    AND (COALESCE($3, p.catalog) = p.catalog OR $3 IS NULL) 
-    AND (COALESCE($4, s.name) = s.name OR $4 IS NULL) 
-    AND (COALESCE(DATE($5), DATE(p.mgf)) = DATE(p.mgf) OR $5 IS NULL)
-    AND (COALESCE($6, p.price) = p.price OR $6 IS NULL) 
-    AND (COALESCE($7, p.discount) = p.discount OR $7 IS NULL) 
-    AND (COALESCE($8, p.quantity) = p.quantity OR $8 IS NULL)
-    AND (COALESCE(DATE($9), DATE(p.created_at)) = DATE(p.created_at) OR $9 IS NULL)
-    AND (COALESCE(DATE($10), DATE(p.updated_at)) = DATE(p.updated_at) OR $10 IS NULL)
-    AND (COALESCE($11, p.base_price) = p.base_price OR $11 IS NULL)
-ORDER BY p.name ASC
+CREATE OR REPLACE FUNCTION search_inf_products(p_catalog VARCHAR(255), max_price MONEY, min_price MONEY)
+RETURNS TABLE (
+    product_id INT,
+    product_name VARCHAR(255),
+    product_catalog VARCHAR(255),
+	product_supplier VARCHAR(255),
+    product_description TEXT,
+    product_price MONEY,
+    product_discount INT,
+    product_image VARCHAR(255)
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        p.id AS product_id,
+        p.name AS product_name,
+        p.catalog AS product_catalog,
+		s.name AS product_supplier,
+        p.description AS product_description,
+        p.price AS product_price,
+        p.discount AS product_discount,
+        p.image AS product_image
+    FROM products p
+	INNER JOIN suppliers s ON s.id = p.supplier_id
+	WHERE p.catalog = search_inf_products.p_catalog 
+		  AND p.price <= search_inf_products.max_price AND p.price >= search_inf_products.min_price;
+END;
+$$ LANGUAGE plpgsql;
+
         </code></pre>
       </div>
     </div>
