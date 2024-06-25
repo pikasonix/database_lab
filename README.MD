@@ -2,10 +2,6 @@
 # Store Admin 
 Trang web quản lý bán hàng
 
-
-
-
-
 ## Tech Stack
 
 **Front-end:** HTML, Javascript, SCSS, Bootstrap 5
@@ -13,11 +9,6 @@ Trang web quản lý bán hàng
 **Back-end:** NodeJS (ExpressJS)
 
 **Database:** PostgreSQL
-
-
-## Features
-
-- 
 
 
 ## Installation
@@ -39,7 +30,4 @@ Run to convert SCSS to CSS
 ```bash
 npm run watch
 ```
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
