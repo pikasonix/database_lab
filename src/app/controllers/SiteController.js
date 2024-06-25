@@ -620,13 +620,12 @@ paidorder(req, res, next) {
 
 statistic(req, res) {
     const { begin_date, end_date, number, store_begin_date, store_end_date } = req.body;
-    pool.query(`SELECT product_id, product_name, product_price::money::numeric::float8, product_discount, total_quantity_sold, product_image, product_amount::money::numeric::float8
+    pool.query(`SELECT product_id, product_name, product_price::money::numeric::float8, product_discount, total_quantity_sold, product_image, product_amount::money::numeric::float8, product_catalog
         FROM get_best_selling_products()`, (err, topProducts) => {
         if (err) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        req.session.topProducts = topProducts.rows;
 
         pool.query(`SELECT supplier_name, supplier_address, total_quantity_sold, total_amount::money::numeric::float8, total_order, rank_num
             FROM rank_of_suppliers()`, (err, topSuppliers) => {
@@ -634,7 +633,6 @@ statistic(req, res) {
                 console.error('Lỗi khi truy vấn dữ liệu:', err);
                 return res.status(500).send('Lỗi cơ sở dữ liệu');
             }
-            req.session.topSuppliers = topSuppliers.rows;
 
             pool.query(`
                 SELECT rank_by_spend,customer_id,customer_name,customer_email,customer_phone,total_spend::money::numeric::float8
@@ -643,7 +641,6 @@ statistic(req, res) {
                     console.error('Lỗi khi truy vấn dữ liệu:', err);
                     return res.status(500).send('Lỗi cơ sở dữ liệu');
                 }
-                req.session.topCustomers = topCustomers.rows;
 
                 pool.query(`
                     SELECT month,quarter,year, total_cost::money::numeric::float8, total_revenue::money::numeric::float8, total_profit::money::numeric::float8
@@ -652,8 +649,7 @@ statistic(req, res) {
                         console.error('Lỗi khi truy vấn dữ liệu:', err);
                         return res.status(500).send('Lỗi cơ sở dữ liệu');
                     }
-                    req.session.storeStatistic = storeStatistic.rows;
-                    res.render('statistic', { ...req.session });
+                    res.render('statistic', { topProducts: topProducts.rows, topSuppliers: topSuppliers.rows, topCustomers: topCustomers.rows, storeStatistic: storeStatistic.rows });
                 });
             });
         });
@@ -669,8 +665,7 @@ revenuesupplier(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        req.session.revenuesupplier = result.rows;
-        res.render('statistic', { ...req.session });
+        res.render('statistic',{revenuesupplier: result.rows});
     });
 }
 
@@ -683,8 +678,7 @@ basepricesupplier(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        req.session.basepricesupplier = result.rows;
-        res.render('statistic', { ...req.session });
+        res.render('statistic', {basepricesupplier: result.rows});
     });
 }
 
@@ -697,8 +691,7 @@ revenueproduct(req, res) {
             console.error('Lỗi khi truy vấn dữ liệu:', err);
             return res.status(500).send('Lỗi cơ sở dữ liệu');
         }
-        req.session.revenueproduct = result.rows;
-        res.render('statistic', { ...req.session });
+        res.render('statistic', { revenueproduct: result.rows });
     });
 }
 

@@ -8,7 +8,7 @@ const MomentHandler = require('handlebars.moment');
 MomentHandler.registerHelpers(Handlebars);
 const moment = require('moment'); 
 const path = require('path');
-const session = require('express-session'); 
+// const session = require('express-session'); 
 const app = express();
 const port = 2000;
 const route = require('./routes');
@@ -28,12 +28,12 @@ app.use(express.json());
 app.use(morgan('tiny'));
 
 // Cấu hình session middleware
-app.use(session({
-    secret: 'your-secret-key', // Đặt khóa bí mật để ký phiên làm việc
-    resave: false, // Không lưu phiên nếu không thay đổi
-    saveUninitialized: true, // Lưu phiên mới ngay cả khi chưa có dữ liệu
-    cookie: { secure: false } // Đặt thành true nếu sử dụng HTTPS
-}));
+// app.use(session({
+//     secret: 'your-secret-key', // Đặt khóa bí mật để ký phiên làm việc
+//     resave: false, // Không lưu phiên nếu không thay đổi
+//     saveUninitialized: true, // Lưu phiên mới ngay cả khi chưa có dữ liệu
+//     cookie: { secure: false } // Đặt thành true nếu sử dụng HTTPS
+// }));
 
 // Template engine
 app.engine('hbs', handlebars.engine({ extname: '.hbs', helpers: comparison }));
