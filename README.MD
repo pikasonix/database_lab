@@ -14,12 +14,20 @@ Trang web quản lý bán hàng
 ## Installation
 
 Install NodeJS v20.12.2
+```
 https://nodejs.org/en/download/prebuilt-installer
+```
+
 Install npm
 ```bash
   npm install
 ```
-    
+
+PostgreSQL
+```
+src\app\controllers\SiteController.js
+```
+
 ## Usage
 Run project
 ```bash
@@ -30,4 +38,3 @@ Run to convert SCSS to CSS
 ```bash
 npm run watch
 ```
-
