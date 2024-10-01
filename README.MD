@@ -38,4 +38,3 @@ Run to convert SCSS to CSS
 ```bash
 npm run watch
 ```
-![image](./demo/Dashboard.png)
