@@ -38,3 +38,39 @@ Run to convert SCSS to CSS
 ```bash
 npm run watch
 ```
+
+## DEMO
+
+#### Home
+
+![home](./demo/Dashboard.png)
+
+#### Search 
+Search for products
+
+![search](./demo/Products.png)
+
+####  Add 
+Add orders with validation
+> Before adding a product, ensure that a supplier exists. If the supplier doesn't exist, automatically add the supplier first, then proceed to add the product.
+
+![add](./demo/AddProduct.png)
+
+#### Edit 
+Edit products with validation
+
+![edit](./demo/EditProduct.png)
+
+####  Delete 
+Delete with logic check in the database
+
+![can delete](DeleteSupplier.png "We can delete this supplier because it doesn't have any product") ![cannot delete](DeleteCustomer.png "We cannot delete this customer because he/she has a order")
+
+#### Manage order 
+Update order status, list orders that need refunds, list unpaid orders
+
+![manageorder](./demo/ManageOrder.png)
+
+#### Statistics 
+
+![statistics](./demo/Statistics.png)
