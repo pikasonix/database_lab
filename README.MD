@@ -1,6 +1,6 @@
 
 # Store Admin 
-Trang web quản lý bán hàng
+
 
 ## Tech Stack
 
@@ -64,7 +64,7 @@ Edit products with validation
 ####  Delete 
 Delete with logic check in the database
 
-![can delete](DeleteSupplier.png "We can delete this supplier because it doesn't have any product") ![cannot delete](DeleteCustomer.png "We cannot delete this customer because he/she has a order")
+![can delete](./demo/DeleteSupplier.png "We can delete this supplier because it doesn't have any product") ![cannot delete](./demo/DeleteCustomer.png "We cannot delete this customer because he/she has a order")
 
 #### Manage order 
 Update order status, list orders that need refunds, list unpaid orders
